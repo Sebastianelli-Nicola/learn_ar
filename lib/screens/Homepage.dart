@@ -10,10 +10,9 @@ class Intro extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.grey.shade300,
-        body: SingleChildScrollView(
-          child: Container(
+        body: Container(
             padding: EdgeInsets.all(30),
-            /*child: Column(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
@@ -23,7 +22,7 @@ class Intro extends StatelessWidget {
                       children: [
                         Container(
                           padding: EdgeInsets.all(20),
-                          child: Column(
+                          child: const Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               SizedBox(height: 30,),
@@ -44,69 +43,18 @@ class Intro extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 1,),
-                Container(
-                  height: 50,
-                  width: 360,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey[300]!.withOpacity(1.0), //color of shadow
-                          spreadRadius: 1, //spread radius
-                          blurRadius: 1, // blur radius
-                          offset: Offset(0, 1), // changes position of shadow
-                          //first paramerter of offset is left-right
-                          //second parameter is top to down
-                        ),
-                      ]
-                  ),
-                  child: Row(
-                    children: [
-                      IconButton(
-                        icon: Icon(
-                          Icons.search,
-                          color: Colors.black,
-                          size: 30,
-                        ), onPressed: () {  },
-                      ),
-                      Expanded(
-                        child: TextField(
-                          style: TextStyle(
-                              fontSize: 15,
-                              fontFamily: 'circe'
-                          ),
-                          decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: "Search for Objects"
-                          ),
-                        ),)
-                    ],
-                  ),
-                ),
-                SizedBox(height: 20,),
-                SingleChildScrollView(
-                  child: Column(
+                Column(
                     children: [
                       InkWell(
                         onTap: (){
-                          Navigator.of(context).push(PageRouteBuilder(
+                          /*Navigator.of(context).push(PageRouteBuilder(
                               pageBuilder: (context, animation, _) {
                                 return ObjectDetail();
                               },
-                              opaque: false));
+                              opaque: false));*/
+                          Navigator.pushNamed(context, '/introscreen');
                         },
                         child: Container(
-                          child:Column(
-                            children: [
-                              Image.asset('images/jett.png',width: 130,height: 130,),
-                              SizedBox(height:10 ,),
-                              Text('Plane',style: TextStyle( fontSize: 20,fontWeight: FontWeight.bold),),
-                            ],
-
-                          ),
-
                           margin: EdgeInsets.only(top: 20),
                           width: 360,
                           height: 180,
@@ -125,129 +73,60 @@ class Intro extends StatelessWidget {
                               //you can set more BoxShadow() here
                             ],
                           ),
+                          child:const Column(
+                            children: [
+                              //Image.asset('images/jett.png',width: 130,height: 130,),
+                              SizedBox(height:10 ,),
+                              Text('AR Model',style: TextStyle( fontSize: 20,fontWeight: FontWeight.bold),),
+                            ],
+
+                          ),
                         ),
                       ),
                     ],
                   ),
-                ),
                 InkWell(
                   onTap: (){
-                    Navigator.of(context).push(PageRouteBuilder(
+                    /*Navigator.of(context).push(PageRouteBuilder(
                         pageBuilder: (context, animation, _) {
                           return ObjectDetail2();
                         },
-                        opaque: false));
+                        opaque: false));*/
+                    Navigator.pushNamed(context, '/introscreen');
                   },
                   child: Container(
+                    margin: EdgeInsets.only(top: 20),
+                    width: 360,
+                    height: 180,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      boxShadow:[
+                        BoxShadow(
+                          color: Colors.grey[300]!.withOpacity(1.0), //color of shadow
+                          spreadRadius: 1, //spread radius
+                          blurRadius: 1, // blur radius
+                          offset: Offset(0, 1), // changes position of shadow
+                          //first paramerter of offset is left-right
+                          //second parameter is top to down
+                        ),
+                        //you can set more BoxShadow() here
+                      ],
+                    ),
                     child:Column(
                       children: [
-                        Image.asset('images/alien.png',width: 160,height: 130,),
+                        //Image.asset('images/alien.png',width: 160,height: 130,),
                         SizedBox(height:10 ,),
                         Text('Alien',style: TextStyle( fontSize: 20,fontWeight: FontWeight.bold),),
                       ],
 
                     ),
-
-                    margin: EdgeInsets.only(top: 20),
-                    width: 360,
-                    height: 180,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      boxShadow:[
-                        BoxShadow(
-                          color: Colors.grey[300]!.withOpacity(1.0), //color of shadow
-                          spreadRadius: 1, //spread radius
-                          blurRadius: 1, // blur radius
-                          offset: Offset(0, 1), // changes position of shadow
-                          //first paramerter of offset is left-right
-                          //second parameter is top to down
-                        ),
-                        //you can set more BoxShadow() here
-                      ],
-                    ),
-                  ),
-                ),
-                InkWell(
-                  onTap: (){
-                    Navigator.of(context).push(PageRouteBuilder(
-                        pageBuilder: (context, animation, _) {
-                          return ObjectDetail3();
-                        },
-                        opaque: false));
-                  },
-                  child: Container(
-                    child:Column(
-                      children: [
-                        Image.asset('images/solar system.png',width: 130,height: 130,),
-                        SizedBox(height:10 ,),
-                        Text('Solar Planets',style: TextStyle( fontSize: 20,fontWeight: FontWeight.bold),),
-                      ],
-
-                    ),
-
-                    margin: EdgeInsets.only(top: 20),
-                    width: 360,
-                    height: 180,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      boxShadow:[
-                        BoxShadow(
-                          color: Colors.grey[300]!.withOpacity(1.0), //color of shadow
-                          spreadRadius: 1, //spread radius
-                          blurRadius: 1, // blur radius
-                          offset: Offset(0, 1), // changes position of shadow
-                          //first paramerter of offset is left-right
-                          //second parameter is top to down
-                        ),
-                        //you can set more BoxShadow() here
-                      ],
-                    ),
                   ),
                 ),
 
-                InkWell(
-                  onTap: (){
-                    Navigator.of(context).push(PageRouteBuilder(
-                        pageBuilder: (context, animation, _) {
-                          return ObjectDetail4();
-                        },
-                        opaque: false));
-                  },
-                  child: Container(
-                    child:Column(
-                      children: [
-                        Image.asset('images/chicken.png',width: 130,height: 130,),
-                        SizedBox(height:10 ,),
-                        Text('Chicken',style: TextStyle( fontSize: 20,fontWeight: FontWeight.bold),),
-                      ],
-
-                    ),
-
-                    margin: EdgeInsets.only(top: 20),
-                    width: 360,
-                    height: 180,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      boxShadow:[
-                        BoxShadow(
-                          color: Colors.grey[300]!.withOpacity(1.0), //color of shadow
-                          spreadRadius: 1, //spread radius
-                          blurRadius: 1, // blur radius
-                          offset: Offset(0, 1), // changes position of shadow
-                          //first paramerter of offset is left-right
-                          //second parameter is top to down
-                        ),
-                        //you can set more BoxShadow() here
-                      ],
-                    ),
-                  ),
-                )
               ],
-            ),*/
+            ),
           ),
-        ));
+    );
   }
 }

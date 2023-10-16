@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:learn_ar/screens/AuthPage.dart';
 import 'package:learn_ar/screens/Homepage.dart';
+import 'package:learn_ar/screens/IntroScreen.dart';
+import 'package:learn_ar/screens/SplashScreen.dart';
 import 'package:provider/provider.dart';
+import 'auth.dart';
 import 'screens/Login.dart';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -13,10 +16,54 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  MyApp({super.key});
+  
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+        title: 'Learn AR',
+        //theme: ,
+        routes: {
+          '/splashscreen': (context) => const SplashScreen(),
+          '/introscreen': (context) => IntroScreen(),
+          //'/': (context) => const MyHomePage(title: 'LearnAR'),
+          '/login': (context) => const IntroSignUp(),
+          '/homepage': (context) => const Intro(),
+          '/auth': (context) => const AuthPage(),
+        },
+        home: StreamBuilder(stream: Auth().authStateChanges, builder: (context, snapshot){
+            if(snapshot.hasData){
+              return Intro()/*IntroSignUp()*/;
+            }
+            else {
+              return Intro();
+            }
+        })
+        /*home: StreamBuilder(stream: Auth.authStateChanges, builder: (context, snapshot)){
+    if(snapshot.hasData){
+    return IntroSignUp();
+    }
+    else{
+    return Intro();
+    }
+    }*/
+
+    );
+  }
+
+}
+
+/*class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   // This widget is the root of our application.
@@ -29,7 +76,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
           title: 'Routine Programmer',
           //theme: theme,
+          //initialRoute: '/splashscreen',
           routes: {
+            '/splashscreen': (context) => const SplashScreen(),
+            '/introscreen': (context) => IntroScreen(),
             '/': (context) => const MyHomePage(title: 'LearnAR'),
             '/login': (context) => const IntroSignUp(),
             '/homepage': (context) => const Intro(),
@@ -48,6 +98,27 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      title: 'Learn AR',
+      //theme: ,
+      home: StreamBuilder(stream: Auth.authStateChanges, builder: (context, snapshot)){
+        if(snapshot.hasData){
+          return IntroSignUp();
+        }
+        else{
+          return Intro();
+        }
+    }
+
+    )
+  }
+
+}
+
+/*class _MyHomePageState extends State<MyHomePage> {
 
   /*int currentIndex = 1;
   final screens = [
@@ -159,4 +230,4 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
 
-}
+}*/*/
