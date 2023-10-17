@@ -52,7 +52,7 @@ class Intro extends StatelessWidget {
                                 return ObjectDetail();
                               },
                               opaque: false));*/
-                          Navigator.pushNamed(context, '/introscreen');
+                          Navigator.pushNamed(context, '/ar');
                         },
                         child: Container(
                           margin: EdgeInsets.only(top: 20),
@@ -113,11 +113,11 @@ class Intro extends StatelessWidget {
                         //you can set more BoxShadow() here
                       ],
                     ),
-                    child:Column(
+                    child:const Column(
                       children: [
                         //Image.asset('images/alien.png',width: 160,height: 130,),
                         SizedBox(height:10 ,),
-                        Text('Alien',style: TextStyle( fontSize: 20,fontWeight: FontWeight.bold),),
+                        Text('Quiz',style: TextStyle( fontSize: 20,fontWeight: FontWeight.bold),),
                       ],
 
                     ),

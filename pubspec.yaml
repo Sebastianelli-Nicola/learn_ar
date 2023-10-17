@@ -42,6 +42,9 @@ dependencies:
   firebase_core: ^2.17.0
   firebase_auth: ^4.10.1
   shared_preferences: ^2.2.1
+  flutter_unity_widget: ^2022.2.0
+  permission_handler: ^8.0.0+2
+  google_fonts: ^4.0.4
 
 dev_dependencies:
   flutter_test:

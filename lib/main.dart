@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:learn_ar/screens/ArPage.dart';
 import 'package:learn_ar/screens/AuthPage.dart';
 import 'package:learn_ar/screens/Homepage.dart';
 import 'package:learn_ar/screens/IntroScreen.dart';
@@ -40,6 +41,7 @@ class _MyAppState extends State<MyApp> {
           '/login': (context) => const IntroSignUp(),
           '/homepage': (context) => const Intro(),
           '/auth': (context) => const AuthPage(),
+          '/ar': (context) => const ArPage(),
         },
         home: StreamBuilder(stream: Auth().authStateChanges, builder: (context, snapshot){
             if(snapshot.hasData){
