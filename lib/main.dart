@@ -5,6 +5,8 @@ import 'package:learn_ar/screens/AuthPage.dart';
 import 'package:learn_ar/screens/Homepage.dart';
 import 'package:learn_ar/screens/IntroScreen.dart';
 import 'package:learn_ar/screens/SplashScreen.dart';
+import 'package:learn_ar/screens/quiz/QuizPage.dart';
+import 'package:learn_ar/screens/quiz/StartPage.dart';
 import 'package:provider/provider.dart';
 import 'auth.dart';
 import 'screens/Login.dart';
@@ -42,6 +44,8 @@ class _MyAppState extends State<MyApp> {
           '/homepage': (context) => const Intro(),
           '/auth': (context) => const AuthPage(),
           '/ar': (context) => const ArPage(),
+          '/quizhomepage': (context) => const StartPage(),
+          '/quizpage': (context) => const QuizPage(),
         },
         home: StreamBuilder(stream: Auth().authStateChanges, builder: (context, snapshot){
             if(snapshot.hasData){

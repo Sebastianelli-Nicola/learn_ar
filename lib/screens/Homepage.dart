@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
 
-
-
 class Intro extends StatelessWidget {
   const Intro({Key? key}) : super(key: key);
 
@@ -92,7 +90,7 @@ class Intro extends StatelessWidget {
                           return ObjectDetail2();
                         },
                         opaque: false));*/
-                    Navigator.pushNamed(context, '/introscreen');
+                    Navigator.pushNamed(context, '/quizhomepage');
                   },
                   child: Container(
                     margin: EdgeInsets.only(top: 20),
