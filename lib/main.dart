@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:learn_ar/database/DbFireBaseConnect.dart';
+import 'package:learn_ar/database/QuestionModel.dart';
 import 'package:learn_ar/screens/ArPage.dart';
 import 'package:learn_ar/screens/AuthPage.dart';
 import 'package:learn_ar/screens/Homepage.dart';
@@ -15,6 +17,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
 void main() async {
+  var db = DBconnect();
+  /*db.addQuestion(Question(id: '20', title: 'Quanto fa 20 x 100', options: {
+    '100': false,'200': true,'300': false,'500': false,
+  }));*/
+  db.fetchQuestion();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
