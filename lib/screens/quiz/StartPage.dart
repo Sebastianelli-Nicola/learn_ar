@@ -56,7 +56,7 @@ class StartPage extends StatelessWidget {
                                 return ObjectDetail();
                               },
                               opaque: false));*/
-                    Navigator.pushNamed(context, '/ar');
+                    Navigator.pushNamed(context, '/introscreen');
                   },
                   child: Container(
                     margin: EdgeInsets.only(top: 20),

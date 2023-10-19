@@ -5,6 +5,7 @@ class Question{
   late final String id;
   late final String title;
   late final Map<String, bool> options;
+  late final String model3dName;
   //3D model
   //late final Uint8List model3d;
 
@@ -14,6 +15,7 @@ class Question{
     required this.id,
     required this.title,
     required this.options,
+    required this.model3dName
     //required this.model3d,
   });
 

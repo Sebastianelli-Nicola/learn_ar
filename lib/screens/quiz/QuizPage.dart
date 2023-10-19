@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:learn_ar/constants.dart';
+import 'package:learn_ar/widget/Model3dWidget.dart';
 import 'package:learn_ar/widget/NextButton.dart';
 import 'package:learn_ar/widget/OptionCard.dart';
 import 'package:learn_ar/widget/QuestionWidget.dart';
 import 'package:learn_ar/widget/ResultBox.dart';
+import 'package:learn_ar/database/DbFireBaseConnect.dart';
+import 'package:model_viewer_plus/model_viewer_plus.dart';
 
 import '../../database/QuestionModel.dart';
 
@@ -16,12 +19,19 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
 
-  List<Question> _questions = [
-    Question(id: '10', title: 'Quanto fa 2 + 2 ?',
-        options: {'5': false, '4': true, '7': false, '3': false,}),
-    Question(id: '11', title: 'Quanto fa 5 + 2 ?',
-        options: {'5': false, '4': false, '7': true, '3': false,})
-  ];
+  var db = DBconnect();
+
+  late Future _questions;
+
+  Future<List<Question>> getData() async{
+    return db.fetchQuestion();
+  }
+
+  @override
+  void initState() {
+    _questions = getData();
+    super.initState();
+  }
 
   int index = 0;
   int score = 0;
@@ -29,14 +39,14 @@ class _QuizPageState extends State<QuizPage> {
   bool isAlreadySelected = false;
 
 
-  void nextQuestion() {
-    if (index == _questions.length - 1){
+  void nextQuestion(int questionLength) {
+    if (index == questionLength - 1){
       showDialog(
           context: context,
           barrierDismissible: false,
           builder: (ctx) => ResultBox(
             result: score,
-            questionLength: _questions.length,
+            questionLength: questionLength,
             onPressed: startOver,
           )
       );
@@ -86,47 +96,112 @@ class _QuizPageState extends State<QuizPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Colors.grey.shade300,
-        appBar: AppBar(
-          title: const Text('Quiz Page'),
-          backgroundColor: background,
-          shadowColor: Colors.transparent,
-          actions: [
-            Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: Text('Score: $score', style: TextStyle(fontSize: 18.0),),
-            )
-          ],
-         ),
-      body: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-        child: Column(
-          children: [
-            QuestionWidget(
-                question: _questions[index].title,
-                indexAction: index,
-                totalQuestions: _questions.length
-            ),
-            const Divider(color: neutralB,),
-            const SizedBox(height: 25.0,),
-            for(int i=0; i < _questions[index].options.length; i++)
-              GestureDetector(
-                onTap: () => checkAnswerAndUpdate(_questions[index].options.values.toList()[i]),
-                child: OptionCard(
-                  option: _questions[index].options.keys.toList()[i],
-                  color: isPressed ? _questions[index].options.values.toList()[i] == true ? correct : incorrect : neutralW,
-                ),
-              ),
-          ],
-        ),
-      ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-        child: NextButton(nextQuestion: nextQuestion),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    return FutureBuilder(
+      future: _questions as Future<List<Question>>,
+      builder: (ctx, snapshot){
+        if(snapshot.connectionState == ConnectionState.done){
+          if(snapshot.hasError){
+            return Center(child: Text('${snapshot.error}'));
+          }else if(snapshot.hasData){
+            var extractedData = snapshot.data as List<Question>;
+            return Scaffold(
+                      backgroundColor: Colors.grey.shade300,
+                      appBar: AppBar(
+                        title: const Text('Quiz Page'),
+                        backgroundColor: background,
+                        shadowColor: Colors.transparent,
+                        actions: [
+                          Padding(
+                            padding: const EdgeInsets.all(18.0),
+                            child: Text('Score: $score', style: TextStyle(fontSize: 18.0),),
+                          )
+                        ],
+                      ),
+                      body: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 5.0,),
+                            QuestionWidget(
+                                question: extractedData[index].title,
+                                indexAction: index,
+                                totalQuestions: extractedData.length
+                            ),
+                            const Divider(color: neutralB,),
+                            const SizedBox(height: 5.0,),
+                            Model3dWidget(db: db, model3dName: extractedData[index].model3dName),
+                            /*FutureBuilder(
+                              future: db.downloadURL('gpu1.glb'),
+                              builder: (BuildContext context, AsyncSnapshot<String> snapshot){
+                                if(snapshot.connectionState == ConnectionState.done && snapshot.hasData){
+                                  return Container(
+                                    width: double.infinity,
+                                    height: 275.0,
+                                    child: ModelViewer(
+                                      src: snapshot.data!,
+                                      alt: "A 3D model of an Earth",
+                                      //autoRotate: true,
+                                      cameraControls: true,
+                                    ),
+                                  );
+                                }
+                                if(snapshot.connectionState == ConnectionState.waiting || snapshot.hasData){
+                                  return CircularProgressIndicator();
+                                }
+                                return Center(child: Text('No Data'));
+                              },
+                            ),*/
+                            const SizedBox(height: 5.0,),
+                            for(int i=0; i < extractedData[index].options.length; i++)
+                              GestureDetector(
+                                onTap: () => checkAnswerAndUpdate(extractedData[index].options.values.toList()[i]),
+                                child: OptionCard(
+                                  option: extractedData[index].options.keys.toList()[i],
+                                  color: isPressed ? extractedData[index].options.values.toList()[i] == true ? correct : incorrect : neutralW,
+                                ),
+                              ),
+
+                          ],
+
+                        ),
+                      ),
+                      floatingActionButton: GestureDetector(
+                        onTap: () => nextQuestion(extractedData.length),
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10.0),
+                          child: NextButton(),
+                        ),
+                      ),
+                      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+                    );
+          }
+
+        }
+        else{
+          return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                 crossAxisAlignment: CrossAxisAlignment.center,
+                 children: [
+                   const CircularProgressIndicator(),
+                   const SizedBox(height: 20.0,),
+                   Text(
+                     'Please Wait while Question are loading..',
+                     style: TextStyle(
+                       color: Theme.of(context).primaryColor,
+                       decoration: TextDecoration.none,
+                       fontSize: 14.0,
+                     ),
+                   )
+                 ],
+              )
+          );
+        }
+      return Center(child: Text('No Data'));
+
+    },
+
     );
   }
 }
