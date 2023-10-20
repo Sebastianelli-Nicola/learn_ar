@@ -30,12 +30,12 @@ class StartPage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(height: 30,),
-                          Text("Welcome", style: TextStyle(
+                          Text("Welcome in", style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w400,
                               fontFamily: 'circle'
                           ),),
-                          Text("Jackson", style: TextStyle(
+                          Text("Quiz Section", style: TextStyle(
                               fontSize: 27,
                               fontWeight: FontWeight.w600,
                               fontFamily: 'circle'
@@ -61,7 +61,7 @@ class StartPage extends StatelessWidget {
                   child: Container(
                     margin: EdgeInsets.only(top: 20),
                     width: 360,
-                    height: 180,
+                    height: 100,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -78,10 +78,10 @@ class StartPage extends StatelessWidget {
                       ],
                     ),
                     child:const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         //Image.asset('images/jett.png',width: 130,height: 130,),
-                        SizedBox(height:10 ,),
-                        Text('QR CODE Detect',style: TextStyle( fontSize: 20,fontWeight: FontWeight.bold),),
+                        Text('Scan the QR code \n and start the Quiz',style: TextStyle( fontSize: 20,fontWeight: FontWeight.bold,),textAlign: TextAlign.center,),
                       ],
 
                     ),
@@ -89,6 +89,9 @@ class StartPage extends StatelessWidget {
                 ),
               ],
             ),
+            SizedBox(height:25 ,),
+            const Divider(color: neutralB,),
+            Text('Questions for each chapter',style: TextStyle( fontSize: 22,fontWeight: FontWeight.bold,),textAlign: TextAlign.center,),
             InkWell(
               onTap: (){
                 /*Navigator.of(context).push(PageRouteBuilder(
@@ -101,7 +104,7 @@ class StartPage extends StatelessWidget {
               child: Container(
                 margin: EdgeInsets.only(top: 20),
                 width: 360,
-                height: 180,
+                height: 70,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -118,10 +121,10 @@ class StartPage extends StatelessWidget {
                   ],
                 ),
                 child:const Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     //Image.asset('images/alien.png',width: 160,height: 130,),
-                    SizedBox(height:10 ,),
-                    Text('Quiz',style: TextStyle( fontSize: 20,fontWeight: FontWeight.bold),),
+                    Text('Chapter 1: GPU',style: TextStyle( fontSize: 20,fontWeight: FontWeight.bold),),
                   ],
 
                 ),

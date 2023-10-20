@@ -24,9 +24,9 @@ class _ArPageState extends State<ArPage> {
     return MaterialApp(
       home: Scaffold(
         key: _scaffoldKey,
-        appBar: AppBar(
-          title: const Text('Vufuria Unity Ar'),
-        ),
+        /*appBar: AppBar(
+          title: const Text('View in Ar'),
+        ),*/
         body: Card(
           margin: const EdgeInsets.all(8),
           clipBehavior: Clip.antiAlias,
@@ -49,14 +49,8 @@ class _ArPageState extends State<ArPage> {
                   elevation: 10,
                   child: Column(
                     children: <Widget>[
-                      const Padding(
-                        padding: EdgeInsets.only(top: 20),
-                        child: Text("Rotation speed:"),
-                      ),
                       Container(
-                        width: 140,
-                        height: 50.0,
-                        margin: EdgeInsets.all(10),
+                        //margin: EdgeInsets.all(10),
                         // ignore: deprecated_member_use
                         child: ElevatedButton(
                           onPressed: () {
@@ -67,15 +61,15 @@ class _ArPageState extends State<ArPage> {
                       padding: EdgeInsets.all(0.0),*/
                           child: Ink(
                             decoration: BoxDecoration(
-                                gradient: const LinearGradient(
+                                /*gradient: const LinearGradient(
                                   colors: [Color(0xff9E9E9E), Color(0xffE0E0E0)],
                                   begin: Alignment.centerLeft,
                                   end: Alignment.centerRight,
-                                ),
+                                ),*/
                                 borderRadius: BorderRadius.circular(30.0)),
                             child: Container(
                               constraints:
-                              BoxConstraints(maxWidth: 250.0, minHeight: 50.0),
+                              BoxConstraints(maxWidth: 280.0, minHeight: 50.0),
                               alignment: Alignment.center,
                               child: const Text(
                                 "Info",

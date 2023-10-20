@@ -2,18 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:learn_ar/constants.dart';
 
 class ResultBox extends StatelessWidget {
-  const ResultBox({Key? key, required this.result, required this.questionLength, required this.onPressed}) : super(key: key);
+  const ResultBox({Key? key, required this.result, required this.questionLength, required this.onPressedRestart, required this.onPressedFinish}) : super(key: key);
 
   final int result;
   final int questionLength;
-  final VoidCallback onPressed;
+  final VoidCallback onPressedRestart;
+  final VoidCallback onPressedFinish;
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       backgroundColor: background,
       content: Padding(
-        padding: const EdgeInsets.all(70.0),
+        padding: const EdgeInsets.all(50.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -45,7 +46,7 @@ class ResultBox extends StatelessWidget {
             ),
             const SizedBox(height: 25.0,),
             GestureDetector(
-              onTap: onPressed,
+              onTap: onPressedRestart,
               child: const Text(
                   'Start Over',
                   style: TextStyle(
@@ -54,6 +55,19 @@ class ResultBox extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       letterSpacing: 1.0,
                   ),
+              ),
+            ),
+            const SizedBox(height: 25.0,),
+            GestureDetector(
+              onTap: onPressedFinish,
+              child: const Text(
+                'Finish',
+                style: TextStyle(
+                  color: Colors.orange,
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1.0,
+                ),
               ),
             )
           ],

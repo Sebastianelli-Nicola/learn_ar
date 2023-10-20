@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:learn_ar/widget/IconWidget.dart';
 
 
 class Intro extends StatelessWidget {
@@ -24,12 +25,12 @@ class Intro extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               SizedBox(height: 30,),
-                              Text("Welcome", style: TextStyle(
+                              Text("Welcome in ", style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w400,
                                   fontFamily: 'circle'
                               ),),
-                              Text("Jackson", style: TextStyle(
+                              Text("Learn AR", style: TextStyle(
                                   fontSize: 27,
                                   fontWeight: FontWeight.w600,
                                   fontFamily: 'circle'
@@ -72,10 +73,12 @@ class Intro extends StatelessWidget {
                             ],
                           ),
                           child:const Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               //Image.asset('images/jett.png',width: 130,height: 130,),
+                              Text('View in AR',style: TextStyle( fontSize: 20,fontWeight: FontWeight.bold),),
                               SizedBox(height:10 ,),
-                              Text('AR Model',style: TextStyle( fontSize: 20,fontWeight: FontWeight.bold),),
+                              IconWidget(value: 'augmented-reality-ar.svg',)
                             ],
 
                           ),
@@ -112,10 +115,12 @@ class Intro extends StatelessWidget {
                       ],
                     ),
                     child:const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         //Image.asset('images/alien.png',width: 160,height: 130,),
-                        SizedBox(height:10 ,),
                         Text('Quiz',style: TextStyle( fontSize: 20,fontWeight: FontWeight.bold),),
+                        SizedBox(height:10 ,),
+                        IconWidget(value: 'question-home.svg',),
                       ],
 
                     ),

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:learn_ar/constants.dart';
+import 'package:learn_ar/widget/BlankWidget.dart';
 import 'package:learn_ar/widget/Model3dWidget.dart';
 import 'package:learn_ar/widget/NextButton.dart';
 import 'package:learn_ar/widget/OptionCard.dart';
 import 'package:learn_ar/widget/QuestionWidget.dart';
 import 'package:learn_ar/widget/ResultBox.dart';
 import 'package:learn_ar/database/DbFireBaseConnect.dart';
+import 'package:learn_ar/widget/TrueFalseWidget.dart';
 import 'package:model_viewer_plus/model_viewer_plus.dart';
 
 import '../../database/QuestionModel.dart';
@@ -37,6 +39,7 @@ class _QuizPageState extends State<QuizPage> {
   int score = 0;
   bool isPressed = false;
   bool isAlreadySelected = false;
+  bool isTrue = false;
 
 
   void nextQuestion(int questionLength) {
@@ -47,7 +50,8 @@ class _QuizPageState extends State<QuizPage> {
           builder: (ctx) => ResultBox(
             result: score,
             questionLength: questionLength,
-            onPressed: startOver,
+            onPressedRestart: startOver,
+            onPressedFinish: finish,
           )
       );
     }
@@ -57,6 +61,7 @@ class _QuizPageState extends State<QuizPage> {
           index++; //when the index will change to 1. rebuild the app
           isPressed = false;
           isAlreadySelected = false;
+          isTrue = false;
         });
       }else{
         ScaffoldMessenger.of(context).showSnackBar(
@@ -76,6 +81,9 @@ class _QuizPageState extends State<QuizPage> {
     }else{
       if(value == true){
         score++;
+        setState(() {
+          isTrue = true;
+        });
       }
       setState(() {
         isPressed = true;
@@ -84,14 +92,59 @@ class _QuizPageState extends State<QuizPage> {
     }
   }
 
+  void checkStartOverOrFinish(){
+
+  }
+
   void startOver() {
     setState(() {
       index = 0;
       score = 0;
       isPressed = false;
       isAlreadySelected = false;
+      isTrue = false;
     });
     Navigator.pop(context);
+  }
+
+  void finish() {
+    setState(() {
+      index = 0;
+      score = 0;
+      isPressed = false;
+      isAlreadySelected = false;
+      isTrue = false;
+    });
+    Navigator.pop(context);
+    Navigator.pushNamed(context, '/quizhomepage');
+  }
+
+  check3dModel(String name) {
+    if(name != 'none'){
+      if(isPressed == false){
+        return Model3dWidget(db: db, model3dName: name);
+      }else{
+        if (isTrue == true){
+          return const TrueFalseWidget(value: 'True.svg');
+        }else{
+          return const TrueFalseWidget(value: 'False.svg');
+        }
+
+      }
+    }else{
+      if(isPressed == false){
+        return const TrueFalseWidget(value: 'questionmark.svg');
+      }
+      if (isTrue == true && isPressed == true){
+        return const TrueFalseWidget(value: 'True.svg');
+      }
+      else{
+        if(isTrue == false && isPressed == true){
+          return const TrueFalseWidget(value: 'False.svg');
+        }
+      }
+      //return const BlankWidget();
+    }
   }
 
   @override
@@ -130,28 +183,21 @@ class _QuizPageState extends State<QuizPage> {
                             ),
                             const Divider(color: neutralB,),
                             const SizedBox(height: 5.0,),
-                            Model3dWidget(db: db, model3dName: extractedData[index].model3dName),
-                            /*FutureBuilder(
-                              future: db.downloadURL('gpu1.glb'),
-                              builder: (BuildContext context, AsyncSnapshot<String> snapshot){
-                                if(snapshot.connectionState == ConnectionState.done && snapshot.hasData){
-                                  return Container(
-                                    width: double.infinity,
-                                    height: 275.0,
-                                    child: ModelViewer(
-                                      src: snapshot.data!,
-                                      alt: "A 3D model of an Earth",
-                                      //autoRotate: true,
-                                      cameraControls: true,
-                                    ),
-                                  );
-                                }
-                                if(snapshot.connectionState == ConnectionState.waiting || snapshot.hasData){
-                                  return CircularProgressIndicator();
-                                }
-                                return Center(child: Text('No Data'));
-                              },
-                            ),*/
+                            /*if (extractedData[index].model3dName != 'none'){
+                              Model3dWidget(db: db, model3dName: extractedData[index].model3dName) as Widget;
+                            }*/
+                              //Model3dWidget(db: db, model3dName: extractedData[index].model3dName),
+
+                            SizedBox(
+                              //width: double.infinity,
+                              height: 275.0,
+                              child: check3dModel(extractedData[index].model3dName),
+                            ),
+
+
+
+
+
                             const SizedBox(height: 5.0,),
                             for(int i=0; i < extractedData[index].options.length; i++)
                               GestureDetector(

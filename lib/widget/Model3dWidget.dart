@@ -29,7 +29,16 @@ class Model3dWidget extends StatelessWidget {
           );
         }
         if(snapshot.connectionState == ConnectionState.waiting || snapshot.hasData){
-          return CircularProgressIndicator();
+          return  Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                alignment: Alignment.center,
+                height: 40.0,
+                child: CircularProgressIndicator(),
+              ),
+            ]
+          );
         }
         return Center(child: Text('No Data'));
       },
