@@ -105,6 +105,7 @@ class _QuizPageState extends State<QuizPage> {
       isTrue = false;
     });
     Navigator.pop(context);
+    Navigator.pushNamed(context, '/quizpage');
   }
 
   void finish() {
