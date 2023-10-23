@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -21,8 +23,7 @@ class _ArPageState extends State<ArPage> {
   }
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
         key: _scaffoldKey,
         /*appBar: AppBar(
           title: const Text('View in Ar'),
@@ -87,8 +88,7 @@ class _ArPageState extends State<ArPage> {
             ],
           ),
         ),
-      ),
-    );
+      );
   }
 
   // Communcation from Flutter to Unity
@@ -111,6 +111,7 @@ class _ArPageState extends State<ArPage> {
 
   // Communication from Unity to Flutter
   void onUnityMessage(message) {
+    log(message.toString());
     print('Received message from unity: ${message.toString()}');
   }
 
@@ -121,6 +122,8 @@ class _ArPageState extends State<ArPage> {
 
   // Communication from Unity when new scene is loaded to Flutter
   void onUnitySceneLoaded(SceneLoaded? sceneInfo) {
+    //log('${sceneInfo?.name}');
+    //log('${sceneInfo?.buildIndex}');
     print('Received scene loaded from unity: ${sceneInfo?.name}');
     print('Received scene loaded from unity buildIndex: ${sceneInfo?.buildIndex}');
   }

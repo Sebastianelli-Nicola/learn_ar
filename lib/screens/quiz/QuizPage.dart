@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:learn_ar/constants.dart';
 import 'package:learn_ar/widget/BlankWidget.dart';
@@ -13,7 +15,21 @@ import 'package:model_viewer_plus/model_viewer_plus.dart';
 import '../../database/QuestionModel.dart';
 
 class QuizPage extends StatefulWidget {
-  const QuizPage({super.key});
+  //const QuizPage({super.key});
+  final String title;
+  final String message;
+
+  // This Widget accepts the arguments as constructor
+  // parameters. It does not extract the arguments from
+  // the ModalRoute.
+  //
+  // The arguments are extracted by the onGenerateRoute
+  // function provided to the MaterialApp widget.
+  const QuizPage({
+    super.key,
+    required this.title,
+    required this.message,
+  });
 
   @override
   State<QuizPage> createState() => _QuizPageState();
@@ -21,17 +37,23 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
 
+
   var db = DBconnect();
 
   late Future _questions;
 
-  Future<List<Question>> getData() async{
-    return db.fetchQuestion();
+
+  Future<List<Question>> getData(String name) async{
+    return db.fetchQuestion(name);
   }
 
   @override
   void initState() {
-    _questions = getData();
+    log('--->' + this.widget.message.toString());
+    /*final args = ModalRoute.of(context)!.settings.arguments /*as Map<String,String>*/;
+    log(args.toString());*/
+    _questions = getData(this.widget.message.toString());
+    log(_questions.toString());
     super.initState();
   }
 
@@ -150,6 +172,7 @@ class _QuizPageState extends State<QuizPage> {
 
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments;
     return FutureBuilder(
       future: _questions as Future<List<Question>>,
       builder: (ctx, snapshot){

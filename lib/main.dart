@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:learn_ar/database/DbFireBaseConnect.dart';
@@ -11,6 +13,7 @@ import 'package:learn_ar/screens/quiz/QuizPage.dart';
 import 'package:learn_ar/screens/quiz/ScanQuizPage.dart';
 import 'package:learn_ar/screens/quiz/StartPage.dart';
 import 'package:provider/provider.dart';
+import 'ScreenArguments.dart';
 import 'auth.dart';
 import 'screens/Login.dart';
 
@@ -53,8 +56,39 @@ class _MyAppState extends State<MyApp> {
           '/auth': (context) => const AuthPage(),
           '/ar': (context) => const ArPage(),
           '/quizhomepage': (context) => const StartPage(),
-          '/quizpage': (context) => const QuizPage(),
+          //'/quizpage': (context) => const QuizPage(title: '', message: 'gpu',),
           '/scanquiz': (context) => const ScanQuiz(),
+        },
+        onGenerateRoute: (settings) {
+          // If you push the PassArguments route
+          if (settings.name == '/quizpage') {
+            // Cast the arguments to the correct
+            // type: ScreenArguments.
+            log('main -> ');
+            final args = settings.arguments as ScreenArguments;
+            log('main -> '+ args.toString());
+
+            // Then, extract the required data from
+            // the arguments and pass the data to the
+            // correct screen.
+            return MaterialPageRoute(
+              builder: (context) {
+                return QuizPage(
+                  title: args.title,
+                  message: args.message,
+                );
+              },
+            );
+          }
+          // The code only supports
+          // PassArgumentsScreen.routeName right now.
+          // Other values need to be implemented if we
+          // add them. The assertion here will help remind
+          // us of that higher up in the call stack, since
+          // this assertion would otherwise fire somewhere
+          // in the framework.
+          assert(false, 'Need to implement ${settings.name}');
+          return null;
         },
         home: StreamBuilder(stream: Auth().authStateChanges, builder: (context, snapshot){
             if(snapshot.hasData){

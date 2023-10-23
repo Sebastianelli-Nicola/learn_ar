@@ -1,13 +1,19 @@
+import 'dart:developer';
+
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:http/http.dart' as http;
+import 'package:learn_ar/database/ChapterModel.dart';
 import 'package:learn_ar/database/QuestionModel.dart';
 import 'dart:convert';
 
 class DBconnect{
 
-  final url = Uri.parse('https://learn-ar-default-rtdb.europe-west1.firebasedatabase.app/questions.json');
+  final url = Uri.parse('https://learn-ar-default-rtdb.europe-west1.firebasedatabase.app/book_architettura_calcolatori/chapters/gpu/questions.json');
 
-  //final gsReference = FirebaseStorage.instance.refFromURL("gs://learn-ar.appspot.com/gpuprova4.gltf");
+  final String urlString = 'https://learn-ar-default-rtdb.europe-west1.firebasedatabase.app/chapters_book_architettura_calcolatori.json';
+
+  final String urlStringQuestions = 'https://learn-ar-default-rtdb.europe-west1.firebasedatabase.app/book_architettura_calcolatori/chapters/';
+
 
   final storage = firebase_storage.FirebaseStorage.instance;
 
@@ -35,7 +41,21 @@ class DBconnect{
       ));
   }
 
-  Future<List<Question>> fetchQuestion() async{
+  Future<List<Question>> fetchQuestion(String name) async{
+    var urlQuestions = Uri.parse(urlStringQuestions + name + '/questions.json' );
+    return http.get(urlQuestions).then((response){
+      var data = json.decode(response.body) as Map<String, dynamic>;
+      List<Question> newQuestions = [];
+
+      data.forEach((key, value){
+        var newQuestion = Question(id: key, title: value['title'], options: Map.castFrom(value['options']), model3dName: value['model3dName']);
+        newQuestions.add(newQuestion);
+      });
+      return newQuestions;
+    });
+  }
+
+  /*Future<List<Question>> fetchQuestion() async{
     return http.get(url).then((response){
       var data = json.decode(response.body) as Map<String, dynamic>;
       List<Question> newQuestions = [];
@@ -45,6 +65,25 @@ class DBconnect{
         newQuestions.add(newQuestion);
       });
       return newQuestions;
+    });
+  }*/
+
+
+  Future<List<Chapter>> fetchChapters() async{
+    var urlChapters = Uri.parse(urlString);
+    return http.get(urlChapters).then((response){
+      var data = json.decode(response.body) as Map<String, dynamic>;
+      log('-> $data');
+      log('lung -> ${data.length}');
+      List<Chapter> newChapters = [];
+
+      data.forEach((key, value){
+          var newChapter = Chapter(id: key, name: (value['name']));
+          newChapters.add(newChapter);
+        });
+      //}
+
+      return newChapters;
     });
   }
 

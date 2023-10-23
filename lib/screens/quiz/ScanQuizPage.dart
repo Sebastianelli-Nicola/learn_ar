@@ -4,8 +4,12 @@ import 'dart:io' show Platform;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:learn_ar/ScreenArguments.dart';
 import 'package:learn_ar/constants.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+
+import '../../database/ChapterModel.dart';
+import '../../database/DbFireBaseConnect.dart';
 
 class ScanQuiz extends StatefulWidget {
   const ScanQuiz({Key? key}) : super(key: key);
@@ -18,6 +22,21 @@ class _ScanQuizState extends State<ScanQuiz> {
   Barcode? result;
   QRViewController? controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+
+  var db = DBconnect();
+
+
+  late Future _chapters;
+
+  Future<List<Chapter>> getData() async{
+    return db.fetchChapters();
+  }
+
+  @override
+  void initState() {
+    _chapters = getData();
+    super.initState();
+  }
 
   // In order to get hot reload to work we need to pause the camera if the platform
   // is android, or resume the camera if the platform is iOS.
@@ -88,12 +107,21 @@ class _ScanQuizState extends State<ScanQuiz> {
     setState(() {
       this.controller = controller;
     });
+    // TODO: bug telecamera rimane attiva anche quando si avvaia il quiz e può leggere altri qrcode (WillPoScope ?)
     controller.scannedDataStream.listen((scanData) {
       setState(() {
         result = scanData;
+        log('scan -> '+ result!.code.toString());
         if (result!.code == 'gpu'){
-          Navigator.pushNamed(context, '/quizpage');
+          log('scan -> ');
+          Navigator.pushNamed(context, '/quizpage', arguments: ScreenArguments('name', 'gpu'));
           reassemble();
+        }
+        if (result!.code == 'ram'){
+          log('scan -> ');
+          Navigator.pushNamed(context, '/quizpage', arguments: ScreenArguments('name', 'ram'));
+          reassemble();
+          controller.dispose();
         }
 
       });
