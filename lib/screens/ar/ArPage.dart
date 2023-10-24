@@ -12,11 +12,11 @@ class ArPage extends StatefulWidget {
 }
 
 class _ArPageState extends State<ArPage> {
-  static final GlobalKey<ScaffoldState> _scaffoldKey =
-  GlobalKey<ScaffoldState>();
+  static final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   late UnityWidgetController _unityWidgetController;
 
   bool visibilityInfo = false;
+  late String info;
 
   @override
   void initState() {
@@ -59,7 +59,7 @@ class _ArPageState extends State<ArPage> {
                           // ignore: deprecated_member_use
                           child: ElevatedButton(
                             onPressed: () {
-                              Navigator.pushNamed(context, '/introscreen');
+                              Navigator.pushNamed(context, '/infoar');
                             },
                             /*shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(80.0)),
@@ -120,6 +120,7 @@ class _ArPageState extends State<ArPage> {
     print('Received message from unity: ${message.toString()}');
     if(message.toString() == 'gpu'){
       setState(() {
+        info = message.toString();
         visibilityInfo = true;
       });
     }

@@ -1,0 +1,5 @@
+{
+  "chapters1": { "name":"gpu" },
+  "chapters2":  { "name":"ram" },
+  "chapters3": { "name":"cpu" }
+}

@@ -18,7 +18,6 @@ class _StartPageState extends State<StartPage> {
 
   var db = DBconnect();
 
-
   late Future _chapters;
 
   Future<List<Chapter>> getData() async{

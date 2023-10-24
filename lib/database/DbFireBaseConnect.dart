@@ -6,6 +6,8 @@ import 'package:learn_ar/database/ChapterModel.dart';
 import 'package:learn_ar/database/QuestionModel.dart';
 import 'dart:convert';
 
+import 'InfoModel.dart';
+
 class DBconnect{
 
   final url = Uri.parse('https://learn-ar-default-rtdb.europe-west1.firebasedatabase.app/book_architettura_calcolatori/chapters/gpu/questions.json');
@@ -14,6 +16,7 @@ class DBconnect{
 
   final String urlStringQuestions = 'https://learn-ar-default-rtdb.europe-west1.firebasedatabase.app/book_architettura_calcolatori/chapters/';
 
+  final String urlStringInfo = 'https://learn-ar-default-rtdb.europe-west1.firebasedatabase.app/book_architettura_calcolatori/chapters/';
 
   final storage = firebase_storage.FirebaseStorage.instance;
 
@@ -82,8 +85,27 @@ class DBconnect{
           newChapters.add(newChapter);
         });
       //}
-
       return newChapters;
+    });
+  }
+
+  Future<List<Info>> fetchInfo() async{
+    var urlInfo = Uri.parse(urlStringInfo + 'gpu' + '/info.json' );
+    return http.get(urlInfo).then((response){
+      var data = json.decode(response.body) as Map<String, dynamic>;
+      log('info1 -> '+ data.toString());
+      List<Info> newInfos = [] ;
+
+      data.forEach((key, value){
+        log('info2 -> ');
+        log('info3 -> '+ key);
+        log('info4 -> '+ value);
+        var newInfo= Info(id: key, name: value);
+        log('info5 -> '+ newInfo.toString());
+        newInfos.add(newInfo);
+        log('info6 -> '+ newInfos.toString());
+      });
+      return newInfos;
     });
   }
 

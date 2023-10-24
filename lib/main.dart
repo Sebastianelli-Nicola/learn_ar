@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:learn_ar/database/DbFireBaseConnect.dart';
 import 'package:learn_ar/database/QuestionModel.dart';
-import 'package:learn_ar/screens/ArPage.dart';
+import 'package:learn_ar/screens/ar/ArPage.dart';
 import 'package:learn_ar/screens/AuthPage.dart';
 import 'package:learn_ar/screens/Homepage.dart';
 import 'package:learn_ar/screens/IntroScreen.dart';
 import 'package:learn_ar/screens/SplashScreen.dart';
+import 'package:learn_ar/screens/ar/InfoArPage.dart';
 import 'package:learn_ar/screens/quiz/QuizPage.dart';
 import 'package:learn_ar/screens/quiz/ScanQuizPage.dart';
 import 'package:learn_ar/screens/quiz/StartPage.dart';
@@ -55,6 +56,7 @@ class _MyAppState extends State<MyApp> {
           '/homepage': (context) => const Intro(),
           '/auth': (context) => const AuthPage(),
           '/ar': (context) => const ArPage(),
+          '/infoar': (context) => const InfoAr(),
           '/quizhomepage': (context) => const StartPage(),
           //'/quizpage': (context) => const QuizPage(title: '', message: 'gpu',),
           '/scanquiz': (context) => const ScanQuiz(),
