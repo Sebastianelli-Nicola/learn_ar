@@ -1,9 +1,11 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io' show Platform;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:learn_ar/ScreenArguments.dart';
 import 'package:learn_ar/constants.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
@@ -23,19 +25,11 @@ class _ScanQuizState extends State<ScanQuiz> {
   QRViewController? controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
-  var db = DBconnect();
-
-
-  late Future _chapters;
-
-  Future<List<Chapter>> getData() async{
-    return db.fetchChapters();
-  }
-
-  @override
+   var data;
+   @override
   void initState() {
-    _chapters = getData();
-    super.initState();
+     readJson();
+     super.initState();
   }
 
   // In order to get hot reload to work we need to pause the camera if the platform
@@ -111,8 +105,17 @@ class _ScanQuizState extends State<ScanQuiz> {
     controller.scannedDataStream.listen((scanData) {
       setState(() {
         result = scanData;
-        log('scan -> '+ result!.code.toString());
-        if (result!.code == 'gpu'){
+
+        var filter = scanFilter();
+        for(int i=0; i<filter.length; i++){
+          if (result!.code == filter[i].name){
+            Navigator.pushNamed(context, '/quizpage', arguments: ScreenArguments('name', filter[i].name));
+            reassemble();
+            return;
+          }
+        }
+
+        /*if (result!.code == 'gpu'){
           log('scan -> ');
           Navigator.pushNamed(context, '/quizpage', arguments: ScreenArguments('name', 'gpu'));
           reassemble();
@@ -122,7 +125,7 @@ class _ScanQuizState extends State<ScanQuiz> {
           Navigator.pushNamed(context, '/quizpage', arguments: ScreenArguments('name', 'ram'));
           reassemble();
           controller.dispose();
-        }
+        }*/
 
       });
 
@@ -143,6 +146,21 @@ class _ScanQuizState extends State<ScanQuiz> {
     controller?.dispose();
     super.dispose();
   }
+
+  List<Chapter> scanFilter(){
+    List<Chapter> newChapters = [];
+    data.forEach((key, value){
+      var newChapter = Chapter(id: key, name: (value['name']));
+      newChapters.add(newChapter);
+    });
+    return newChapters;
+  }
+
+  Future<void> readJson() async {
+    final String response = await rootBundle.loadString('assets/chapters.json');
+    data = json.decode(response) as Map<String, dynamic>;
+  }
+
 
 
 }

@@ -73,12 +73,12 @@ class DBconnect{
     var urlChapters = Uri.parse(urlString);
     return http.get(urlChapters).then((response){
       var data = json.decode(response.body) as Map<String, dynamic>;
-      log('-> $data');
-      log('lung -> ${data.length}');
       List<Chapter> newChapters = [];
+      log('fa -> ${data}');
 
       data.forEach((key, value){
           var newChapter = Chapter(id: key, name: (value['name']));
+          log('fa -> ${newChapter}');
           newChapters.add(newChapter);
         });
       //}

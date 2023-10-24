@@ -64,9 +64,7 @@ class _MyAppState extends State<MyApp> {
           if (settings.name == '/quizpage') {
             // Cast the arguments to the correct
             // type: ScreenArguments.
-            log('main -> ');
             final args = settings.arguments as ScreenArguments;
-            log('main -> '+ args.toString());
 
             // Then, extract the required data from
             // the arguments and pass the data to the
@@ -80,13 +78,7 @@ class _MyAppState extends State<MyApp> {
               },
             );
           }
-          // The code only supports
-          // PassArgumentsScreen.routeName right now.
-          // Other values need to be implemented if we
-          // add them. The assertion here will help remind
-          // us of that higher up in the call stack, since
-          // this assertion would otherwise fire somewhere
-          // in the framework.
+
           assert(false, 'Need to implement ${settings.name}');
           return null;
         },
