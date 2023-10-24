@@ -6,15 +6,16 @@ import 'package:model_viewer_plus/model_viewer_plus.dart';
 
 class Model3dWidget extends StatelessWidget {
 
-  const Model3dWidget({Key? key, required this.db, required this.model3dName}) : super(key: key);
+  const Model3dWidget({Key? key, required this.db, required this.model3dName, required this.chapter}) : super(key: key);
 
   final DBconnect db;
   final String model3dName;
+  final String chapter;
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: db.downloadURL(model3dName),
+      future: db.downloadURL(model3dName, chapter),
       builder: (BuildContext context, AsyncSnapshot<String> snapshot){
         if(snapshot.connectionState == ConnectionState.done && snapshot.hasData){
           return Container(

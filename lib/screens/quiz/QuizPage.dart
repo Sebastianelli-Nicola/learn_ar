@@ -111,9 +111,6 @@ class _QuizPageState extends State<QuizPage> {
     }
   }
 
-  void checkStartOverOrFinish(){
-
-  }
 
   void startOver() {
     setState(() {
@@ -136,6 +133,7 @@ class _QuizPageState extends State<QuizPage> {
       isTrue = false;
     });
     Navigator.pop(context);
+    Navigator.pop(context);
     Navigator.pushNamed(context, '/quizhomepage');
 
   }
@@ -143,7 +141,7 @@ class _QuizPageState extends State<QuizPage> {
   check3dModel(String name) {
     if(name != 'none'){
       if(isPressed == false){
-        return Model3dWidget(db: db, model3dName: name);
+        return Model3dWidget(db: db, model3dName: name, chapter: widget.message.toString(),);
       }else{
         if (isTrue == true){
           return const TrueFalseWidget(value: 'True.svg');

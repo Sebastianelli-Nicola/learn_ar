@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:learn_ar/widget/IconWidget.dart';
 
+import '../constants.dart';
+
 
 class Intro extends StatelessWidget {
   const Intro({Key? key}) : super(key: key);
@@ -8,6 +10,11 @@ class Intro extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          foregroundColor: background,
+          backgroundColor: background2,
+          shadowColor: Colors.transparent,
+        ),
         backgroundColor: Colors.grey.shade300,
         body: Container(
             padding: EdgeInsets.all(30),

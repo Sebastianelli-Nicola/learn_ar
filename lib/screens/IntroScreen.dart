@@ -43,7 +43,7 @@ class _IntroScreenState extends State<IntroScreen> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: store.downloadURL('gpuprova4.gltf'),
+      future: store.downloadURL('gpuprova4.gltf','/quiz_gpu/'),
       builder: (BuildContext context, AsyncSnapshot<String> snapshot){
         if(snapshot.connectionState == ConnectionState.done && snapshot.hasData){
           return Container(

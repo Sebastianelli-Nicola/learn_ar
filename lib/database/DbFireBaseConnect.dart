@@ -28,8 +28,8 @@ class DBconnect{
    return result;
   }
 
-  Future<String> downloadURL(String imageName) async{
-    String downloadurl = await storage.ref(imageName).getDownloadURL();
+  Future<String> downloadURL(String imageName, String chapter) async{
+    String downloadurl = await storage.ref('/quiz_$chapter/$imageName').getDownloadURL();
     return downloadurl;
   }
 
@@ -93,17 +93,11 @@ class DBconnect{
     var urlInfo = Uri.parse(urlStringInfo + 'gpu' + '/info.json' );
     return http.get(urlInfo).then((response){
       var data = json.decode(response.body) as Map<String, dynamic>;
-      log('info1 -> '+ data.toString());
       List<Info> newInfos = [] ;
 
       data.forEach((key, value){
-        log('info2 -> ');
-        log('info3 -> '+ key);
-        log('info4 -> '+ value);
         var newInfo= Info(id: key, name: value);
-        log('info5 -> '+ newInfo.toString());
         newInfos.add(newInfo);
-        log('info6 -> '+ newInfos.toString());
       });
       return newInfos;
     });
