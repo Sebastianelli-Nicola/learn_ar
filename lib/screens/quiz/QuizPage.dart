@@ -49,9 +49,6 @@ class _QuizPageState extends State<QuizPage> {
 
   @override
   void initState() {
-    log('--->' + this.widget.message.toString());
-    /*final args = ModalRoute.of(context)!.settings.arguments /*as Map<String,String>*/;
-    log(args.toString());*/
     _questions = getData(this.widget.message.toString());
     log(_questions.toString());
     super.initState();
@@ -140,6 +137,7 @@ class _QuizPageState extends State<QuizPage> {
     });
     Navigator.pop(context);
     Navigator.pushNamed(context, '/quizhomepage');
+
   }
 
   check3dModel(String name) {

@@ -25,6 +25,8 @@ class _ScanQuizState extends State<ScanQuiz> {
   QRViewController? controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
+  bool correct = false;
+
    var data;
    @override
   void initState() {
@@ -160,6 +162,8 @@ class _ScanQuizState extends State<ScanQuiz> {
     final String response = await rootBundle.loadString('assets/chapters.json');
     data = json.decode(response) as Map<String, dynamic>;
   }
+
+
 
 
 

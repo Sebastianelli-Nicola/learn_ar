@@ -16,6 +16,8 @@ class _ArPageState extends State<ArPage> {
   GlobalKey<ScaffoldState>();
   late UnityWidgetController _unityWidgetController;
 
+  bool visibilityInfo = false;
+
   @override
   void initState() {
     super.initState();
@@ -46,42 +48,45 @@ class _ArPageState extends State<ArPage> {
                 bottom: 20,
                 left: 20,
                 right: 20,
-                child: Card(
-                  elevation: 10,
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        //margin: EdgeInsets.all(10),
-                        // ignore: deprecated_member_use
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.pushNamed(context, '/introscreen');
-                          },
-                          /*shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(80.0)),
-                      padding: EdgeInsets.all(0.0),*/
-                          child: Ink(
-                            decoration: BoxDecoration(
-                                /*gradient: const LinearGradient(
-                                  colors: [Color(0xff9E9E9E), Color(0xffE0E0E0)],
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                ),*/
-                                borderRadius: BorderRadius.circular(30.0)),
-                            child: Container(
-                              constraints:
-                              BoxConstraints(maxWidth: 280.0, minHeight: 50.0),
-                              alignment: Alignment.center,
-                              child: const Text(
-                                "Info",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(color: Colors.black, fontSize: 15),
+                child: Opacity(
+                  opacity: visibilityInfo == true ? 1.0 : 0.0,
+                  child: Card(
+                    elevation: 10,
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          //margin: EdgeInsets.all(10),
+                          // ignore: deprecated_member_use
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/introscreen');
+                            },
+                            /*shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(80.0)),
+                        padding: EdgeInsets.all(0.0),*/
+                            child: Ink(
+                              decoration: BoxDecoration(
+                                  /*gradient: const LinearGradient(
+                                    colors: [Color(0xff9E9E9E), Color(0xffE0E0E0)],
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                  ),*/
+                                  borderRadius: BorderRadius.circular(30.0)),
+                              child: Container(
+                                constraints:
+                                BoxConstraints(maxWidth: 280.0, minHeight: 50.0),
+                                alignment: Alignment.center,
+                                child: const Text(
+                                  "Info",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(color: Colors.black, fontSize: 15),
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -111,8 +116,13 @@ class _ArPageState extends State<ArPage> {
 
   // Communication from Unity to Flutter
   void onUnityMessage(message) {
-    log(message.toString());
+    log('unity1 ->'+ message.toString());
     print('Received message from unity: ${message.toString()}');
+    if(message.toString() == 'gpu'){
+      setState(() {
+        visibilityInfo = true;
+      });
+    }
   }
 
   // Callback that connects the created controller to the unity controller
@@ -122,8 +132,8 @@ class _ArPageState extends State<ArPage> {
 
   // Communication from Unity when new scene is loaded to Flutter
   void onUnitySceneLoaded(SceneLoaded? sceneInfo) {
-    //log('${sceneInfo?.name}');
-    //log('${sceneInfo?.buildIndex}');
+    log('unity2 ->'+'${sceneInfo?.name}');
+    log('unity2 ->'+'${sceneInfo?.buildIndex}');
     print('Received scene loaded from unity: ${sceneInfo?.name}');
     print('Received scene loaded from unity buildIndex: ${sceneInfo?.buildIndex}');
   }
