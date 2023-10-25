@@ -43,140 +43,141 @@ class _StartPageState extends State<StartPage> {
               return Scaffold(
                 backgroundColor: Colors.grey.shade300,
                 appBar: AppBar(
-                  title: const Text('Quiz Home Page'),
-                  backgroundColor: background,
-                  shadowColor: Colors.transparent,
+                    foregroundColor: background,
+                    backgroundColor: background2,
+                    shadowColor: Colors.transparent
                 ),
                 body: Container(
                   padding: EdgeInsets.all(30),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            children: [
-                              Container(
-                                padding: EdgeInsets.all(20),
-                                child: const Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(height: 30,),
-                                    Text("Welcome in", style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w400,
-                                        fontFamily: 'circle'
-                                    ),),
-                                    Text("Quiz Section", style: TextStyle(
-                                        fontSize: 27,
-                                        fontWeight: FontWeight.w600,
-                                        fontFamily: 'circle'
-                                    ),),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(20),
+                                  child: const Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text("Welcome in", style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w400,
+                                          fontFamily: 'circle'
+                                      ),),
+                                      Text("Quiz Section", style: TextStyle(
+                                          fontSize: 27,
+                                          fontWeight: FontWeight.w600,
+                                          fontFamily: 'circle'
+                                      ),),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                /*Navigator.of(context).push(PageRouteBuilder(
+                                          pageBuilder: (context, animation, _) {
+                                            return ObjectDetail();
+                                          },
+                                          opaque: false));*/
+                                Navigator.pushNamed(context, '/scanquiz');
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(top: 20),
+                                width: 360,
+                                height: 100,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(20)),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey[300]!.withOpacity(1.0),
+                                      //color of shadow
+                                      spreadRadius: 1,
+                                      //spread radius
+                                      blurRadius: 1,
+                                      // blur radius
+                                      offset: Offset(
+                                          0, 1), // changes position of shadow
+                                      //first paramerter of offset is left-right
+                                      //second parameter is top to down
+                                    ),
+                                    //you can set more BoxShadow() here
                                   ],
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              /*Navigator.of(context).push(PageRouteBuilder(
-                                        pageBuilder: (context, animation, _) {
-                                          return ObjectDetail();
-                                        },
-                                        opaque: false));*/
-                              Navigator.pushNamed(context, '/scanquiz');
-                            },
-                            child: Container(
-                              margin: EdgeInsets.only(top: 20),
-                              width: 360,
-                              height: 100,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.all(
-                                    Radius.circular(20)),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey[300]!.withOpacity(1.0),
-                                    //color of shadow
-                                    spreadRadius: 1,
-                                    //spread radius
-                                    blurRadius: 1,
-                                    // blur radius
-                                    offset: Offset(
-                                        0, 1), // changes position of shadow
-                                    //first paramerter of offset is left-right
-                                    //second parameter is top to down
-                                  ),
-                                  //you can set more BoxShadow() here
-                                ],
-                              ),
-                              child: const Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  //Image.asset('images/jett.png',width: 130,height: 130,),
-                                  Text('Scan the QR code \n and start the Quiz',
-                                    style: TextStyle(fontSize: 20,
-                                      fontWeight: FontWeight.bold,),
-                                    textAlign: TextAlign.center,),
-                                ],
+                                child: const Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    //Image.asset('images/jett.png',width: 130,height: 130,),
+                                    Text('Scan the QR code \n and start the Quiz',
+                                      style: TextStyle(fontSize: 20,
+                                        fontWeight: FontWeight.bold,),
+                                      textAlign: TextAlign.center,),
+                                  ],
 
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 25,),
-                      const Divider(color: neutralB,),
-                      Text('Questions for each chapter', style: TextStyle(
-                        fontSize: 22, fontWeight: FontWeight.bold,),
-                        textAlign: TextAlign.center,),
-                      for(int i=0; i< extractedData.length; i++)
-                      ChapterWidget(chapter: extractedData[i].name),
-                      /*InkWell(
-                        onTap: (){
-                          /*Navigator.of(context).push(PageRouteBuilder(
-                                  pageBuilder: (context, animation, _) {
-                                    return ObjectDetail2();
-                                  },
-                                  opaque: false));*/
-                          Navigator.pushNamed(context, '/quizpage');
-                        },
-                        child: Container(
-                          margin: EdgeInsets.only(top: 20),
-                          width: 360,
-                          height: 70,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                            boxShadow:[
-                              BoxShadow(
-                                color: Colors.grey[300]!.withOpacity(1.0), //color of shadow
-                                spreadRadius: 1, //spread radius
-                                blurRadius: 1, // blur radius
-                                offset: Offset(0, 1), // changes position of shadow
-                                //first paramerter of offset is left-right
-                                //second parameter is top to down
-                              ),
-                              //you can set more BoxShadow() here
-                            ],
-                          ),
-                          child:const Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              //Image.asset('images/alien.png',width: 160,height: 130,),
-                              Text('Chapter 1: GPU',style: TextStyle( fontSize: 20,fontWeight: FontWeight.bold),),
-                            ],
-
-                          ),
+                          ],
                         ),
-                      ),*/
+                        SizedBox(height: 25,),
+                        const Divider(color: neutralB,),
+                        Text('Questions for each chapter', style: TextStyle(
+                          fontSize: 22, fontWeight: FontWeight.bold,),
+                          textAlign: TextAlign.center,),
+                        for(int i=0; i< extractedData.length; i++)
+                        ChapterWidget(chapter: extractedData[i].name),
+                        /*InkWell(
+                          onTap: (){
+                            /*Navigator.of(context).push(PageRouteBuilder(
+                                    pageBuilder: (context, animation, _) {
+                                      return ObjectDetail2();
+                                    },
+                                    opaque: false));*/
+                            Navigator.pushNamed(context, '/quizpage');
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(top: 20),
+                            width: 360,
+                            height: 70,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.all(Radius.circular(20)),
+                              boxShadow:[
+                                BoxShadow(
+                                  color: Colors.grey[300]!.withOpacity(1.0), //color of shadow
+                                  spreadRadius: 1, //spread radius
+                                  blurRadius: 1, // blur radius
+                                  offset: Offset(0, 1), // changes position of shadow
+                                  //first paramerter of offset is left-right
+                                  //second parameter is top to down
+                                ),
+                                //you can set more BoxShadow() here
+                              ],
+                            ),
+                            child:const Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                //Image.asset('images/alien.png',width: 160,height: 130,),
+                                Text('Chapter 1: GPU',style: TextStyle( fontSize: 20,fontWeight: FontWeight.bold),),
+                              ],
 
-                    ],
+                            ),
+                          ),
+                        ),*/
+
+                      ],
+                    ),
                   ),
                 ),
               );

@@ -84,14 +84,16 @@ class _MyAppState extends State<MyApp> {
           assert(false, 'Need to implement ${settings.name}');
           return null;
         },
-        home: StreamBuilder(stream: Auth().authStateChanges, builder: (context, snapshot){
-            if(snapshot.hasData){
-              return Intro()/*IntroSignUp()*/;
-            }
-            else {
-              return Intro();
-            }
-        })
+        home: StreamBuilder(
+            stream: Auth().authStateChanges,
+            builder: (context, snapshot){
+                if(snapshot.hasData){
+                  return Intro()/*IntroSignUp()*/;
+                }
+                else {
+                  return AuthPage();
+                }
+            })
         /*home: StreamBuilder(stream: Auth.authStateChanges, builder: (context, snapshot)){
     if(snapshot.hasData){
     return IntroSignUp();

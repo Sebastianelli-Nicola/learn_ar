@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:learn_ar/auth.dart';
 
+import '../constants.dart';
+
 class AuthPage extends StatefulWidget {
   const AuthPage({Key? key}) : super(key: key);
 
@@ -31,27 +33,52 @@ class _AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          TextField(
-            controller: _email,
-            decoration: const InputDecoration(label: Text('email')),
+      appBar: AppBar(
+          foregroundColor: background,
+          backgroundColor: background2,
+          shadowColor: Colors.transparent
+      ),
+      backgroundColor: background2,
+      body: Container(
+        padding: EdgeInsets.only(left: 30.0,top: 30.0,right: 30.0),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const Text('Learn AR', style: TextStyle(fontSize: 26.0,fontWeight: FontWeight.bold),),
+              const SizedBox(height: 30.0,),
+              Text(isLogin ? 'Login' : 'Sign up', style: TextStyle(fontSize: 20.0, color: background,fontWeight: FontWeight.bold),),
+              const Divider(color: background,),
+              //const SizedBox(height: 5.0,),
+              TextField(
+                controller: _email,
+                decoration: const InputDecoration(label: Text('email')),
+              ),
+              TextField(
+                controller: _password,
+                obscureText: true,
+                decoration: const InputDecoration(label: Text('password')),
+              ),
+              const SizedBox(height: 20.0,),
+              SizedBox(
+                width: double.infinity,
+                height: 50.0,
+                child: ElevatedButton(
+                  onPressed: (){
+                  isLogin ? signIn() : createUser();
+                  },
+                  child: Text(isLogin ? 'Login' : 'Sign up', style: TextStyle(fontSize: 16.0,fontWeight: FontWeight.bold),),
+                ),
+              ),
+              TextButton(
+                onPressed: (){
+                  setState(() {
+                    isLogin = !isLogin;
+                  });
+                },
+                child: Text(isLogin ? 'Don’t have an account yet? Sign up' : 'Do you have an account? Login'),)
+            ],
           ),
-          TextField(
-            controller: _password,
-            obscureText: true,
-            decoration: const InputDecoration(label: Text('password')),
-          ),
-          ElevatedButton(onPressed: (){
-            isLogin ? signIn() : createUser();
-          }, child: Text(isLogin ? 'Accedi' : 'Registrati'),
-          ),
-          TextButton(onPressed: (){
-            setState(() {
-              isLogin = !isLogin;
-            });
-          }, child: Text(isLogin ? 'Non hai un account? Registrati' : 'Hai un account? Accedi'))
-        ],
+        ),
       ),
     );
   }

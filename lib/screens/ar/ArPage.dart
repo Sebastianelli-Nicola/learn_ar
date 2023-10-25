@@ -26,6 +26,7 @@ class _ArPageState extends State<ArPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        //primary: true,
         key: _scaffoldKey,
         /*appBar: AppBar(
           title: const Text('View in Ar'),
