@@ -16,7 +16,7 @@ class ChapterWidget extends StatelessWidget {
                           return ObjectDetail2();
                         },
                         opaque: false));*/
-        Navigator.pushNamed(context, '/quizpage', arguments: ScreenArguments('name', chapter));
+        Navigator.pushNamed(context, '/quizpage', arguments: ScreenArguments('name', chapter, 'start'));
       },
       child: Container(
         margin: EdgeInsets.only(top: 20),

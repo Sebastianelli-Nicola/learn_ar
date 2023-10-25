@@ -51,6 +51,7 @@ dependencies:
   gcloud: ^0.8.11
   flutter_svg: ^2.0.7
   qr_code_scanner: ^1.0.1
+  animated_splash_screen: ^1.3.0
 
 #dependency_overrides:
   #webview_flutter: 2.0.13

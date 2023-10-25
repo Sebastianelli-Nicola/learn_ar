@@ -48,9 +48,13 @@ class _ScanQuizState extends State<ScanQuiz> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      extendBody: true,
       appBar: AppBar(
-        title: const Text('Scan QR Code'),
-        backgroundColor: background,
+        //title: const Text('Scan QR Code'),
+        backgroundColor: Colors.transparent,
+        foregroundColor: background,
+        elevation: 0.0,
         actions: [
           IconButton(
               onPressed: () async {
@@ -68,10 +72,15 @@ class _ScanQuizState extends State<ScanQuiz> {
           ),
         ],
       ),
-      body: Column(
+      body: Stack(
         children:  <Widget>[
-          Expanded(flex: 4, child: _buildQrView(context)),
-          Text('Place the QR Code in the area', style: TextStyle(fontSize: 15.0, color: Colors.red),textAlign: TextAlign.center,)
+          Expanded(flex: 1, child: _buildQrView(context)),
+          const Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(child: Text('Place the QR Code in the area', style: TextStyle(fontSize: 15.0, color: background),textAlign: TextAlign.center,)),
+            ],
+          )
 
         ],
       ),
@@ -90,7 +99,7 @@ class _ScanQuizState extends State<ScanQuiz> {
       key: qrKey,
       onQRViewCreated: _onQRViewCreated,
       overlay: QrScannerOverlayShape(
-          borderColor: Colors.red,
+          borderColor: background,
           borderRadius: 10,
           borderLength: 30,
           borderWidth: 10,
@@ -111,7 +120,7 @@ class _ScanQuizState extends State<ScanQuiz> {
         var filter = scanFilter();
         for(int i=0; i<filter.length; i++){
           if (result!.code == filter[i].name){
-            Navigator.pushNamed(context, '/quizpage', arguments: ScreenArguments('name', filter[i].name));
+            Navigator.pushNamed(context, '/quizpage', arguments: ScreenArguments('name', filter[i].name, 'scan'));
             reassemble();
             return;
           }

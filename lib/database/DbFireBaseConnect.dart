@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:learn_ar/database/ChapterModel.dart';
 import 'package:learn_ar/database/QuestionModel.dart';
@@ -101,6 +102,13 @@ class DBconnect{
       });
       return newInfos;
     });
+  }
+
+
+  //qr code filters
+  Future<Map<String, dynamic>> readJson() async {
+    final String response = await rootBundle.loadString('assets/chapters.json');
+    return json.decode(response) as Map<String, dynamic>;
   }
 
 }

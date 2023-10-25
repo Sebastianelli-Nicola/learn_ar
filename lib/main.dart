@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,6 +22,8 @@ import 'screens/Login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
+import 'package:animated_splash_screen/animated_splash_screen.dart';
+
 void main() async {
   //var db = DBconnect();
   /*db.addQuestion(Question(id: '20', title: 'Quanto fa 20 x 100', options: {
@@ -41,7 +44,39 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  //*@override
+  /*Future<AppExitResponse> didRequestAppExit() async {
+    Auth().signOut();
+    return AppExitResponse.exit;
+  }*/
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    switch (state) {
+      case AppLifecycleState.resumed:
+        //Auth().signInWithEmailAndPassword(email: Auth().currentUser!.email, password: uth().currentUser.p)
+        break;
+      case AppLifecycleState.paused:
+        //Auth().signOut();
+        break;
+      default:
+        break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,6 +111,7 @@ class _MyAppState extends State<MyApp> {
                 return QuizPage(
                   title: args.title,
                   message: args.message,
+                  origin: args.origin,
                 );
               },
             );
@@ -84,7 +120,31 @@ class _MyAppState extends State<MyApp> {
           assert(false, 'Need to implement ${settings.name}');
           return null;
         },
-        home: StreamBuilder(
+      home: StreamBuilder(
+          stream: Auth().authStateChanges,
+          builder: (context, snapshot){
+            if(snapshot.hasData){
+              return Intro()/*IntroSignUp()*/;
+            }
+            else {
+              return AuthPage();
+            }
+          }),
+        /*home: AnimatedSplashScreen(
+          splash: Icons.home,
+          splashTransition: SplashTransition.fadeTransition,
+          nextScreen: StreamBuilder(
+              stream: Auth().authStateChanges,
+              builder: (context, snapshot){
+                if(snapshot.hasData){
+                  return Intro()/*IntroSignUp()*/;
+                }
+                else {
+                  return AuthPage();
+                }
+              }),
+        )*/
+        /*StreamBuilder(
             stream: Auth().authStateChanges,
             builder: (context, snapshot){
                 if(snapshot.hasData){
@@ -93,7 +153,7 @@ class _MyAppState extends State<MyApp> {
                 else {
                   return AuthPage();
                 }
-            })
+            })*/
         /*home: StreamBuilder(stream: Auth.authStateChanges, builder: (context, snapshot)){
     if(snapshot.hasData){
     return IntroSignUp();

@@ -18,6 +18,8 @@ class QuizPage extends StatefulWidget {
   //const QuizPage({super.key});
   final String title;
   final String message;
+  final String origin;
+
 
   // This Widget accepts the arguments as constructor
   // parameters. It does not extract the arguments from
@@ -29,6 +31,7 @@ class QuizPage extends StatefulWidget {
     super.key,
     required this.title,
     required this.message,
+    required this.origin,
   });
 
   @override
@@ -132,8 +135,17 @@ class _QuizPageState extends State<QuizPage> {
       isAlreadySelected = false;
       isTrue = false;
     });
-    Navigator.pop(context);
-    Navigator.pop(context);
+    if(widget.origin.toString() == 'scan'){
+      Navigator.pop(context);
+      Navigator.pop(context);
+      Navigator.pop(context);
+      Navigator.pop(context);
+    }
+    else{
+      Navigator.pop(context);
+      Navigator.pop(context);
+      Navigator.pop(context);
+    }
     Navigator.pushNamed(context, '/quizhomepage');
 
   }
