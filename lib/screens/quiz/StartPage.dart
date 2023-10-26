@@ -84,11 +84,6 @@ class _StartPageState extends State<StartPage> {
                           children: [
                             InkWell(
                               onTap: () {
-                                /*Navigator.of(context).push(PageRouteBuilder(
-                                          pageBuilder: (context, animation, _) {
-                                            return ObjectDetail();
-                                          },
-                                          opaque: false));*/
                                 Navigator.pushNamed(context, '/scanquiz');
                               },
                               child: Container(
@@ -97,7 +92,7 @@ class _StartPageState extends State<StartPage> {
                                 height: 100,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
-                                  borderRadius: BorderRadius.all(
+                                  borderRadius: const BorderRadius.all(
                                       Radius.circular(20)),
                                   boxShadow: [
                                     BoxShadow(
@@ -107,7 +102,7 @@ class _StartPageState extends State<StartPage> {
                                       //spread radius
                                       blurRadius: 1,
                                       // blur radius
-                                      offset: Offset(
+                                      offset: const Offset(
                                           0, 1), // changes position of shadow
                                       //first paramerter of offset is left-right
                                       //second parameter is top to down
@@ -124,7 +119,6 @@ class _StartPageState extends State<StartPage> {
                                         fontWeight: FontWeight.bold,),
                                       textAlign: TextAlign.center,),
                                   ],
-
                                 ),
                               ),
                             ),
@@ -132,50 +126,11 @@ class _StartPageState extends State<StartPage> {
                         ),
                         SizedBox(height: 25,),
                         const Divider(color: neutralB,),
-                        Text('Questions for each chapter', style: TextStyle(
+                        const Text('Questions for each chapter', style: TextStyle(
                           fontSize: 22, fontWeight: FontWeight.bold,),
                           textAlign: TextAlign.center,),
                         for(int i=0; i< extractedData.length; i++)
                         ChapterWidget(chapter: extractedData[i].name),
-                        /*InkWell(
-                          onTap: (){
-                            /*Navigator.of(context).push(PageRouteBuilder(
-                                    pageBuilder: (context, animation, _) {
-                                      return ObjectDetail2();
-                                    },
-                                    opaque: false));*/
-                            Navigator.pushNamed(context, '/quizpage');
-                          },
-                          child: Container(
-                            margin: EdgeInsets.only(top: 20),
-                            width: 360,
-                            height: 70,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.all(Radius.circular(20)),
-                              boxShadow:[
-                                BoxShadow(
-                                  color: Colors.grey[300]!.withOpacity(1.0), //color of shadow
-                                  spreadRadius: 1, //spread radius
-                                  blurRadius: 1, // blur radius
-                                  offset: Offset(0, 1), // changes position of shadow
-                                  //first paramerter of offset is left-right
-                                  //second parameter is top to down
-                                ),
-                                //you can set more BoxShadow() here
-                              ],
-                            ),
-                            child:const Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                //Image.asset('images/alien.png',width: 160,height: 130,),
-                                Text('Chapter 1: GPU',style: TextStyle( fontSize: 20,fontWeight: FontWeight.bold),),
-                              ],
-
-                            ),
-                          ),
-                        ),*/
-
                       ],
                     ),
                   ),
@@ -193,22 +148,12 @@ class _StartPageState extends State<StartPage> {
                     children: [
                       CircularProgressIndicator(),
                       SizedBox(height: 20.0,),
-                      /*Text(
-                        'Please Wait while Question are loading..',
-                        style: TextStyle(
-                          color: Theme
-                              .of(context)
-                              .primaryColor,
-                          decoration: TextDecoration.none,
-                          fontSize: 14.0,
-                        ),
-                      )*/
                     ],
                   )
               ),
             );
           }
-          return Center(child: Text('No Data'));
+          return const Center(child: Text('No Data'));
         },
 
     );

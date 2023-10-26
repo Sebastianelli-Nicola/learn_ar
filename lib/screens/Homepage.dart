@@ -73,7 +73,7 @@ class Intro extends StatelessWidget {
                           child: Container(
                             margin: EdgeInsets.only(top: 20),
                             width: 360,
-                            height: 180,
+                            height: 160,
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -115,7 +115,7 @@ class Intro extends StatelessWidget {
                     child: Container(
                       margin: EdgeInsets.only(top: 20),
                       width: 360,
-                      height: 180,
+                      height: 160,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -138,6 +138,46 @@ class Intro extends StatelessWidget {
                           Text('Quiz',style: TextStyle( fontSize: 20,fontWeight: FontWeight.bold),),
                           SizedBox(height:10 ,),
                           IconWidget(value: 'question-home.svg',),
+                        ],
+
+                      ),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: (){
+                      /*Navigator.of(context).push(PageRouteBuilder(
+                          pageBuilder: (context, animation, _) {
+                            return ObjectDetail2();
+                          },
+                          opaque: false));*/
+                      Navigator.pushNamed(context, '/statistics');
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(top: 20),
+                      width: 360,
+                      height: 160,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                        boxShadow:[
+                          BoxShadow(
+                            color: Colors.grey[300]!.withOpacity(1.0), //color of shadow
+                            spreadRadius: 1, //spread radius
+                            blurRadius: 1, // blur radius
+                            offset: Offset(0, 1), // changes position of shadow
+                            //first paramerter of offset is left-right
+                            //second parameter is top to down
+                          ),
+                          //you can set more BoxShadow() here
+                        ],
+                      ),
+                      child:const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          //Image.asset('images/alien.png',width: 160,height: 130,),
+                          Text('Statistics',style: TextStyle( fontSize: 20,fontWeight: FontWeight.bold),),
+                          SizedBox(height:10 ,),
+                          IconWidget(value: 'statistics.svg',),
                         ],
 
                       ),

@@ -6,8 +6,6 @@ class Chapter{
   late final String name;
 
 
-
-
   // create constructor
   Chapter({
     required this.id,

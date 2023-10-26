@@ -13,8 +13,8 @@ class IconWidget extends StatelessWidget {
       //color: Colors.transparent,
       child: SvgPicture.asset(
         'assets/$value',
-        height: 100.0,
-        width: 100.0,
+        height: 80.0,
+        width: 80.0,
         allowDrawingOutsideViewBox: true,
       ),
     );

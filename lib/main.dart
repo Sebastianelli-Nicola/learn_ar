@@ -14,6 +14,7 @@ import 'package:learn_ar/screens/ar/InfoArPage.dart';
 import 'package:learn_ar/screens/quiz/QuizPage.dart';
 import 'package:learn_ar/screens/quiz/ScanQuizPage.dart';
 import 'package:learn_ar/screens/quiz/StartPage.dart';
+import 'package:learn_ar/screens/statistics/StatisticsPage.dart';
 import 'package:provider/provider.dart';
 import 'ScreenArguments.dart';
 import 'auth.dart';
@@ -95,6 +96,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           '/quizhomepage': (context) => const StartPage(),
           //'/quizpage': (context) => const QuizPage(title: '', message: 'gpu',),
           '/scanquiz': (context) => const ScanQuiz(),
+          '/statistics': (context) => const Statistics(),
         },
         onGenerateRoute: (settings) {
           // If you push the PassArguments route

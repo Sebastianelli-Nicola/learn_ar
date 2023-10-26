@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:learn_ar/database/ChapterModel.dart';
 import 'package:learn_ar/database/QuestionModel.dart';
+import 'package:learn_ar/database/StatisticModel.dart';
 import 'dart:convert';
 
 import 'InfoModel.dart';
@@ -19,9 +20,11 @@ class DBconnect{
 
   final String urlStringInfo = 'https://learn-ar-default-rtdb.europe-west1.firebasedatabase.app/book_architettura_calcolatori/chapters/';
 
+  final String urlStringStatistics = 'https://learn-ar-default-rtdb.europe-west1.firebasedatabase.app/statistics_book_architettura_calcolatori.json';
+
   final storage = firebase_storage.FirebaseStorage.instance;
 
-  // Storage ->
+  // Storage -->
 
   Future<firebase_storage.ListResult> listFiles() async{
    firebase_storage.ListResult result = await storage.ref().listAll();
@@ -29,13 +32,14 @@ class DBconnect{
    return result;
   }
 
+  //For load model 3D in the quiz
   Future<String> downloadURL(String imageName, String chapter) async{
     String downloadurl = await storage.ref('/quiz_$chapter/$imageName').getDownloadURL();
     return downloadurl;
   }
 
 
-  // Realtime Database ->
+  // Realtime Database -->
 
   Future<void> addQuestion(Question question) async{
       http.post(url, body: json.encode({
@@ -45,6 +49,7 @@ class DBconnect{
       ));
   }
 
+  //Question for chapter
   Future<List<Question>> fetchQuestion(String name) async{
     var urlQuestions = Uri.parse(urlStringQuestions + name + '/questions.json' );
     return http.get(urlQuestions).then((response){
@@ -73,16 +78,15 @@ class DBconnect{
   }*/
 
 
+  //Chapters
   Future<List<Chapter>> fetchChapters() async{
     var urlChapters = Uri.parse(urlString);
     return http.get(urlChapters).then((response){
       var data = json.decode(response.body) as Map<String, dynamic>;
       List<Chapter> newChapters = [];
-      log('fa -> ${data}');
 
       data.forEach((key, value){
           var newChapter = Chapter(id: key, name: (value['name']));
-          log('fa -> ${newChapter}');
           newChapters.add(newChapter);
         });
       //}
@@ -90,6 +94,7 @@ class DBconnect{
     });
   }
 
+  //Info Ar Model
   Future<List<Info>> fetchInfo() async{
     var urlInfo = Uri.parse(urlStringInfo + 'gpu' + '/info.json' );
     return http.get(urlInfo).then((response){
@@ -104,11 +109,36 @@ class DBconnect{
     });
   }
 
-
   //qr code filters
   Future<Map<String, dynamic>> readJson() async {
     final String response = await rootBundle.loadString('assets/chapters.json');
     return json.decode(response) as Map<String, dynamic>;
   }
+
+  //Statistics
+  Future<Statistic> fetchStatistic(/*String email*/) async{
+    log('stats -> 0');
+    var urlStatistics = Uri.parse(urlStringStatistics);
+    log('stats -> 1');
+    return http.get(urlStatistics).then((response){
+      log('stats -> 2');
+      var data = json.decode(response.body) as Map<String, dynamic>;
+      log('stats -> 3 -> $data');
+      List<Statistic> newStatistics = [];
+
+      data.forEach((key, value){
+        log('stats -> 4');
+        var newStatistic = Statistic(id: key, email: value['email'], stats: Map.castFrom(value['stats']));
+        log('stats -> 5 -> $newStatistic');
+        newStatistics.add(newStatistic);
+        log('stats -> 6 -> $newStatistics');
+      });
+      log('stats -> 7 -> ${newStatistics[0].stats.keys.toList()[0]}');
+      log('stats -> 8 -> ${newStatistics[0].stats.keys.toList()[1]}');
+      log('stats -> 8 -> ${newStatistics[0].stats.keys.toList().length}');
+      return newStatistics[0];
+    });
+  }
+
 
 }
