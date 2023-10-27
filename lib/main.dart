@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:learn_ar/database/DbFireBaseConnect.dart';
 import 'package:learn_ar/database/QuestionModel.dart';
+import 'package:learn_ar/database/StatisticModel.dart';
 import 'package:learn_ar/screens/ar/ArPage.dart';
 import 'package:learn_ar/screens/AuthPage.dart';
 import 'package:learn_ar/screens/Homepage.dart';
@@ -26,10 +27,9 @@ import 'firebase_options.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 
 void main() async {
-  //var db = DBconnect();
-  /*db.addQuestion(Question(id: '20', title: 'Quanto fa 20 x 100', options: {
-    '100': false,'200': true,'300': false,'500': false,
-  }));*/
+  /*var db = DBconnect();
+  db.addStatistic(Statistic(id: '1', email: 'seba97985@gmail.com', stats: {
+    'gpu': 70,'ram': 75,'cpu': 30,},));*/
   //db.fetchQuestion();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -122,7 +122,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           assert(false, 'Need to implement ${settings.name}');
           return null;
         },
-      home: StreamBuilder(
+      /*home: StreamBuilder(
           stream: Auth().authStateChanges,
           builder: (context, snapshot){
             if(snapshot.hasData){
@@ -131,9 +131,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
             else {
               return AuthPage();
             }
-          }),
-        /*home: AnimatedSplashScreen(
-          splash: Icons.home,
+          }),*/
+        home: AnimatedSplashScreen(
+          splash: Icons.camera,
           splashTransition: SplashTransition.fadeTransition,
           nextScreen: StreamBuilder(
               stream: Auth().authStateChanges,
@@ -145,7 +145,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                   return AuthPage();
                 }
               }),
-        )*/
+        )
         /*StreamBuilder(
             stream: Auth().authStateChanges,
             builder: (context, snapshot){

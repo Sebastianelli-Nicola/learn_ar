@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../constants.dart';
+
 class ArPage extends StatefulWidget {
   const ArPage({Key? key}) : super(key: key);
 
@@ -28,9 +30,11 @@ class _ArPageState extends State<ArPage> {
     return Scaffold(
         //primary: true,
         key: _scaffoldKey,
-        /*appBar: AppBar(
-          title: const Text('View in Ar'),
-        ),*/
+      appBar: AppBar(
+          foregroundColor: background,
+          backgroundColor: background2,
+          shadowColor: Colors.transparent
+      ),
         body: Card(
           margin: const EdgeInsets.all(8),
           clipBehavior: Clip.antiAlias,

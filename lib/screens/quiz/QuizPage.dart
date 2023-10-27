@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:learn_ar/auth.dart';
 import 'package:learn_ar/constants.dart';
 import 'package:learn_ar/widget/BlankWidget.dart';
 import 'package:learn_ar/widget/Model3dWidget.dart';
@@ -13,6 +14,7 @@ import 'package:learn_ar/widget/TrueFalseWidget.dart';
 import 'package:model_viewer_plus/model_viewer_plus.dart';
 
 import '../../database/QuestionModel.dart';
+import '../../database/StatisticModel.dart';
 
 class QuizPage extends StatefulWidget {
   //const QuizPage({super.key});
@@ -127,7 +129,16 @@ class _QuizPageState extends State<QuizPage> {
     Navigator.pushNamed(context, '/quizpage');
   }
 
+  void addStats(){
+    var emailWithoutComma = Auth().currentUser!.email.toString().replaceAll('.', '');
+    double p = (score * 1.0 / (index + 1)) * 100;
+    int perc = p.round();
+    db.addStatistic(Statistic(id: '1', email: emailWithoutComma , stats: {
+      widget.message.toString(): perc,},));
+  }
+
   void finish() {
+    addStats();
     setState(() {
       index = 0;
       score = 0;

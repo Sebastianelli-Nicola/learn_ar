@@ -14,10 +14,11 @@ class StatisticWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Container(
+      child: stat != 'no data yet' ?
+      Container(
         margin: EdgeInsets.only(top: 20),
-        width: (MediaQuery.of(context).size.width - 40.0) * perc / 100,
-        height: 70,
+        width: (MediaQuery.of(context).size.width - 40.0) * (perc == 0 ? 1 : perc) / 100,
+        height: 60,
         decoration: BoxDecoration(
           color: Colors.green,
           borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -36,11 +37,24 @@ class StatisticWidget extends StatelessWidget {
         child:Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('${stat.toUpperCase()}' + ': $perc',style: TextStyle( fontSize: 20,fontWeight: FontWeight.bold),),
+            Text((perc == 0 ? '' : '${stat.toUpperCase()}') + (perc == 0 ? '' : ': $perc %'),style: TextStyle( fontSize: 12,fontWeight: FontWeight.bold),),
           ],
 
         ),
-      ),
+      )
+      :
+        Container(
+          alignment: Alignment.center,
+          height: 350,
+          child: const Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(
+                child: Text('No data yet', style: TextStyle( fontSize: 15,fontWeight: FontWeight.bold)),
+              ),
+            ],
+          ),
+        )
     );
   }
 }

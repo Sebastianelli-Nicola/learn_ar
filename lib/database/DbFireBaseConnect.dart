@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
@@ -11,6 +12,8 @@ import 'dart:convert';
 import 'InfoModel.dart';
 
 class DBconnect{
+
+  final myRootRef = FirebaseDatabase(databaseURL: 'https://learn-ar-default-rtdb.europe-west1.firebasedatabase.app').ref();
 
   final url = Uri.parse('https://learn-ar-default-rtdb.europe-west1.firebasedatabase.app/book_architettura_calcolatori/chapters/gpu/questions.json');
 
@@ -116,29 +119,101 @@ class DBconnect{
   }
 
   //Statistics
-  Future<Statistic> fetchStatistic(/*String email*/) async{
-    log('stats -> 0');
+
+  /*Future<void> addStatistic(Statistic statistic) async{
+    var urlStatistics = Uri.parse(urlStringStatistics );
+    http.post(urlStatistics, body: json.encode({
+
+      "user5": {
+            "user3": {
+              'email': statistic.email,
+              'stats': statistic.stats,
+            }
+          }
+        }
+    ));
+  }*/
+
+
+  Future<Statistic> fetchStatistic(String email) async{
     var urlStatistics = Uri.parse(urlStringStatistics);
-    log('stats -> 1');
     return http.get(urlStatistics).then((response){
       log('stats -> 2');
       var data = json.decode(response.body) as Map<String, dynamic>;
       log('stats -> 3 -> $data');
+      log('stats -> 3 -> ${data.values}');
+      log('stats -> 3 -> ${data.keys}');
+
       List<Statistic> newStatistics = [];
 
       data.forEach((key, value){
         log('stats -> 4');
-        var newStatistic = Statistic(id: key, email: value['email'], stats: Map.castFrom(value['stats']));
-        log('stats -> 5 -> $newStatistic');
-        newStatistics.add(newStatistic);
+        log('stats -> 4'+ value['email']);
+        log('stats -> 4'+ value['stats'].toString() );
+        if(value['email'] == email){
+          log('dentro ->');
+          var newStatistic = Statistic(id: key, email: value['email'], stats: Map.castFrom(value['stats']));
+          newStatistics.add(newStatistic);
+          log('stats -> 5 -> $newStatistic');
+        }
         log('stats -> 6 -> $newStatistics');
       });
-      log('stats -> 7 -> ${newStatistics[0].stats.keys.toList()[0]}');
-      log('stats -> 8 -> ${newStatistics[0].stats.keys.toList()[1]}');
-      log('stats -> 8 -> ${newStatistics[0].stats.keys.toList().length}');
-      return newStatistics[0];
+      //log('stats -> 7 -> ${newStatistics[0].stats.keys.toList()[0]}');
+      //log('stats -> 8 -> ${newStatistics[0].stats.keys.toList()[1]}');
+      //log('stats -> 8 -> ${newStatistics[0].stats.keys.toList().length}');
+      var defaultStatistic = Statistic(id: '', email: '', stats: <String, int>{'no data yet' : 0});
+
+
+      return newStatistics.isNotEmpty ? newStatistics[0] : defaultStatistic;
     });
   }
+
+
+
+  void addStatistic(Statistic statistic){
+    var userNameRef =  myRootRef.child('/statistics_book_architettura_calcolatori');
+
+    userNameRef.child('${statistic.email}').set({
+    'email': statistic.email,
+    'stats': statistic.stats,
+    });
+  }
+
+
+/*Future<void> fetchStatistic2(String email) async{
+    var userNameRef =  myRootRef.child('/statistics_book_architettura_calcolatori');
+    log('a -> 0');
+    final snapshot = await userNameRef.child('$email').get();
+    log('a -> ${snapshot.value}');
+    if (snapshot.exists) {
+      log('a -> 1');
+      List<Statistic> newStatistics = [];
+      log('a -> 2');
+      var values = Map<String, dynamic>.from(snapshot.value as Map);
+      var stats = Map.castFrom(values["stats"]);
+      var stringQueryParameters = values.map<String, int>(
+            (key, value) => MapEntry<String, int>(key, value ),
+      );
+      log('a -> 2 -> ${stringQueryParameters}');
+      //var newStatistic = Statistic(id: email, email: email, stats: stats);
+      //var data = snapshot as Map<String, dynamic>;
+      log('a -> 3');
+
+      values.forEach((key, value){
+        log('a-> 4 $key');
+        log('a-> 4 $value');
+        var stats = Map.castFrom(value['stats']);
+        log('a-> 4 $stats');
+        var newStatistic = Statistic(id: key, email: value['email'], stats: Map.castFrom(value['stats']));
+        log('a -> 5 -> $newStatistic');
+        newStatistics.add(newStatistic);
+        log('a -> 6 -> $newStatistics');
+      });
+      print(snapshot.value);
+    } else {
+      print('No data available.');
+    }
+  }*/
 
 
 }

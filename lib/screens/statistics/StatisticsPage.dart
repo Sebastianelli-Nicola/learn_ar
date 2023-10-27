@@ -8,6 +8,7 @@ import 'package:learn_ar/database/StatisticModel.dart';
 import 'package:learn_ar/widget/ChapterWidget.dart';
 import 'package:learn_ar/widget/StatisticWidget.dart';
 
+import '../../auth.dart';
 import '../../database/DbFireBaseConnect.dart';
 
 class Statistics extends StatefulWidget {
@@ -26,7 +27,11 @@ class _StatisticsState extends State<Statistics> {
 
 
   Future<Statistic> getData()async{
-   return db.fetchStatistic();
+    var emailWithoutComma = Auth().currentUser!.email.toString().replaceAll('.', '');
+    /*if(emailWithoutComma.isEmpty){
+      return Statistic(id: '', email: '', stats: <String, int>{'No data yet' : 0});
+    }*/
+   return db.fetchStatistic(emailWithoutComma);
   }
 
   @override
@@ -90,8 +95,9 @@ class _StatisticsState extends State<Statistics> {
                       const Text('Percentages of correct answers for each chapter', style: TextStyle(
                         fontSize: 22, fontWeight: FontWeight.bold,),
                         textAlign: TextAlign.center,),
+                        //addStatisticWidget(extractedData);
                         for(int i=0; i< extractedData.stats.keys.toList().length ; i++)
-                          StatisticWidget(stat: extractedData.stats.keys.toList()[i], perc: extractedData.stats.values.toList()[i],),
+                           StatisticWidget(stat: extractedData.stats.keys.toList()[i], perc: extractedData.stats.values.toList()[i],),
                     ],
                   ),
                 ),
@@ -119,4 +125,17 @@ class _StatisticsState extends State<Statistics> {
 
     );
   }
+
+  /*StatisticWidget addStatisticWidget(Statistic extractedData){
+    if (extractedData.stats.keys.first == 'No data yet'){
+      return
+    }
+    if(extractedData.stats.keys.toList().isNotEmpty){
+      for(int i=0; i< extractedData.stats.keys.toList().length ; i++) {
+        return StatisticWidget(stat: extractedData.stats.keys.toList()[i], perc: extractedData.stats.values.toList()[i],)
+      };
+    }
+    return StatisticWidget(stat: 'no data yet', perc: 100);
+
+  }*/
 }
