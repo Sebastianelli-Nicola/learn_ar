@@ -129,11 +129,11 @@ class _QuizPageState extends State<QuizPage> {
     Navigator.pushNamed(context, '/quizpage');
   }
 
-  void addStats(){
+  Future<void> addStats() async {
     var emailWithoutComma = Auth().currentUser!.email.toString().replaceAll('.', '');
     double p = (score * 1.0 / (index + 1)) * 100;
     int perc = p.round();
-    db.addStatistic(Statistic(id: '1', email: emailWithoutComma , stats: {
+    await db.addStatistic(Statistic(id: '1', email: emailWithoutComma , stats: {
       widget.message.toString(): perc,},));
   }
 

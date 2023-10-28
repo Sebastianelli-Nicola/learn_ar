@@ -10,6 +10,7 @@ import 'package:learn_ar/database/StatisticModel.dart';
 import 'dart:convert';
 
 import 'InfoModel.dart';
+import 'UserModel.dart';
 
 class DBconnect{
 
@@ -136,6 +137,7 @@ class DBconnect{
 
 
   Future<Statistic> fetchStatistic(String email) async{
+    var userNameRef =  myRootRef.child('/statistics_book_architettura_calcolatori');
     var urlStatistics = Uri.parse(urlStringStatistics);
     return http.get(urlStatistics).then((response){
       log('stats -> 2');
@@ -151,10 +153,23 @@ class DBconnect{
         log('stats -> 4'+ value['email']);
         log('stats -> 4'+ value['stats'].toString() );
         if(value['email'] == email){
-          log('dentro ->');
-          var newStatistic = Statistic(id: key, email: value['email'], stats: Map.castFrom(value['stats']));
-          newStatistics.add(newStatistic);
-          log('stats -> 5 -> $newStatistic');
+          if(value['stats'] != null){
+            if(Map.castFrom(value['stats']).keys.contains('no data yet') ){
+              log('qua ->');
+              userNameRef.child('${email}').child('stats').child('no data yet').remove();
+            }
+            else{
+              log('dentro ->');
+              log('${Map.castFrom(value['stats']).keys}');
+              var newStatistic = Statistic(
+                  id: key,
+                  email: value['email'],
+                  stats: Map.castFrom(value['stats']));
+              newStatistics.add(newStatistic);
+              log('stats -> 5 -> $newStatistic');
+
+            }
+          }
         }
         log('stats -> 6 -> $newStatistics');
       });
@@ -169,13 +184,54 @@ class DBconnect{
   }
 
 
-
-  void addStatistic(Statistic statistic){
+  //add statistic, update statistic
+  Future<void> addStatistic(Statistic statistic) async {
     var userNameRef =  myRootRef.child('/statistics_book_architettura_calcolatori');
 
-    userNameRef.child('${statistic.email}').set({
-    'email': statistic.email,
-    'stats': statistic.stats,
+    var s = await fetchStatistic(statistic.email);
+    var isPresent = false;
+    Map<String, int> map ={};
+    if(s.stats.isNotEmpty){
+      s.stats.forEach((key, value) {
+        map[key] = value;
+        if (statistic.stats.keys == key) {
+          map.update(key, (value) => statistic.stats.values.first);
+          isPresent = true;
+        }
+      });
+      if(isPresent == true){
+        userNameRef.child('${statistic.email}').update({
+          'stats': map,
+        });
+      }
+      else{
+        map[statistic.stats.keys.first] = statistic.stats.values.first;
+        userNameRef.child('${statistic.email}').update({
+          'stats': map,
+        });
+      }
+    }
+
+    /*for (int i=0; i<s.stats.keys.length; i++){
+      log('dent-> $i');
+    }
+
+    userNameRef.child('${statistic.email}').update({
+      'stats': statistic.stats,
+    });*/
+  }
+
+
+
+  //add user info
+  void addUserAndInfo(User user){
+    var userNameRef =  myRootRef.child('/statistics_book_architettura_calcolatori');
+
+    userNameRef.child('${user.email}').set({
+      'email': user.email,
+      'name' : user.name,
+      'surname': user.surname,
+      'birthdate' : user.birthDate,
     });
   }
 

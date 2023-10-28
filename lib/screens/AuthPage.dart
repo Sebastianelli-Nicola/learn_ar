@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:learn_ar/auth.dart';
+import 'package:learn_ar/database/DbFireBaseConnect.dart';
+import 'package:learn_ar/database/UserModel.dart' as consumer;
 
 import '../constants.dart';
 
@@ -22,6 +24,8 @@ class _AuthPageState extends State<AuthPage> {
   bool isLogin = true;
   DateTime selectedDate = DateTime(2010,12,31);
   dynamic selectedDateF;
+
+  DBconnect db = DBconnect();
 
   Future<void> signIn() async{
     try{
@@ -109,14 +113,15 @@ class _AuthPageState extends State<AuthPage> {
                 child: ElevatedButton(
                   onPressed: (){
                   isLogin ? signIn() : createUser();
+                  if (isLogin == false){
+                    db.addUserAndInfo(consumer.User(id: '1', email: _email.text.replaceAll('.', ''), name: _name.text, surname: _surname.text, birthDate: _date.text));
+                  }
                   },
                   child: Text(isLogin ? 'Login' : 'Sign up', style: const TextStyle(fontSize: 16.0,fontWeight: FontWeight.bold),),
                 ),
               ),
               TextButton(
                 onPressed: (){
-                  log('date -> $selectedDate');
-                  log('date -> $selectedDateF');
                   setState(() {
                     isLogin = !isLogin;
                   });
