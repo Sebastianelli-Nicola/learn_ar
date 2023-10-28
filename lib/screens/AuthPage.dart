@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:learn_ar/auth.dart';
@@ -14,7 +16,12 @@ class AuthPage extends StatefulWidget {
 class _AuthPageState extends State<AuthPage> {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
+  final TextEditingController _name = TextEditingController();
+  final TextEditingController _surname = TextEditingController();
+  final TextEditingController _date = TextEditingController();
   bool isLogin = true;
+  DateTime selectedDate = DateTime(2010,12,31);
+  dynamic selectedDateF;
 
   Future<void> signIn() async{
     try{
@@ -40,24 +47,61 @@ class _AuthPageState extends State<AuthPage> {
       ),
       backgroundColor: background2,
       body: Container(
-        padding: EdgeInsets.only(left: 30.0,top: 30.0,right: 30.0),
+        padding: const EdgeInsets.only(left: 30.0,top: 30.0,right: 30.0),
         child: SingleChildScrollView(
           child: Column(
             children: [
               const Text('Learn AR', style: TextStyle(fontSize: 26.0,fontWeight: FontWeight.bold),),
               const SizedBox(height: 30.0,),
-              Text(isLogin ? 'Login' : 'Sign up', style: TextStyle(fontSize: 20.0, color: background,fontWeight: FontWeight.bold),),
+              Text(isLogin ? 'Login' : 'Sign up', style: const TextStyle(fontSize: 20.0, color: background,fontWeight: FontWeight.bold),),
               const Divider(color: background,),
               //const SizedBox(height: 5.0,),
-              TextField(
-                controller: _email,
-                decoration: const InputDecoration(label: Text('email')),
+              isLogin == true ?
+                Column(
+                  children: [
+                    TextField(
+                      controller: _email,
+                      decoration: const InputDecoration(label: Text('email')),
+                    ),
+                    TextField(
+                      controller: _password,
+                      obscureText: true,
+                      decoration: const InputDecoration(label: Text('password')),
+                    )
+                  ],
+                )
+              : Column(
+                children: [
+                  TextField(
+                      controller: _email,
+                      decoration: const InputDecoration(label: Text('email')),
+                    ),
+                  TextField(
+                    controller: _password,
+                    obscureText: true,
+                    decoration: const InputDecoration(label: Text('password')),
+                  ),
+                  TextField(
+                    controller: _name,
+                    decoration: const InputDecoration(label: Text('name')),
+                  ),
+                  TextField(
+                    controller: _surname,
+                    decoration: const InputDecoration(label: Text('surname')),
+                  ),
+                  TextField(
+                    onTap: (){
+                      //showDatePicker(context: context, initialDate: selectedData, firstDate: DateTime(2002), lastDate: DateTime.now());
+                      _selectDate(context);
+                    },
+                    controller: _date,
+                    keyboardType: TextInputType.none,
+                    decoration: const InputDecoration(label: Text('birth date')),
+                  ),
+                ],
               ),
-              TextField(
-                controller: _password,
-                obscureText: true,
-                decoration: const InputDecoration(label: Text('password')),
-              ),
+
+
               const SizedBox(height: 20.0,),
               SizedBox(
                 width: double.infinity,
@@ -66,11 +110,13 @@ class _AuthPageState extends State<AuthPage> {
                   onPressed: (){
                   isLogin ? signIn() : createUser();
                   },
-                  child: Text(isLogin ? 'Login' : 'Sign up', style: TextStyle(fontSize: 16.0,fontWeight: FontWeight.bold),),
+                  child: Text(isLogin ? 'Login' : 'Sign up', style: const TextStyle(fontSize: 16.0,fontWeight: FontWeight.bold),),
                 ),
               ),
               TextButton(
                 onPressed: (){
+                  log('date -> $selectedDate');
+                  log('date -> $selectedDateF');
                   setState(() {
                     isLogin = !isLogin;
                   });
@@ -81,6 +127,22 @@ class _AuthPageState extends State<AuthPage> {
         ),
       ),
     );
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(1900, 1),
+        lastDate: DateTime(2010,12,31)
+    );
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+        selectedDateF = "${selectedDate.toLocal()}".split(' ')[0];
+        _date.text = selectedDateF;
+      });
+    }
   }
 
 }
