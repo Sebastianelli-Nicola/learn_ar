@@ -5,7 +5,9 @@ import 'package:learn_ar/constants.dart';
 import 'package:learn_ar/database/ChapterModel.dart';
 import 'package:learn_ar/widget/ChapterWidget.dart';
 
+import '../../auth.dart';
 import '../../database/DbFireBaseConnect.dart';
+import '../../database/StatisticModel.dart';
 
 class StartPage extends StatefulWidget {
   const StartPage({super.key});
@@ -19,27 +21,48 @@ class _StartPageState extends State<StartPage> {
   var db = DBconnect();
 
   late Future _chapters;
+  late Future<Statistic> _statistics;
+  late bool beforeUnlock = true ;
+
+
+  Future<Statistic> getDataStats()async{
+    var emailWithoutComma = Auth().currentUser!.email.toString().replaceAll('.', '');
+    return db.fetchStatistic(emailWithoutComma);
+  }
 
   Future<List<Chapter>> getData() async{
     return db.fetchChapters();
   }
 
+  bool checkLock(bool isLock){
+    if(beforeUnlock == true){
+        beforeUnlock = isLock;
+      return false;
+    }
+      beforeUnlock = isLock;
+    return true;
+  }
+
   @override
   void initState() {
     _chapters = getData();
+    _statistics = getDataStats();
     super.initState();
   }
+
+
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: _chapters,
+        future: Future.wait([_chapters, _statistics]),
         builder: (ctx, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasError) {
               return Center(child: Text('${snapshot.error}'));
             } else if (snapshot.hasData) {
-              var extractedData = snapshot.data as List<Chapter>;
+              var extractedData = snapshot.data?[0] as List<Chapter>;
+              var extractedDataStats = snapshot.data?[1] as Statistic;
               return Scaffold(
                 backgroundColor: Colors.grey.shade300,
                 appBar: AppBar(
@@ -130,7 +153,7 @@ class _StartPageState extends State<StartPage> {
                           fontSize: 22, fontWeight: FontWeight.bold,),
                           textAlign: TextAlign.center,),
                         for(int i=0; i< extractedData.length; i++)
-                        ChapterWidget(chapter: extractedData[i].name),
+                        ChapterWidget(chapter: extractedData[i].name, isLock: checkLock(extractedDataStats.stats.containsKey(extractedData[i].name))),
                       ],
                     ),
                   ),

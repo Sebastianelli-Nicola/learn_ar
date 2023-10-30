@@ -74,7 +74,7 @@ class _ScanQuizState extends State<ScanQuiz> {
       ),
       body: Stack(
         children:  <Widget>[
-          Expanded(flex: 1, child: _buildQrView(context)),
+          _buildQrView(context),
           const Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -120,8 +120,9 @@ class _ScanQuizState extends State<ScanQuiz> {
         var filter = scanFilter();
         for(int i=0; i<filter.length; i++){
           if (result!.code == filter[i].name){
+            Navigator.pop(context);
             Navigator.pushNamed(context, '/quizpage', arguments: ScreenArguments('name', filter[i].name, 'scan'));
-            reassemble();
+            //reassemble();
             return;
           }
         }

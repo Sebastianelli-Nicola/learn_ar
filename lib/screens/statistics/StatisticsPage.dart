@@ -28,9 +28,6 @@ class _StatisticsState extends State<Statistics> {
 
   Future<Statistic> getData()async{
     var emailWithoutComma = Auth().currentUser!.email.toString().replaceAll('.', '');
-    /*if(emailWithoutComma.isEmpty){
-      return Statistic(id: '', email: '', stats: <String, int>{'No data yet' : 0});
-    }*/
    return db.fetchStatistic(emailWithoutComma);
   }
 

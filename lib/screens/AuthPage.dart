@@ -50,7 +50,6 @@ class _AuthPageState extends State<AuthPage> {
           margin: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
         ));
       }
-      //log(error as String);
     }
     ;
   }
@@ -59,7 +58,24 @@ class _AuthPageState extends State<AuthPage> {
     try {
       await Auth().createUserWithEmailAndPassword(
           email: _email.text, password: _password.text);
-    } on FirebaseAuthException catch (error) {}
+    } on FirebaseAuthException catch (error) {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      if (errorCode == 'email-already-in-use') {
+        //alert('Wrong password.');
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('The email address is already in use by another account'),
+          behavior: SnackBarBehavior.floating,
+          margin: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+        ));
+      } else if(errorCode == 'too-many-requests'){
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('We have blocked all requests from this device due to unusual activity. Try again later'),
+          behavior: SnackBarBehavior.floating,
+          margin: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+        ));
+      }
+    }
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -228,6 +244,7 @@ class _AuthPageState extends State<AuthPage> {
                 height: 50.0,
                 child: ElevatedButton(
                   onPressed: () {
+                    FocusScope.of(context).unfocus();
                     if (_formKey.currentState!.validate()) {
                       // If the form is valid, display a snackbar. In the real world,
                       // you'd often call a server or save the information in a database.

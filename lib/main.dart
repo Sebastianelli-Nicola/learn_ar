@@ -51,6 +51,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    //Auth().signOut();
   }
 
   @override
@@ -71,7 +72,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       case AppLifecycleState.resumed:
         //Auth().signInWithEmailAndPassword(email: Auth().currentUser!.email, password: uth().currentUser.p)
         break;
-      case AppLifecycleState.paused:
+      case AppLifecycleState.detached:
         //Auth().signOut();
         break;
       default:

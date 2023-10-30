@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:learn_ar/ScreenArguments.dart';
 
 class ChapterWidget extends StatelessWidget {
-  const ChapterWidget({Key? key, required this.chapter, }) : super(key: key);
+  const ChapterWidget({Key? key, required this.chapter, required this.isLock,  }) : super(key: key);
 
   final String chapter;
+  final bool isLock;
+
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,8 @@ class ChapterWidget extends StatelessWidget {
                           return ObjectDetail2();
                         },
                         opaque: false));*/
-        Navigator.pushNamed(context, '/quizpage', arguments: ScreenArguments('name', chapter, 'start'));
+
+        isLock == true  ? null : Navigator.pushNamed(context, '/quizpage', arguments: ScreenArguments('name', chapter, 'start'));
       },
       child: Container(
         margin: EdgeInsets.only(top: 20),
@@ -37,12 +40,12 @@ class ChapterWidget extends StatelessWidget {
             //you can set more BoxShadow() here
           ],
         ),
-        child:Column(
+        child:Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Chapter : ${chapter.toUpperCase()}',style: TextStyle( fontSize: 20,fontWeight: FontWeight.bold),),
+            Expanded(flex: 5 ,child: Text('      Chapter : ${chapter.toUpperCase()}',style: TextStyle( fontSize: 20,fontWeight: FontWeight.bold),)),
+            isLock == true ? Expanded(flex: 2, child: Icon(Icons.lock)) :  Text(''),
           ],
-
         ),
       ),
     );

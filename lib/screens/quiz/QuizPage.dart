@@ -159,7 +159,7 @@ class _QuizPageState extends State<QuizPage> {
       Navigator.pop(context);
       Navigator.pop(context);
       Navigator.pop(context);
-      Navigator.pop(context);
+      //Navigator.pop(context);
     }
     else{
       Navigator.pop(context);
@@ -278,13 +278,13 @@ class _QuizPageState extends State<QuizPage> {
 
         }
         else{
-          return Center(
+          return const Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                  crossAxisAlignment: CrossAxisAlignment.center,
                  children: [
-                   const CircularProgressIndicator(),
-                   const SizedBox(height: 20.0,),
+                   CircularProgressIndicator(),
+                   /*const SizedBox(height: 20.0,),
                    Text(
                      'Please Wait while Question are loading..',
                      style: TextStyle(
@@ -292,7 +292,7 @@ class _QuizPageState extends State<QuizPage> {
                        decoration: TextDecoration.none,
                        fontSize: 14.0,
                      ),
-                   )
+                   )*/
                  ],
               )
           );
