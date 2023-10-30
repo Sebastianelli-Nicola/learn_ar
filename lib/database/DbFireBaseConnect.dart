@@ -38,7 +38,9 @@ class DBconnect{
 
   //For load model 3D in the quiz
   Future<String> downloadURL(String imageName, String chapter) async{
+    log('qua-> $imageName e $chapter');
     String downloadurl = await storage.ref('/quiz_$chapter/$imageName').getDownloadURL();
+    log('qua-> $downloadurl');
     return downloadurl;
   }
 

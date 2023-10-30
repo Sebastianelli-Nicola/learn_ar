@@ -164,6 +164,7 @@ class _QuizPageState extends State<QuizPage> {
   check3dModel(String name) {
     if(name != 'none'){
       if(isPressed == false){
+        log('qui->'+ name);
         return Model3dWidget(db: db, model3dName: name, chapter: widget.message.toString(),);
       }else{
         if (isTrue == true){
