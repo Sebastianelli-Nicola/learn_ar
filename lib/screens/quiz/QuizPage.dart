@@ -68,16 +68,25 @@ class _QuizPageState extends State<QuizPage> {
 
   void nextQuestion(int questionLength) {
     if (index == questionLength - 1){
-      showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (ctx) => ResultBox(
-            result: score,
-            questionLength: questionLength,
-            onPressedRestart: startOver,
-            onPressedFinish: finish,
-          )
-      );
+      if(isPressed){
+        showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (ctx) => ResultBox(
+              result: score,
+              questionLength: questionLength,
+              onPressedRestart: startOver,
+              onPressedFinish: finish,
+            )
+        );
+      }else{
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Please select any option'),
+              behavior: SnackBarBehavior.floating,
+              margin: EdgeInsets.symmetric(vertical: 20.0,horizontal: 20.0),
+            )
+        );
+      }
     }
     else{
       if(isPressed){

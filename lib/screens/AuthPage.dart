@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:learn_ar/auth.dart';
 import 'package:learn_ar/database/DbFireBaseConnect.dart';
 import 'package:learn_ar/database/UserModel.dart' as consumer;
-import 'package:rflutter_alert/rflutter_alert.dart';
+
 
 import '../constants.dart';
 
@@ -36,11 +36,8 @@ class _AuthPageState extends State<AuthPage> {
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
-      log('code -> $errorCode');
-      log('message -> $errorMessage');
       if (errorCode == 'INVALID_LOGIN_CREDENTIALS') {
         //alert('Wrong password.');
-        log('qui->');
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text('Email or Password not correct'),
           behavior: SnackBarBehavior.floating,
