@@ -5,11 +5,14 @@ import 'package:learn_ar/constants.dart';
 import 'package:learn_ar/database/ChapterModel.dart';
 import 'package:learn_ar/database/QuestionModel.dart';
 import 'package:learn_ar/database/StatisticModel.dart';
+import 'package:learn_ar/provider/StatisticProvider.dart';
 import 'package:learn_ar/widget/ChapterWidget.dart';
 import 'package:learn_ar/widget/StatisticWidget.dart';
+import 'package:provider/provider.dart';
 
 import '../../auth.dart';
 import '../../database/DbFireBaseConnect.dart';
+import '../../provider/QuizProvider.dart';
 
 class Statistics extends StatefulWidget {
   const Statistics({super.key});
@@ -20,20 +23,19 @@ class Statistics extends StatefulWidget {
 
 class _StatisticsState extends State<Statistics> {
 
-  var db = DBconnect();
 
   late Future _statistics;
 
-
-
-  Future<Statistic> getData()async{
+  /*Future<Statistic> getData()async{
     var emailWithoutComma = Auth().currentUser!.email.toString().replaceAll('.', '');
    return db.fetchStatistic(emailWithoutComma);
-  }
+  }*/
 
   @override
   void initState() {
-    _statistics = getData();
+    final provider = Provider.of<StatisticProvider>(context, listen: false);
+    _statistics = provider.getDataStatistics();
+    //_statistics = getData();
     super.initState();
   }
 
@@ -123,16 +125,4 @@ class _StatisticsState extends State<Statistics> {
     );
   }
 
-  /*StatisticWidget addStatisticWidget(Statistic extractedData){
-    if (extractedData.stats.keys.first == 'No data yet'){
-      return
-    }
-    if(extractedData.stats.keys.toList().isNotEmpty){
-      for(int i=0; i< extractedData.stats.keys.toList().length ; i++) {
-        return StatisticWidget(stat: extractedData.stats.keys.toList()[i], perc: extractedData.stats.values.toList()[i],)
-      };
-    }
-    return StatisticWidget(stat: 'no data yet', perc: 100);
-
-  }*/
 }

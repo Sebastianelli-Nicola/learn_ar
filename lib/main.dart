@@ -7,6 +7,7 @@ import 'package:learn_ar/database/DbFireBaseConnect.dart';
 import 'package:learn_ar/database/QuestionModel.dart';
 import 'package:learn_ar/database/StatisticModel.dart';
 import 'package:learn_ar/provider/QuizProvider.dart';
+import 'package:learn_ar/provider/StatisticProvider.dart';
 import 'package:learn_ar/screens/ar/ArPage.dart';
 import 'package:learn_ar/screens/AuthPage.dart';
 import 'package:learn_ar/screens/Homepage.dart';
@@ -84,7 +85,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (context) => QuizProvider())],
+      providers: [ChangeNotifierProvider(create: (context) => QuizProvider()),
+                  ChangeNotifierProvider(create: (context) => StatisticProvider())],
       child: MaterialApp(
           title: 'Learn AR',
           //theme: ,
