@@ -8,10 +8,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:learn_ar/ScreenArguments.dart';
 import 'package:learn_ar/constants.dart';
+import 'package:provider/provider.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 import '../../database/ChapterModel.dart';
 import '../../database/DbFireBaseConnect.dart';
+import '../../provider/QuizProvider.dart';
 
 class ScanQuiz extends StatefulWidget {
   const ScanQuiz({Key? key}) : super(key: key);
@@ -26,15 +28,17 @@ class _ScanQuizState extends State<ScanQuiz> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
   bool correct = false;
+  var data;
 
-   var data;
    @override
   void initState() {
-     readJson();
+     //readJson();
      super.initState();
+     final provider = Provider.of<QuizProvider>(context, listen: false);
+     provider.readJson();
+     data = provider.item;
   }
 
-  // In order to get hot reload to work we need to pause the camera if the platform
   // is android, or resume the camera if the platform is iOS.
   @override
   void reassemble() {
@@ -43,6 +47,12 @@ class _ScanQuizState extends State<ScanQuiz> {
       controller!.pauseCamera();
     }
     controller!.resumeCamera();
+  }
+
+  @override
+  void dispose() {
+    controller?.dispose();
+    super.dispose();
   }
 
   @override
@@ -81,14 +91,13 @@ class _ScanQuizState extends State<ScanQuiz> {
               Center(child: Text('Place the QR Code in the area', style: TextStyle(fontSize: 15.0, color: background),textAlign: TextAlign.center,)),
             ],
           )
-
         ],
       ),
     );
   }
 
   Widget _buildQrView(BuildContext context) {
-    // For this example we check how width or tall the device is and change the scanArea and overlay accordingly.
+    //check how width or tall the device is and change the scanArea and overlay accordingly.
     var scanArea = (MediaQuery.of(context).size.width < 400 ||
         MediaQuery.of(context).size.height < 400)
         ? 250.0
@@ -112,11 +121,9 @@ class _ScanQuizState extends State<ScanQuiz> {
     setState(() {
       this.controller = controller;
     });
-    // TODO: bug telecamera rimane attiva anche quando si avvaia il quiz e può leggere altri qrcode (WillPoScope ?)
     controller.scannedDataStream.listen((scanData) {
       setState(() {
         result = scanData;
-
         var filter = scanFilter();
         for(int i=0; i<filter.length; i++){
           if (result!.code == filter[i].name){
@@ -126,18 +133,6 @@ class _ScanQuizState extends State<ScanQuiz> {
             return;
           }
         }
-
-        /*if (result!.code == 'gpu'){
-          log('scan -> ');
-          Navigator.pushNamed(context, '/quizpage', arguments: ScreenArguments('name', 'gpu'));
-          reassemble();
-        }
-        if (result!.code == 'ram'){
-          log('scan -> ');
-          Navigator.pushNamed(context, '/quizpage', arguments: ScreenArguments('name', 'ram'));
-          reassemble();
-          controller.dispose();
-        }*/
 
       });
 
@@ -153,12 +148,7 @@ class _ScanQuizState extends State<ScanQuiz> {
     }
   }
 
-  @override
-  void dispose() {
-    controller?.dispose();
-    super.dispose();
-  }
-
+  //return list of filters for qrcode
   List<Chapter> scanFilter(){
     List<Chapter> newChapters = [];
     data.forEach((key, value){
@@ -168,13 +158,10 @@ class _ScanQuizState extends State<ScanQuiz> {
     return newChapters;
   }
 
-  Future<void> readJson() async {
+  /*Future<void> readJson() async {
     final String response = await rootBundle.loadString('assets/chapters.json');
     data = json.decode(response) as Map<String, dynamic>;
-  }
-
-
-
+  }*/
 
 
 }

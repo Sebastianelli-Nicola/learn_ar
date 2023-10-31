@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:learn_ar/database/DbFireBaseConnect.dart';
 import 'package:learn_ar/database/QuestionModel.dart';
 import 'package:learn_ar/database/StatisticModel.dart';
+import 'package:learn_ar/provider/QuizProvider.dart';
 import 'package:learn_ar/screens/ar/ArPage.dart';
 import 'package:learn_ar/screens/AuthPage.dart';
 import 'package:learn_ar/screens/Homepage.dart';
@@ -51,7 +52,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    //Auth().signOut();
+    Auth().signOut();
   }
 
   @override
@@ -82,90 +83,93 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'Learn AR',
-        //theme: ,
-        routes: {
-          '/splashscreen': (context) => const SplashScreen(),
-          '/introscreen': (context) => IntroScreen(),
-          //'/': (context) => const MyHomePage(title: 'LearnAR'),
-          '/login': (context) => const IntroSignUp(),
-          '/homepage': (context) => const Intro(),
-          '/auth': (context) => const AuthPage(),
-          '/ar': (context) => const ArPage(),
-          '/infoar': (context) => const InfoAr(),
-          '/quizhomepage': (context) => const StartPage(),
-          //'/quizpage': (context) => const QuizPage(title: '', message: 'gpu',),
-          '/scanquiz': (context) => const ScanQuiz(),
-          '/statistics': (context) => const Statistics(),
-        },
-        onGenerateRoute: (settings) {
-          // If you push the PassArguments route
-          if (settings.name == '/quizpage') {
-            // Cast the arguments to the correct
-            // type: ScreenArguments.
-            final args = settings.arguments as ScreenArguments;
+    return MultiProvider(
+      providers: [ChangeNotifierProvider(create: (context) => QuizProvider())],
+      child: MaterialApp(
+          title: 'Learn AR',
+          //theme: ,
+          routes: {
+            '/splashscreen': (context) => const SplashScreen(),
+            '/introscreen': (context) => IntroScreen(),
+            //'/': (context) => const MyHomePage(title: 'LearnAR'),
+            '/login': (context) => const IntroSignUp(),
+            '/homepage': (context) => const Intro(),
+            '/auth': (context) => const AuthPage(),
+            '/ar': (context) => const ArPage(),
+            '/infoar': (context) => const InfoAr(),
+            '/quizhomepage': (context) => const StartPage(),
+            //'/quizpage': (context) => const QuizPage(title: '', message: 'gpu',),
+            '/scanquiz': (context) => const ScanQuiz(),
+            '/statistics': (context) => const Statistics(),
+          },
+          onGenerateRoute: (settings) {
+            // If you push the PassArguments route
+            if (settings.name == '/quizpage') {
+              // Cast the arguments to the correct
+              // type: ScreenArguments.
+              final args = settings.arguments as ScreenArguments;
 
-            // Then, extract the required data from
-            // the arguments and pass the data to the
-            // correct screen.
-            return MaterialPageRoute(
-              builder: (context) {
-                return QuizPage(
-                  title: args.title,
-                  message: args.message,
-                  origin: args.origin,
-                );
-              },
-            );
-          }
+              // Then, extract the required data from
+              // the arguments and pass the data to the
+              // correct screen.
+              return MaterialPageRoute(
+                builder: (context) {
+                  return QuizPage(
+                    title: args.title,
+                    message: args.message,
+                    origin: args.origin,
+                  );
+                },
+              );
+            }
 
-          assert(false, 'Need to implement ${settings.name}');
-          return null;
-        },
-      /*home: StreamBuilder(
-          stream: Auth().authStateChanges,
-          builder: (context, snapshot){
-            if(snapshot.hasData){
-              return Intro()/*IntroSignUp()*/;
-            }
-            else {
-              return AuthPage();
-            }
-          }),*/
-        home: AnimatedSplashScreen(
-          splash: Icons.camera,
-          splashTransition: SplashTransition.fadeTransition,
-          nextScreen: StreamBuilder(
-              stream: Auth().authStateChanges,
-              builder: (context, snapshot){
-                if(snapshot.hasData){
-                  return Intro()/*IntroSignUp()*/;
-                }
-                else {
-                  return AuthPage();
-                }
-              }),
-        )
-        /*StreamBuilder(
+            assert(false, 'Need to implement ${settings.name}');
+            return null;
+          },
+        /*home: StreamBuilder(
             stream: Auth().authStateChanges,
             builder: (context, snapshot){
-                if(snapshot.hasData){
-                  return Intro()/*IntroSignUp()*/;
-                }
-                else {
-                  return AuthPage();
-                }
-            })*/
-        /*home: StreamBuilder(stream: Auth.authStateChanges, builder: (context, snapshot)){
-    if(snapshot.hasData){
-    return IntroSignUp();
-    }
-    else{
-    return Intro();
-    }
-    }*/
+              if(snapshot.hasData){
+                return Intro()/*IntroSignUp()*/;
+              }
+              else {
+                return AuthPage();
+              }
+            }),*/
+          home: AnimatedSplashScreen(
+            splash: Icons.camera,
+            splashTransition: SplashTransition.fadeTransition,
+            nextScreen: StreamBuilder(
+                stream: Auth().authStateChanges,
+                builder: (context, snapshot){
+                  if(snapshot.hasData){
+                    return Intro()/*IntroSignUp()*/;
+                  }
+                  else {
+                    return AuthPage();
+                  }
+                }),
+          )
+          /*StreamBuilder(
+              stream: Auth().authStateChanges,
+              builder: (context, snapshot){
+                  if(snapshot.hasData){
+                    return Intro()/*IntroSignUp()*/;
+                  }
+                  else {
+                    return AuthPage();
+                  }
+              })*/
+          /*home: StreamBuilder(stream: Auth.authStateChanges, builder: (context, snapshot)){
+      if(snapshot.hasData){
+      return IntroSignUp();
+      }
+      else{
+      return Intro();
+      }
+      }*/
 
+      ),
     );
   }
 

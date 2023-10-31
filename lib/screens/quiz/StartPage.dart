@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:learn_ar/constants.dart';
 import 'package:learn_ar/database/ChapterModel.dart';
 import 'package:learn_ar/widget/ChapterWidget.dart';
+import 'package:provider/provider.dart';
 
 import '../../auth.dart';
 import '../../database/DbFireBaseConnect.dart';
 import '../../database/StatisticModel.dart';
+import '../../provider/QuizProvider.dart';
 
 class StartPage extends StatefulWidget {
   const StartPage({super.key});
@@ -18,38 +20,27 @@ class StartPage extends StatefulWidget {
 
 class _StartPageState extends State<StartPage> {
 
-  var db = DBconnect();
 
   late Future _chapters;
   late Future<Statistic> _statistics;
   late bool beforeUnlock = true ;
 
-
-  Future<Statistic> getDataStats()async{
+  /*Future<Statistic> getDataStats()async{
     var emailWithoutComma = Auth().currentUser!.email.toString().replaceAll('.', '');
     return db.fetchStatistic(emailWithoutComma);
   }
 
   Future<List<Chapter>> getData() async{
     return db.fetchChapters();
-  }
-
-  bool checkLock(bool isLock){
-    if(beforeUnlock == true){
-        beforeUnlock = isLock;
-      return false;
-    }
-      beforeUnlock = isLock;
-    return true;
-  }
+  }*/
 
   @override
   void initState() {
-    _chapters = getData();
-    _statistics = getDataStats();
+    final provider = Provider.of<QuizProvider>(context, listen: false);
+    _chapters = provider.getDataChapter();
+    _statistics = provider.getDataStats();
     super.initState();
   }
-
 
 
   @override
@@ -181,4 +172,15 @@ class _StartPageState extends State<StartPage> {
 
     );
   }
+
+  //check if questions for specific chapter are locked or unlocked
+  bool checkLock(bool isLock){
+    if(beforeUnlock == true){
+      beforeUnlock = isLock;
+      return false;
+    }
+    beforeUnlock = isLock;
+    return true;
+  }
+
 }
