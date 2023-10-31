@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:learn_ar/database/DbFireBaseConnect.dart';
 import 'package:learn_ar/database/QuestionModel.dart';
 import 'package:learn_ar/database/StatisticModel.dart';
+import 'package:learn_ar/provider/ArProvider.dart';
 import 'package:learn_ar/provider/QuizProvider.dart';
 import 'package:learn_ar/provider/StatisticProvider.dart';
 import 'package:learn_ar/screens/ar/ArPage.dart';
@@ -86,7 +87,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [ChangeNotifierProvider(create: (context) => QuizProvider()),
-                  ChangeNotifierProvider(create: (context) => StatisticProvider())],
+                  ChangeNotifierProvider(create: (context) => StatisticProvider()),
+                  ChangeNotifierProvider(create: (context) => ArProvider())],
       child: MaterialApp(
           title: 'Learn AR',
           //theme: ,

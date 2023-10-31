@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../constants.dart';
 import '../../database/DbFireBaseConnect.dart';
 import '../../database/InfoModel.dart';
+import '../../provider/ArProvider.dart';
 
 class InfoAr extends StatefulWidget {
   const InfoAr({super.key});
@@ -13,17 +15,18 @@ class InfoAr extends StatefulWidget {
 }
 
 class _InfoArState extends State<InfoAr> {
-  var db = DBconnect();
+  //var db = DBconnect();
 
   late Future _info;
 
-  Future<List<Info>> getData() async{
+  /*Future<List<Info>> getData() async{
     return db.fetchInfo();
-  }
+  }*/
 
   @override
   void initState() {
-    _info = getData();
+    final provider = Provider.of<ArProvider>(context, listen: false);
+    _info = provider.getData();
     super.initState();
   }
 
@@ -101,9 +104,6 @@ class _InfoArState extends State<InfoAr> {
           }
           return Center(child: Text('No Data'));
         },
-
       );
-
-
   }
 }

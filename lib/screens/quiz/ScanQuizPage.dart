@@ -14,6 +14,7 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import '../../database/ChapterModel.dart';
 import '../../database/DbFireBaseConnect.dart';
 import '../../provider/QuizProvider.dart';
+import '../../utility/PermissionUtility.dart';
 
 class ScanQuiz extends StatefulWidget {
   const ScanQuiz({Key? key}) : super(key: key);
@@ -37,6 +38,7 @@ class _ScanQuizState extends State<ScanQuiz> {
      final provider = Provider.of<QuizProvider>(context, listen: false);
      provider.readJson();
      data = provider.item;
+     PermissionUtility().requestPermission();
   }
 
   // is android, or resume the camera if the platform is iOS.
@@ -143,7 +145,7 @@ class _ScanQuizState extends State<ScanQuiz> {
     log('${DateTime.now().toIso8601String()}_onPermissionSet $p');
     if (!p) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('no Permission')),
+        const SnackBar(content: Text('No Permission')),
       );
     }
   }

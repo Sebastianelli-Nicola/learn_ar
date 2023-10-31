@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
+import 'package:learn_ar/utility/PermissionUtility.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../constants.dart';
@@ -23,7 +24,7 @@ class _ArPageState extends State<ArPage> {
   @override
   void initState() {
     super.initState();
-    requestPermission();
+    PermissionUtility().requestPermission();
   }
   @override
   Widget build(BuildContext context) {
@@ -144,19 +145,6 @@ class _ArPageState extends State<ArPage> {
     print('Received scene loaded from unity buildIndex: ${sceneInfo?.buildIndex}');
   }
 
-  Future<void> requestPermission() async {
-    final permission = Permission.camera;
-
-    if (await permission.isDenied) {
-      await permission.request();
-    }
-  }
-
-  Future<bool> checkPermissionStatus() async {
-    final permission = Permission.camera;
-
-    return await permission.status.isGranted;
-  }
 
 }
 
