@@ -6,6 +6,7 @@ import '../database/InfoModel.dart';
 class ArProvider extends ChangeNotifier{
   var db = DBconnect();
 
+  //return a list of informations of 3d model
   Future<List<Info>> getData() async{
     return db.fetchInfo();
   }

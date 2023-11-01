@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:learn_ar/constants.dart';
 import 'package:learn_ar/database/ChapterModel.dart';
@@ -50,10 +51,10 @@ class _StatisticsState extends State<Statistics> {
           } else if (snapshot.hasData) {
            var extractedData = snapshot.data as Statistic;
             return Scaffold(
-              backgroundColor: Colors.grey.shade300,
+              //backgroundColor: Colors.grey.shade300,
               appBar: AppBar(
-                  foregroundColor: background,
-                  backgroundColor: background2,
+                  //foregroundColor: background,
+                  //backgroundColor: background2,
                   shadowColor: Colors.transparent
               ),
               body: Container(
@@ -106,7 +107,7 @@ class _StatisticsState extends State<Statistics> {
         }
         else {
           return Container(
-            color: background2,
+            color: CupertinoColors.white,
             child: const Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -124,5 +125,13 @@ class _StatisticsState extends State<Statistics> {
 
     );
   }
+
+  /*sortPerc(Statistic statistic){
+    List<Statistic> list =[];
+    for(int i=0; i< statistic.stats.keys.toList().length ; i++){
+      list.add(statistic.stats.values.[i] )
+    };
+    list.sort((a, b) => a['perc'].compareTo(b))
+  }*/
 
 }

@@ -1,5 +1,14 @@
 {
-  "chapters1": { "name":"gpu" },
-  "chapters2":  { "name":"ram" },
-  "chapters3": { "name":"cpu" }
+  "chapters1": {
+    "name":"gpu" ,
+    "isLock": false
+  },
+  "chapters2":  {
+    "name":"ram" ,
+    "isLock": true
+  },
+  "chapters3": {
+    "name":"cpu" ,
+    "isLock": true
+  }
 }

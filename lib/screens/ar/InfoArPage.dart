@@ -8,7 +8,20 @@ import '../../database/InfoModel.dart';
 import '../../provider/ArProvider.dart';
 
 class InfoAr extends StatefulWidget {
-  const InfoAr({super.key});
+  //const InfoAr({super.key});
+
+  final String title;
+  final String message;
+  final String origin;
+
+
+  const InfoAr({
+    super.key,
+    required this.title,
+    required this.message,
+    required this.origin,
+  });
+
 
   @override
   State<InfoAr> createState() => _InfoArState();
@@ -58,18 +71,22 @@ class _InfoArState extends State<InfoAr> {
               var extractedData = snapshot.data as List<Info>;
               return Scaffold(
                 appBar: AppBar(
-                  foregroundColor: background,
-                  backgroundColor: background2,
+                  //foregroundColor: background,
+                  //backgroundColor: background2,
                   shadowColor: Colors.transparent,
                 ),
                 body: Container(
                   padding: EdgeInsets.all(20),
-                  color: background2,
+                  color: CupertinoColors.white,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Center(
-                        child: Text(extractedData[0].name),
+                        child: Text(widget.message.toString().toUpperCase() ,style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),),
+                      ),
+                      SizedBox(height: 20.0,),
+                      Center(
+                        child: Text(extractedData[0].name, style: TextStyle(fontSize: 17.0),),
                       )
                     ],
                   ),

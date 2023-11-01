@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:learn_ar/main.dart';
 
-import 'Homepage.dart';
+import 'home/Homepage.dart';
 
 class IntroSignUp extends StatefulWidget {
   const IntroSignUp({Key? key}) : super(key: key);

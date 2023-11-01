@@ -10,15 +10,16 @@ import 'package:learn_ar/provider/ArProvider.dart';
 import 'package:learn_ar/provider/QuizProvider.dart';
 import 'package:learn_ar/provider/StatisticProvider.dart';
 import 'package:learn_ar/screens/ar/ArPage.dart';
-import 'package:learn_ar/screens/AuthPage.dart';
-import 'package:learn_ar/screens/Homepage.dart';
+import 'package:learn_ar/screens/auth/AuthPage.dart';
+import 'package:learn_ar/screens/home/Homepage.dart';
 import 'package:learn_ar/screens/IntroScreen.dart';
 import 'package:learn_ar/screens/SplashScreen.dart';
 import 'package:learn_ar/screens/ar/InfoArPage.dart';
 import 'package:learn_ar/screens/quiz/QuizPage.dart';
 import 'package:learn_ar/screens/quiz/ScanQuizPage.dart';
-import 'package:learn_ar/screens/quiz/StartPage.dart';
+import 'package:learn_ar/screens/quiz/SectionQuizPage.dart';
 import 'package:learn_ar/screens/statistics/StatisticsPage.dart';
+import 'package:learn_ar/theme/Themes.dart';
 import 'package:provider/provider.dart';
 import 'ScreenArguments.dart';
 import 'auth.dart';
@@ -54,7 +55,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    Auth().signOut();
+    //Auth().signOut();
   }
 
   @override
@@ -91,7 +92,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                   ChangeNotifierProvider(create: (context) => ArProvider())],
       child: MaterialApp(
           title: 'Learn AR',
-          //theme: ,
+          theme: theme,
           routes: {
             '/splashscreen': (context) => const SplashScreen(),
             '/introscreen': (context) => IntroScreen(),
@@ -100,8 +101,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
             '/homepage': (context) => const Intro(),
             '/auth': (context) => const AuthPage(),
             '/ar': (context) => const ArPage(),
-            '/infoar': (context) => const InfoAr(),
-            '/quizhomepage': (context) => const StartPage(),
+            //'/infoar': (context) => const InfoAr(),
+            '/quizhomepage': (context) => const SectionQuizPage(),
             //'/quizpage': (context) => const QuizPage(title: '', message: 'gpu',),
             '/scanquiz': (context) => const ScanQuiz(),
             '/statistics': (context) => const Statistics(),
@@ -126,6 +127,24 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                 },
               );
             }
+            if (settings.name == '/infoar') {
+              // Cast the arguments to the correct
+              // type: ScreenArguments.
+              final args = settings.arguments as ScreenArguments;
+
+              // Then, extract the required data from
+              // the arguments and pass the data to the
+              // correct screen.
+              return MaterialPageRoute(
+                builder: (context) {
+                  return InfoAr(
+                    title: args.title,
+                    message: args.message,
+                    origin: args.origin,
+                  );
+                },
+              );
+            }
 
             assert(false, 'Need to implement ${settings.name}');
             return null;
@@ -141,7 +160,13 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
               }
             }),*/
           home: AnimatedSplashScreen(
-            splash: Icons.camera,
+            splash: Column(
+              children: [
+                Image.asset('assets/learn_ar_logo.png',width: 60.0, height: 60.0,),
+                Text('Learn AR',style: TextStyle(fontSize: 40.0, fontWeight: FontWeight.bold),),
+              ],
+            ),
+            splashIconSize: 150.0,
             splashTransition: SplashTransition.fadeTransition,
             nextScreen: StreamBuilder(
                 stream: Auth().authStateChanges,

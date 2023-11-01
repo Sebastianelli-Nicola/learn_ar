@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:learn_ar/constants.dart';
 import 'package:learn_ar/database/ChapterModel.dart';
@@ -11,14 +12,14 @@ import '../../database/DbFireBaseConnect.dart';
 import '../../database/StatisticModel.dart';
 import '../../provider/QuizProvider.dart';
 
-class StartPage extends StatefulWidget {
-  const StartPage({super.key});
+class SectionQuizPage extends StatefulWidget {
+  const SectionQuizPage({super.key});
 
   @override
-  State<StartPage> createState() => _StartPageState();
+  State<SectionQuizPage> createState() => _SectionQuizPageState();
 }
 
-class _StartPageState extends State<StartPage> {
+class _SectionQuizPageState extends State<SectionQuizPage> {
 
 
   late Future _chapters;
@@ -45,6 +46,7 @@ class _StartPageState extends State<StartPage> {
 
   @override
   Widget build(BuildContext context) {
+    var provider = context.watch<QuizProvider>();
     return FutureBuilder(
         future: Future.wait([_chapters, _statistics]),
         builder: (ctx, snapshot) {
@@ -55,10 +57,10 @@ class _StartPageState extends State<StartPage> {
               var extractedData = snapshot.data?[0] as List<Chapter>;
               var extractedDataStats = snapshot.data?[1] as Statistic;
               return Scaffold(
-                backgroundColor: Colors.grey.shade300,
+                //backgroundColor: Colors.grey.shade300,
                 appBar: AppBar(
                     foregroundColor: background,
-                    backgroundColor: background2,
+                    //backgroundColor: background2,
                     shadowColor: Colors.transparent
                 ),
                 body: Container(
@@ -105,7 +107,7 @@ class _StartPageState extends State<StartPage> {
                                 width: 360,
                                 height: 100,
                                 decoration: BoxDecoration(
-                                  color: Colors.white,
+                                  color: Colors.orange.shade100,
                                   borderRadius: const BorderRadius.all(
                                       Radius.circular(20)),
                                   boxShadow: [
@@ -144,7 +146,7 @@ class _StartPageState extends State<StartPage> {
                           fontSize: 22, fontWeight: FontWeight.bold,),
                           textAlign: TextAlign.center,),
                         for(int i=0; i< extractedData.length; i++)
-                        ChapterWidget(chapter: extractedData[i].name, isLock: checkLock(extractedDataStats.stats.containsKey(extractedData[i].name))),
+                          ChapterWidget(chapter: extractedData[i].name, isLock: checkLock(extractedDataStats.stats.containsKey(extractedData[i].name),extractedData[i].name, provider) ),
                       ],
                     ),
                   ),
@@ -154,7 +156,7 @@ class _StartPageState extends State<StartPage> {
           }
           else {
             return Container(
-              color: background2,
+              color: CupertinoColors.white,
               child: const Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -174,12 +176,14 @@ class _StartPageState extends State<StartPage> {
   }
 
   //check if questions for specific chapter are locked or unlocked
-  bool checkLock(bool isLock){
+  bool checkLock(bool isLock, String chapter, QuizProvider provider){
     if(beforeUnlock == true){
       beforeUnlock = isLock;
+      //provider.updateJson(chapter);
       return false;
     }
     beforeUnlock = isLock;
+    //provider.updateJson(chapter);
     return true;
   }
 

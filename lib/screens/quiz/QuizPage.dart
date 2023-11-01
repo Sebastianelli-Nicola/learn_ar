@@ -81,10 +81,10 @@ class _QuizPageState extends State<QuizPage> {
           }else if(snapshot.hasData){
             var extractedData = snapshot.data as List<Question>;
             return Scaffold(
-                      backgroundColor: Colors.grey.shade300,
+                      //backgroundColor: Colors.grey.shade300,
                       appBar: AppBar(
-                        title: const Text('Quiz Page'),
-                        backgroundColor: background,
+                        //title: const Text('Quiz Page'),
+                        //backgroundColor: background,
                         shadowColor: Colors.transparent,
                         actions: [
                           Padding(
@@ -98,6 +98,7 @@ class _QuizPageState extends State<QuizPage> {
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: Column(
                           children: [
+                            LinearProgressIndicator(value: index * 1.0 /  extractedData.length,minHeight: 5.0,),
                             const SizedBox(height: 5.0,),
                             QuestionWidget(
                                 question: extractedData[index].title,
@@ -117,7 +118,7 @@ class _QuizPageState extends State<QuizPage> {
                                 onTap: () => checkAnswerAndUpdate(extractedData[index].options.values.toList()[i]),
                                 child: OptionCard(
                                   option: extractedData[index].options.keys.toList()[i],
-                                  color: isPressed ? extractedData[index].options.values.toList()[i] == true ? correct : incorrect : neutralW,
+                                  color: isPressed ? extractedData[index].options.values.toList()[i] == true ? correct : incorrect : Colors.grey.shade100,
                                 ),
                               ),
                           ],

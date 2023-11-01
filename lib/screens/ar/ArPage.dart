@@ -5,6 +5,7 @@ import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 import 'package:learn_ar/utility/PermissionUtility.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../ScreenArguments.dart';
 import '../../constants.dart';
 
 class ArPage extends StatefulWidget {
@@ -32,8 +33,8 @@ class _ArPageState extends State<ArPage> {
         //primary: true,
         key: _scaffoldKey,
       appBar: AppBar(
-          foregroundColor: background,
-          backgroundColor: background2,
+          //foregroundColor: background,
+          //backgroundColor: background2,
           shadowColor: Colors.transparent
       ),
         body: Card(
@@ -65,7 +66,7 @@ class _ArPageState extends State<ArPage> {
                           // ignore: deprecated_member_use
                           child: ElevatedButton(
                             onPressed: () {
-                              Navigator.pushNamed(context, '/infoar');
+                              Navigator.pushNamed(context, '/infoar', arguments: ScreenArguments('name', info ,'arpage'));
                             },
                             /*shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(80.0)),

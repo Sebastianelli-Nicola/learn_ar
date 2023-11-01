@@ -7,7 +7,7 @@ import 'package:learn_ar/database/DbFireBaseConnect.dart';
 import 'package:learn_ar/database/UserModel.dart' as consumer;
 
 
-import '../constants.dart';
+import '../../constants.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({Key? key}) : super(key: key);
