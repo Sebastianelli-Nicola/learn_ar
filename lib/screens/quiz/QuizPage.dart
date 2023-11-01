@@ -80,59 +80,87 @@ class _QuizPageState extends State<QuizPage> {
             return Center(child: Text('${snapshot.error}'));
           }else if(snapshot.hasData){
             var extractedData = snapshot.data as List<Question>;
-            return Scaffold(
-                      //backgroundColor: Colors.grey.shade300,
-                      appBar: AppBar(
-                        //title: const Text('Quiz Page'),
-                        //backgroundColor: background,
-                        shadowColor: Colors.transparent,
-                        actions: [
-                          Padding(
-                            padding: const EdgeInsets.all(18.0),
-                            child: Text('Score: $score', style: TextStyle(fontSize: 18.0),),
-                          )
-                        ],
-                      ),
-                      body: Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Column(
-                          children: [
-                            LinearProgressIndicator(value: index * 1.0 /  extractedData.length,minHeight: 5.0,),
-                            const SizedBox(height: 5.0,),
-                            QuestionWidget(
-                                question: extractedData[index].title,
-                                indexAction: index,
-                                totalQuestions: extractedData.length
-                            ),
-                            const Divider(color: neutralB,),
-                            const SizedBox(height: 5.0,),
-                            SizedBox(
-                              //width: double.infinity,
-                              height: 275.0,
-                              child: check3dModel(extractedData[index].model3dName),
-                            ),
-                            const SizedBox(height: 5.0,),
-                            for(int i=0; i < extractedData[index].options.length; i++)
-                              GestureDetector(
-                                onTap: () => checkAnswerAndUpdate(extractedData[index].options.values.toList()[i]),
-                                child: OptionCard(
-                                  option: extractedData[index].options.keys.toList()[i],
-                                  color: isPressed ? extractedData[index].options.values.toList()[i] == true ? correct : incorrect : Colors.grey.shade100,
-                                ),
-                              ),
+            return WillPopScope(
+              onWillPop: () async {
+                final shouldPop = await showDialog<bool>(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: const Text('Do you want to go back?'),
+                      actionsAlignment: MainAxisAlignment.end,
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context, false);
+                          },
+                          child: const Text('No'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context, true);
+                          },
+                          child: const Text('Yes'),
+                        ),
+                      ],
+                    );
+                  },
+                );
+                return shouldPop!;
+              },
+              child: Scaffold(
+                        //backgroundColor: Colors.grey.shade300,
+                        appBar: AppBar(
+                          //title: const Text('Quiz Page'),
+                          //backgroundColor: background,
+                          shadowColor: Colors.transparent,
+                          actions: [
+                            Padding(
+                              padding: const EdgeInsets.all(18.0),
+                              child: Text('Score: $score', style: TextStyle(fontSize: 18.0),),
+                            )
                           ],
                         ),
-                      ),
-                      floatingActionButton: GestureDetector(
-                        onTap: () => nextQuestion(extractedData.length, quizProvider),
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 10.0),
-                          child: NextButton(),
+                        body: Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Column(
+                            children: [
+                              LinearProgressIndicator(value: index * 1.0 /  extractedData.length,minHeight: 5.0,),
+                              const SizedBox(height: 5.0,),
+                              QuestionWidget(
+                                  question: extractedData[index].title,
+                                  indexAction: index,
+                                  totalQuestions: extractedData.length
+                              ),
+                              const Divider(color: neutralB,),
+                              const SizedBox(height: 5.0,),
+                              SizedBox(
+                                //width: double.infinity,
+                                height: 275.0,
+                                child: check3dModel(extractedData[index].model3dName),
+                              ),
+                              const SizedBox(height: 5.0,),
+                              for(int i=0; i < extractedData[index].options.length; i++)
+                                GestureDetector(
+                                  onTap: () => checkAnswerAndUpdate(extractedData[index].options.values.toList()[i]),
+                                  child: OptionCard(
+                                    option: extractedData[index].options.keys.toList()[i],
+                                    color: isPressed ? extractedData[index].options.values.toList()[i] == true ? correct : incorrect : Colors.grey.shade100,
+                                  ),
+                                ),
+                            ],
+                          ),
                         ),
+                        floatingActionButton: GestureDetector(
+                          onTap: () => nextQuestion(extractedData.length, quizProvider),
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 10.0),
+                            child: NextButton(),
+                          ),
+                        ),
+                        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
                       ),
-                      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-                    );
+            );
           }
         }
         else{
@@ -296,6 +324,30 @@ class _QuizPageState extends State<QuizPage> {
       }
       //return const BlankWidget();
     }
+  }
+
+  _promptExit(BuildContext context) {
+
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20.0))),
+        title: Text('Are you sure?'),
+        //content: new Text(Strings.prompt_exit_content),
+        actions: <Widget>[
+          TextButton(
+            child: Text('No'),
+            onPressed: () => Navigator.of(context).pop(false),
+          ),
+          SizedBox(height: 16),
+          TextButton(
+            child: Text('Yes'),
+            onPressed: () => Navigator.of(context).pop(true),
+          ),
+        ],
+      ),
+    ) ??
+        false;
   }
 
 }
