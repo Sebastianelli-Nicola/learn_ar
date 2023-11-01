@@ -96,7 +96,7 @@ class _InfoArState extends State<InfoAr> {
           }
           else {
             return Container(
-              color: background2,
+              color: CupertinoColors.white,
               child: const Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,

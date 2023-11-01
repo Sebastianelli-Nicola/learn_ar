@@ -1,12 +1,17 @@
+import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:learn_ar/ScanQuizArguments.dart';
 import 'package:learn_ar/constants.dart';
 import 'package:learn_ar/database/ChapterModel.dart';
 import 'package:learn_ar/widget/ChapterWidget.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../../ScreenArguments.dart';
 import '../../auth.dart';
 import '../../database/DbFireBaseConnect.dart';
 import '../../database/StatisticModel.dart';
@@ -26,6 +31,8 @@ class _SectionQuizPageState extends State<SectionQuizPage> {
   late Future<Statistic> _statistics;
   late bool beforeUnlock = true ;
 
+  List<bool> chapterslock = [];
+
   /*Future<Statistic> getDataStats()async{
     var emailWithoutComma = Auth().currentUser!.email.toString().replaceAll('.', '');
     return db.fetchStatistic(emailWithoutComma);
@@ -40,6 +47,8 @@ class _SectionQuizPageState extends State<SectionQuizPage> {
     final provider = Provider.of<QuizProvider>(context, listen: false);
     _chapters = provider.getDataChapter();
     _statistics = provider.getDataStats();
+    provider.readJson();
+    //writeDate();
     super.initState();
   }
 
@@ -100,14 +109,15 @@ class _SectionQuizPageState extends State<SectionQuizPage> {
                           children: [
                             InkWell(
                               onTap: () {
-                                Navigator.pushNamed(context, '/scanquiz');
-                              },
+                                log('asaada-> $chapterslock');
+                                Navigator.pushNamed(context, '/scanquiz', arguments:  ScanQuizArguments('name', chapterslock));
+                              }, 
                               child: Container(
                                 margin: EdgeInsets.only(top: 20),
                                 width: 360,
                                 height: 100,
                                 decoration: BoxDecoration(
-                                  color: Colors.orange.shade100,
+                                  color: Colors.lightBlue.shade300,
                                   borderRadius: const BorderRadius.all(
                                       Radius.circular(20)),
                                   boxShadow: [
@@ -180,10 +190,12 @@ class _SectionQuizPageState extends State<SectionQuizPage> {
     if(beforeUnlock == true){
       beforeUnlock = isLock;
       //provider.updateJson(chapter);
+      chapterslock.add(false);
       return false;
     }
     beforeUnlock = isLock;
     //provider.updateJson(chapter);
+    chapterslock.add(true);
     return true;
   }
 

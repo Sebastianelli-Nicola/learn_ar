@@ -6,13 +6,14 @@ class StatisticWidget extends StatelessWidget {
   const StatisticWidget({
     Key? key,
     required this.stat,
-    required this.perc,
+    required this.perc, required this.width,
     /*required this.chapter,*/
   }) : super(key: key);
 
   //final String chapter;
   final String stat;
   final int perc;
+  final int width;
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +22,7 @@ class StatisticWidget extends StatelessWidget {
             ? Row(
                 children: [
                   Container(
+                    width: 50,
                       margin: EdgeInsets.only(top: 20),
                       alignment: Alignment.center,
                       child: Text(stat.toUpperCase(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
@@ -28,9 +30,10 @@ class StatisticWidget extends StatelessWidget {
                   SizedBox(width: 20,),
                   Container(
                     margin: EdgeInsets.only(top: 20),
-                    width: (MediaQuery.of(context).size.width - 140.0) *
+                    /*width: (MediaQuery.of(context).size.width - 140.0) *
                         (perc == 0 ? 1 : perc) /
-                        100,
+                        100,*/
+                    width: (width-180)*(perc == 0 ? 1 : perc) / 100,
                     height: 60,
                     decoration: BoxDecoration(
                       color: Colors.green,
@@ -48,14 +51,17 @@ class StatisticWidget extends StatelessWidget {
                         //you can set more BoxShadow() here
                       ],
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          (perc < 5 ? '' : '$perc %'),
-                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                        ),
-                      ],
+                    child: Container(
+                      width: 100,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            (perc < 5 ? '' : '$perc %'),
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],

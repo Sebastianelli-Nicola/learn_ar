@@ -17,7 +17,17 @@ import '../../provider/QuizProvider.dart';
 import '../../utility/PermissionUtility.dart';
 
 class ScanQuiz extends StatefulWidget {
-  const ScanQuiz({Key? key}) : super(key: key);
+  //const ScanQuiz({Key? key}) : super(key: key);
+
+  final String title;
+  final List<bool> list;
+
+
+  const ScanQuiz({
+    super.key,
+    required this.title,
+    required this.list,
+  });
 
   @override
   State<StatefulWidget> createState() => _ScanQuizState();
@@ -30,15 +40,17 @@ class _ScanQuizState extends State<ScanQuiz> {
 
   bool correct = false;
   var data;
+  bool showSnackLock = false;
+
 
    @override
   void initState() {
      //readJson();
-     super.initState();
      final provider = Provider.of<QuizProvider>(context, listen: false);
-     provider.readJson();
+     //provider.readJson();
      data = provider.item;
      PermissionUtility().requestPermission();
+     super.initState();
   }
 
   // is android, or resume the camera if the platform is iOS.
@@ -126,11 +138,28 @@ class _ScanQuizState extends State<ScanQuiz> {
     controller.scannedDataStream.listen((scanData) {
       setState(() {
         result = scanData;
+        log('scan1 -> $scanData');
         var filter = scanFilter();
         for(int i=0; i<filter.length; i++){
+          log('scan2 -> ${filter[i].name}');
           if (result!.code == filter[i].name){
-            Navigator.pop(context);
-            Navigator.pushNamed(context, '/quizpage', arguments: ScreenArguments('name', filter[i].name, 'scan'));
+            if(filter[i].isLock == false){
+              log('qui3 -> ${filter[i].name}');
+              Navigator.pop(context);
+              Navigator.pushNamed(context, '/quizpage', arguments: ScreenArguments('name', filter[i].name, 'scan'));
+            }
+            else{
+              if(showSnackLock== false){
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text('Chapter Locked'),
+                  behavior: SnackBarBehavior.floating,
+                  margin: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+                ));
+                showSnackLock = true;
+              }
+
+            }
+
             //reassemble();
             return;
           }
@@ -153,17 +182,17 @@ class _ScanQuizState extends State<ScanQuiz> {
   //return list of filters for qrcode
   List<Chapter> scanFilter(){
     List<Chapter> newChapters = [];
+     var listLock = widget.list;
+    int i = 0;
     data.forEach((key, value){
-      var newChapter = Chapter(id: key, name: (value['name']));
+      var newChapter = Chapter(id: key, name: (value['name']),isLock: listLock[i]);
+      i++;
       newChapters.add(newChapter);
     });
     return newChapters;
   }
 
-  /*Future<void> readJson() async {
-    final String response = await rootBundle.loadString('assets/chapters.json');
-    data = json.decode(response) as Map<String, dynamic>;
-  }*/
+
 
 
 }

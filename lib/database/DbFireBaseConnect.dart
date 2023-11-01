@@ -121,6 +121,7 @@ class DBconnect{
     return json.decode(response) as Map<String, dynamic>;
   }
 
+
   //Statistics
 
   /*Future<void> addStatistic(Statistic statistic) async{

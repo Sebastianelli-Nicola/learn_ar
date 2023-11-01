@@ -19,6 +19,7 @@ class QuizProvider extends ChangeNotifier{
   Map<String, dynamic> get item => _data;
 
 
+
   //return a list of questions data for a specific chapter
   Future<List<Question>> getDataQuestion(String name) async{
     return db.fetchQuestion(name);
@@ -49,7 +50,7 @@ class QuizProvider extends ChangeNotifier{
   Future<void> readJson() async {
     //final String response = await rootBundle.loadString('assets/chapters.json');
     //_data = json.decode(response) as Map<String, dynamic>;
-    _data = db.readJson() as Map<String, dynamic>;
+     _data = await db.readJson() as Map<String, dynamic>;
   }
 
   /*Future<void> updateJson(String chapter) async {

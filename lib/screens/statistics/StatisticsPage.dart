@@ -91,13 +91,39 @@ class _StatisticsState extends State<Statistics> {
                         ],
                       ),
                       SizedBox(height: 25,),
-                      const Divider(color: neutralB,),
-                      const Text('Percentages of correct answers for each chapter', style: TextStyle(
-                        fontSize: 22, fontWeight: FontWeight.bold,),
-                        textAlign: TextAlign.center,),
-                        //addStatisticWidget(extractedData);
-                        for(int i=0; i< extractedData.stats.keys.toList().length ; i++)
-                           StatisticWidget(stat: extractedData.stats.keys.toList()[i], perc: extractedData.stats.values.toList()[i],),
+                      //const Divider(color: neutralB,),
+                      Container(
+                        padding: EdgeInsets.all(10),
+                        width: 360,
+                        height: MediaQuery.of(context).size.height - 260,
+                        //color: Colors.cyan,
+                        decoration: BoxDecoration(
+                          color: Colors.greenAccent.shade100 ,
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          boxShadow:[
+                            BoxShadow(
+                              color: Colors.grey[300]!.withOpacity(1.0), //color of shadow
+                              spreadRadius: 1, //spread radius
+                              blurRadius: 1, // blur radius
+                              offset: Offset(0, 1), // changes position of shadow
+                              //first paramerter of offset is left-right
+                              //second parameter is top to down
+                            ),
+                            //you can set more BoxShadow() here
+                          ],
+                        ),
+                        child: Column(
+                          children: [
+                            const Text('Percentages of correct answers for each chapter', style: TextStyle(
+                              fontSize: 21, fontWeight: FontWeight.bold,),
+                              textAlign: TextAlign.center,),
+                            //addStatisticWidget(extractedData);
+                            for(int i=0; i< extractedData.stats.keys.toList().length ; i++)
+                              StatisticWidget(stat: extractedData.stats.keys.toList()[i], perc: extractedData.stats.values.toList()[i],width: 360,),
+                          ],
+                        ),
+                      ),
+
                     ],
                   ),
                 ),

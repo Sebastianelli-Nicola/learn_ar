@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:learn_ar/ScanQuizArguments.dart';
 import 'package:learn_ar/database/DbFireBaseConnect.dart';
 import 'package:learn_ar/database/QuestionModel.dart';
 import 'package:learn_ar/database/StatisticModel.dart';
@@ -104,7 +105,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
             //'/infoar': (context) => const InfoAr(),
             '/quizhomepage': (context) => const SectionQuizPage(),
             //'/quizpage': (context) => const QuizPage(title: '', message: 'gpu',),
-            '/scanquiz': (context) => const ScanQuiz(),
+            //'/scanquiz': (context) => const ScanQuiz(),
             '/statistics': (context) => const Statistics(),
           },
           onGenerateRoute: (settings) {
@@ -141,6 +142,23 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                     title: args.title,
                     message: args.message,
                     origin: args.origin,
+                  );
+                },
+              );
+            }
+            if (settings.name == '/scanquiz') {
+              // Cast the arguments to the correct
+              // type: ScreenArguments.
+              final args = settings.arguments as ScanQuizArguments;
+
+              // Then, extract the required data from
+              // the arguments and pass the data to the
+              // correct screen.
+              return MaterialPageRoute(
+                builder: (context) {
+                  return ScanQuiz(
+                    title: args.title,
+                    list: args.list,
                   );
                 },
               );

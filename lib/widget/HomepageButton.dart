@@ -21,7 +21,7 @@ class HomePageButton extends StatelessWidget {
         width: double.infinity,
         height: 160,
         decoration: BoxDecoration(
-          color: option == 'Statistics' ? Colors.greenAccent.shade100  : option == 'Quiz' ? Colors.orange.shade100 : Colors.cyan.shade200,
+          color: option == 'Statistics' ? Colors.greenAccent.shade100  : option == 'Quiz' ? Colors.cyan.shade200 : Colors.orange.shade100,
           borderRadius: BorderRadius.all(Radius.circular(20)),
           boxShadow:[
             BoxShadow(

@@ -30,7 +30,7 @@ class ChapterWidget extends StatelessWidget {
               width: 360,
               height: 70,
               decoration: BoxDecoration(
-                color: isLock == true ? Colors.grey.shade50.withOpacity(0.1) : Color(0xfffae5c4),
+                color: isLock == true ? Colors.grey.shade50.withOpacity(0.1) : Colors.lightBlue.shade100,
                 borderRadius: BorderRadius.all(Radius.circular(20)),
                 boxShadow:[
                   BoxShadow(
