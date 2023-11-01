@@ -33,10 +33,10 @@ class StatisticWidget extends StatelessWidget {
                     /*width: (MediaQuery.of(context).size.width - 140.0) *
                         (perc == 0 ? 1 : perc) /
                         100,*/
-                    width: (width-180)*(perc == 0 ? 1 : perc) / 100,
-                    height: 60,
+                    width: (width-180)*(perc == 0 ? 2 : perc) / 100,
+                    height: 50,
                     decoration: BoxDecoration(
-                      color: Colors.green,
+                      color: perc > 66 ? Colors.green : perc < 34 ? Colors.redAccent.shade200 : Colors.orangeAccent,
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                       boxShadow: [
                         BoxShadow(
@@ -57,7 +57,7 @@ class StatisticWidget extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            (perc < 5 ? '' : '$perc %'),
+                            (perc < 15 ? '' : '$perc %'),
                             style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                           ),
                         ],

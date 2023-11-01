@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:learn_ar/auth.dart';
 import 'package:learn_ar/database/DbFireBaseConnect.dart';
 import 'package:learn_ar/database/UserModel.dart' as consumer;
+import 'package:learn_ar/provider/HomeProvider.dart';
+import 'package:provider/provider.dart';
 
 
 import '../../constants.dart';
@@ -26,7 +28,7 @@ class _AuthPageState extends State<AuthPage> {
   DateTime selectedDate = DateTime(2010, 12, 31);
   dynamic selectedDateF;
 
-  DBconnect db = DBconnect();
+  //DBconnect db = DBconnect();
 
   Future<void> signIn() async {
     try {
@@ -82,6 +84,7 @@ class _AuthPageState extends State<AuthPage> {
 
   @override
   Widget build(BuildContext context) {
+    var provider = context.watch<HomeProvider>();
     return Scaffold(
       appBar: AppBar(
           foregroundColor: background,
@@ -250,12 +253,19 @@ class _AuthPageState extends State<AuthPage> {
                       // you'd often call a server or save the information in a database.
                       isLogin ? signIn() : createUser();
                       if (isLogin == false) {
-                        db.addUserAndInfo(consumer.UserModel(
+                        provider.addUserInfo(consumer.UserModel(
+                                    id: '1',
+                                    email: _email.text.replaceAll('.', ''),
+                                    name: _name.text,
+                                    surname: _surname.text,
+                                    birthDate: _date.text)
+                        );
+                        /*db.addUserAndInfo(consumer.UserModel(
                             id: '1',
                             email: _email.text.replaceAll('.', ''),
                             name: _name.text,
                             surname: _surname.text,
-                            birthDate: _date.text));
+                            birthDate: _date.text));*/
                       }
                     }
                   },
