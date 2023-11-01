@@ -33,7 +33,7 @@ class StatisticWidget extends StatelessWidget {
                     /*width: (MediaQuery.of(context).size.width - 140.0) *
                         (perc == 0 ? 1 : perc) /
                         100,*/
-                    width: (width-180)*(perc == 0 ? 2 : perc) / 100,
+                    width: (width-160)*(perc == 0 ? 2 : perc) / 100,
                     height: 50,
                     decoration: BoxDecoration(
                       color: perc > 66 ? Colors.green : perc < 34 ? Colors.redAccent.shade200 : Colors.orangeAccent,

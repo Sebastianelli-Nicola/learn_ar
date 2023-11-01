@@ -38,10 +38,17 @@ class _AuthPageState extends State<AuthPage> {
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
+      log('errorcode -> $errorCode');
       if (errorCode == 'INVALID_LOGIN_CREDENTIALS') {
         //alert('Wrong password.');
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text('Email or Password not correct'),
+          behavior: SnackBarBehavior.floating,
+          margin: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+        ));
+      } else if(errorCode == 'invalid-email'){
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Email not correct'),
           behavior: SnackBarBehavior.floating,
           margin: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
         ));

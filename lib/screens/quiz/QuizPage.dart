@@ -322,32 +322,7 @@ class _QuizPageState extends State<QuizPage> {
           return const TrueFalseWidget(value: 'False.svg');
         }
       }
-      //return const BlankWidget();
     }
-  }
-
-  _promptExit(BuildContext context) {
-
-    return showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20.0))),
-        title: Text('Are you sure?'),
-        //content: new Text(Strings.prompt_exit_content),
-        actions: <Widget>[
-          TextButton(
-            child: Text('No'),
-            onPressed: () => Navigator.of(context).pop(false),
-          ),
-          SizedBox(height: 16),
-          TextButton(
-            child: Text('Yes'),
-            onPressed: () => Navigator.of(context).pop(true),
-          ),
-        ],
-      ),
-    ) ??
-        false;
   }
 
 }
