@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-class User{
+class UserModel{
 
   late final String id;
   late final String email;
@@ -12,7 +12,7 @@ class User{
 
 
   // create constructor
-  User({
+  UserModel({
     required this.id,
     required this.email,
     required this.name,

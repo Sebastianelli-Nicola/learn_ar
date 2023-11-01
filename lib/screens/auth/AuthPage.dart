@@ -250,7 +250,7 @@ class _AuthPageState extends State<AuthPage> {
                       // you'd often call a server or save the information in a database.
                       isLogin ? signIn() : createUser();
                       if (isLogin == false) {
-                        db.addUserAndInfo(consumer.User(
+                        db.addUserAndInfo(consumer.UserModel(
                             id: '1',
                             email: _email.text.replaceAll('.', ''),
                             name: _name.text,

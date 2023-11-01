@@ -227,7 +227,7 @@ class DBconnect{
 
 
   //add user info
-  void addUserAndInfo(User user){
+  void addUserAndInfo(UserModel user){
     var userNameRef =  myRootRef.child('/statistics_book_architettura_calcolatori');
 
     userNameRef.child('${user.email}').set({
@@ -235,6 +235,43 @@ class DBconnect{
       'name' : user.name,
       'surname': user.surname,
       'birthdate' : user.birthDate,
+    });
+  }
+
+  //return info for a specific user
+  fetchUserInfo(String email){
+    var userNameRef =  myRootRef.child('/statistics_book_architettura_calcolatori');
+    var urlStatistics = Uri.parse(urlStringStatistics);
+    return http.get(urlStatistics).then((response){
+      log('user -> 2');
+      var data = json.decode(response.body) as Map<String, dynamic>;
+      log('user -> 3 -> $data');
+      log('user -> 3 -> ${data.values}');
+      log('user -> 3 -> ${data.keys}');
+
+      UserModel user = UserModel(id: 'id', email: '', name: '', surname: '', birthDate: '');
+
+      data.forEach((key, value){
+        log('user -> 4');
+        log('user -> 4'+ value['email']);
+        if(value['email'] == email){
+          var newUser = UserModel(
+              id: key,
+              email: value['email'],
+              name: value['name'],
+              surname: value['surname'],
+              birthDate: value['birthdate']
+          );
+          user = newUser;
+          log('user -> 5 -> $newUser');
+        }
+        log('user -> 6 -> $user');
+      });
+      //log('stats -> 7 -> ${newStatistics[0].stats.keys.toList()[0]}');
+      //log('stats -> 8 -> ${newStatistics[0].stats.keys.toList()[1]}');
+      //log('stats -> 8 -> ${newStatistics[0].stats.keys.toList().length}');
+      var defaultStatistic = Statistic(id: '', email: '', stats: <String, int>{'no data yet' : 0});
+      return user;
     });
   }
 

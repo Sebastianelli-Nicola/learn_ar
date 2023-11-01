@@ -8,6 +8,7 @@ import 'package:learn_ar/database/DbFireBaseConnect.dart';
 import 'package:learn_ar/database/QuestionModel.dart';
 import 'package:learn_ar/database/StatisticModel.dart';
 import 'package:learn_ar/provider/ArProvider.dart';
+import 'package:learn_ar/provider/HomeProvider.dart';
 import 'package:learn_ar/provider/QuizProvider.dart';
 import 'package:learn_ar/provider/StatisticProvider.dart';
 import 'package:learn_ar/screens/ar/ArPage.dart';
@@ -16,6 +17,7 @@ import 'package:learn_ar/screens/home/Homepage.dart';
 import 'package:learn_ar/screens/IntroScreen.dart';
 import 'package:learn_ar/screens/SplashScreen.dart';
 import 'package:learn_ar/screens/ar/InfoArPage.dart';
+import 'package:learn_ar/screens/home/ProfilePage.dart';
 import 'package:learn_ar/screens/quiz/QuizPage.dart';
 import 'package:learn_ar/screens/quiz/ScanQuizPage.dart';
 import 'package:learn_ar/screens/quiz/SectionQuizPage.dart';
@@ -90,7 +92,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     return MultiProvider(
       providers: [ChangeNotifierProvider(create: (context) => QuizProvider()),
                   ChangeNotifierProvider(create: (context) => StatisticProvider()),
-                  ChangeNotifierProvider(create: (context) => ArProvider())],
+                  ChangeNotifierProvider(create: (context) => ArProvider()),
+                  ChangeNotifierProvider(create: (context) => HomeProvider())],
       child: MaterialApp(
           title: 'Learn AR',
           theme: theme,
@@ -100,6 +103,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
             //'/': (context) => const MyHomePage(title: 'LearnAR'),
             '/login': (context) => const IntroSignUp(),
             '/homepage': (context) => const Intro(),
+            '/profile': (context) => const ProfilePage(),
             '/auth': (context) => const AuthPage(),
             '/ar': (context) => const ArPage(),
             //'/infoar': (context) => const InfoAr(),

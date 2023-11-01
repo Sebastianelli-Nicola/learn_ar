@@ -41,7 +41,9 @@ class Intro extends StatelessWidget {
                   ),
                   //margin: EdgeInsets.fromLTRB(0, 8, 10, 8),
                   child: InkWell(
-                    //onTap: {},
+                    onTap: (){
+                      Navigator.pushNamed(context, '/profile');
+                    },
                     child: CircleAvatar(
                       child: Text(getEmailFirstLetter() ,style: TextStyle(fontSize: 15.0),),
                       //backgroundImage: ExactAssetImage('assets/Bronze.jpg'),
