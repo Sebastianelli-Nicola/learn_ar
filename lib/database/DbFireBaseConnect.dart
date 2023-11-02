@@ -101,8 +101,8 @@ class DBconnect{
   }
 
   //Info Ar Model
-  Future<List<Info>> fetchInfo() async{
-    var urlInfo = Uri.parse(urlStringInfo + 'gpu' + '/info.json' );
+  Future<List<Info>> fetchInfo(String chapter) async{
+    var urlInfo = Uri.parse(urlStringInfo + '$chapter' + '/info.json' );
     return http.get(urlInfo).then((response){
       var data = json.decode(response.body) as Map<String, dynamic>;
       List<Info> newInfos = [] ;

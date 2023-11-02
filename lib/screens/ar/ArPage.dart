@@ -125,7 +125,7 @@ class _ArPageState extends State<ArPage> {
   void onUnityMessage(message) {
     log('unity1 ->'+ message.toString());
     print('Received message from unity: ${message.toString()}');
-    if(message.toString() == 'gpu'){
+    if(message.toString() == 'gpu' || message.toString() == 'cpu' || message.toString() == 'ram' ){
       setState(() {
         info = message.toString();
         visibilityInfo = true;

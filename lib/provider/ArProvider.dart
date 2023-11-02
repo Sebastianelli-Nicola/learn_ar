@@ -7,7 +7,7 @@ class ArProvider extends ChangeNotifier{
   var db = DBconnect();
 
   //return a list of informations of 3d model
-  Future<List<Info>> getData() async{
-    return db.fetchInfo();
+  Future<List<Info>> getData(String chapter) async{
+    return db.fetchInfo(chapter);
   }
 }

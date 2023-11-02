@@ -39,7 +39,7 @@ class _InfoArState extends State<InfoAr> {
   @override
   void initState() {
     final provider = Provider.of<ArProvider>(context, listen: false);
-    _info = provider.getData();
+    _info = provider.getData(widget.message.toString());
     super.initState();
   }
 
