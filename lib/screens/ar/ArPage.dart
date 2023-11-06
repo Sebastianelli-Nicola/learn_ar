@@ -21,6 +21,7 @@ class _ArPageState extends State<ArPage> {
 
   bool visibilityInfo = false;
   late String info;
+  String scene = 'SampleScene';
 
   @override
   void initState() {
@@ -31,11 +32,27 @@ class _ArPageState extends State<ArPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         //primary: true,
+        extendBodyBehindAppBar: true,
+        extendBody: true,
         key: _scaffoldKey,
       appBar: AppBar(
           //foregroundColor: background,
+          backgroundColor: Colors.transparent,
           //backgroundColor: background2,
-          shadowColor: Colors.transparent
+          shadowColor: Colors.transparent,
+          elevation: 0.0,
+          actions: [
+            IconButton(
+              onPressed: ()  {
+                changeScene();
+                if(scene == 'SampleScene'){
+                  visibilityInfo = false;
+                }
+              },
+              icon: const Icon(Icons.change_circle)
+              ),
+          ],
+
       ),
         body: Card(
           margin: const EdgeInsets.all(8),
@@ -56,7 +73,7 @@ class _ArPageState extends State<ArPage> {
                 left: 20,
                 right: 20,
                 child: Opacity(
-                  opacity: visibilityInfo == true ? 1.0 : 0.0,
+                  opacity: (visibilityInfo == true && scene == 'SampleScene') ? 1.0 : 0.0 ,
                   child: Card(
                     elevation: 10,
                     child: Column(
@@ -103,22 +120,22 @@ class _ArPageState extends State<ArPage> {
       );
   }
 
-  // Communcation from Flutter to Unity
-  void setRotationSpeed(String speed) {
-    _unityWidgetController.postMessage(
-      'Cube',
-      'SetRotationSpeed',
-      speed,
-    );
-  }
 
   // Communcation from Flutter to Unity
-  void setAR(String speed) {
-    _unityWidgetController.postMessage(
-      'Cube',
-      'SetRotationSpeed',
-      speed,
-    );
+  void changeScene () {
+    if(scene == 'SampleScene'){
+      setState(() {
+        scene = 'InteractWithObject';
+      });
+
+    }
+    else{
+      setState(() {
+        scene = 'SampleScene';
+      });
+
+    }
+    _unityWidgetController.postMessage('Gamemanager', 'ChangeTheSceneNow', scene);
   }
 
   // Communication from Unity to Flutter
