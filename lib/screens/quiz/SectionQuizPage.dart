@@ -190,11 +190,13 @@ class _SectionQuizPageState extends State<SectionQuizPage> {
     if(beforeUnlock == true){
       beforeUnlock = isLock;
       //provider.updateJson(chapter);
+      log('lock');
       chapterslock.add(false);
       return false;
     }
     beforeUnlock = isLock;
     //provider.updateJson(chapter);
+    log('unlock');
     chapterslock.add(true);
     return true;
   }

@@ -30,94 +30,102 @@ class _ArPageState extends State<ArPage> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        //primary: true,
-        extendBodyBehindAppBar: true,
-        extendBody: true,
-        key: _scaffoldKey,
-      appBar: AppBar(
-          //foregroundColor: background,
-          backgroundColor: Colors.transparent,
-          //backgroundColor: background2,
-          shadowColor: Colors.transparent,
-          elevation: 0.0,
-          actions: [
-            IconButton(
-              onPressed: ()  {
-                changeScene();
-                if(scene == 'SampleScene'){
-                  visibilityInfo = false;
-                }
-              },
-              icon: const Icon(Icons.change_circle)
-              ),
-          ],
+    return WillPopScope(
+      onWillPop: () async {
+          //Navigator.pop(context);
+          _unityWidgetController.unload();
+          return true;
+          //
+      },
+      child: Scaffold(
+          //primary: true,
+          extendBodyBehindAppBar: true,
+          extendBody: true,
+          key: _scaffoldKey,
+        appBar: AppBar(
+            //foregroundColor: background,
+            backgroundColor: Colors.transparent,
+            //backgroundColor: background2,
+            shadowColor: Colors.transparent,
+            elevation: 0.0,
+            actions: [
+              IconButton(
+                onPressed: ()  {
+                  changeScene();
+                  if(scene == 'SampleScene'){
+                    visibilityInfo = false;
+                  }
+                },
+                icon: const Icon(Icons.change_circle)
+                ),
+            ],
 
-      ),
-        body: Card(
-          margin: const EdgeInsets.all(8),
-          clipBehavior: Clip.antiAlias,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0),
-          ),
-          child: Stack(
-            children: <Widget>[
-              UnityWidget(
-                onUnityCreated: onUnityCreated,
-                onUnityMessage: onUnityMessage,
-                onUnitySceneLoaded: onUnitySceneLoaded,
-                fullscreen: false,
-              ),
-              Positioned(
-                bottom: 20,
-                left: 20,
-                right: 20,
-                child: Opacity(
-                  opacity: (visibilityInfo == true && scene == 'SampleScene') ? 1.0 : 0.0 ,
-                  child: Card(
-                    elevation: 10,
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          //margin: EdgeInsets.all(10),
-                          // ignore: deprecated_member_use
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.pushNamed(context, '/infoar', arguments: ScreenArguments('name', info ,'arpage'));
-                            },
-                            /*shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(80.0)),
-                        padding: EdgeInsets.all(0.0),*/
-                            child: Ink(
-                              decoration: BoxDecoration(
-                                  /*gradient: const LinearGradient(
-                                    colors: [Color(0xff9E9E9E), Color(0xffE0E0E0)],
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                  ),*/
-                                  borderRadius: BorderRadius.circular(30.0)),
-                              child: Container(
-                                constraints:
-                                BoxConstraints(maxWidth: 280.0, minHeight: 50.0),
-                                alignment: Alignment.center,
-                                child: const Text(
-                                  "Info",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(color: Colors.black, fontSize: 15),
+        ),
+          body: Card(
+            margin: const EdgeInsets.all(8),
+            clipBehavior: Clip.antiAlias,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+            child: Stack(
+              children: <Widget>[
+                UnityWidget(
+                  onUnityCreated: onUnityCreated,
+                  onUnityMessage: onUnityMessage,
+                  onUnitySceneLoaded: onUnitySceneLoaded,
+                  fullscreen: false,
+                ),
+                Positioned(
+                  bottom: 20,
+                  left: 20,
+                  right: 20,
+                  child: Opacity(
+                    opacity: (visibilityInfo == true && scene == 'SampleScene') ? 1.0 : 0.0 ,
+                    child: Card(
+                      elevation: 10,
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            //margin: EdgeInsets.all(10),
+                            // ignore: deprecated_member_use
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.pushNamed(context, '/infoar', arguments: ScreenArguments('name', info ,'arpage'));
+                              },
+                              /*shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(80.0)),
+                          padding: EdgeInsets.all(0.0),*/
+                              child: Ink(
+                                decoration: BoxDecoration(
+                                    /*gradient: const LinearGradient(
+                                      colors: [Color(0xff9E9E9E), Color(0xffE0E0E0)],
+                                      begin: Alignment.centerLeft,
+                                      end: Alignment.centerRight,
+                                    ),*/
+                                    borderRadius: BorderRadius.circular(30.0)),
+                                child: Container(
+                                  constraints:
+                                  BoxConstraints(maxWidth: 280.0, minHeight: 50.0),
+                                  alignment: Alignment.center,
+                                  child: const Text(
+                                    "Info",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(color: Colors.black, fontSize: 15),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      );
+    );
   }
 
 

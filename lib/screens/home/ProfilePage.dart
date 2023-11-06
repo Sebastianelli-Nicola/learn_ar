@@ -97,7 +97,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     //mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     children: [
                                       Text('Email: \t\t\t\t\t\t\t', style: TextStyle(fontSize: 19.0,fontWeight: FontWeight.bold),),
-                                      Text(Auth().currentUser!.email.toString(), style: TextStyle(fontSize: 17.0),),
+                                      Text(Auth().currentUser!.email.toString(), style: TextStyle(fontSize: 14.0),),
                                     ],
                                   ),
                                   SizedBox(height: 30.0,),

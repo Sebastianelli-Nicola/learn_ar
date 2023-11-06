@@ -58,7 +58,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    //Auth().signOut();
+    Auth().signOut();
   }
 
   @override
@@ -89,6 +89,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return MultiProvider(
       providers: [ChangeNotifierProvider(create: (context) => QuizProvider()),
                   ChangeNotifierProvider(create: (context) => StatisticProvider()),
@@ -98,10 +102,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           title: 'Learn AR',
           theme: theme,
           routes: {
-            '/splashscreen': (context) => const SplashScreen(),
-            '/introscreen': (context) => IntroScreen(),
+            //'/splashscreen': (context) => const SplashScreen(),
+            //'/introscreen': (context) => IntroScreen(),
             //'/': (context) => const MyHomePage(title: 'LearnAR'),
-            '/login': (context) => const IntroSignUp(),
+            //'/login': (context) => const IntroSignUp(),
             '/homepage': (context) => const Intro(),
             '/profile': (context) => const ProfilePage(),
             '/auth': (context) => const AuthPage(),
@@ -171,16 +175,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
             assert(false, 'Need to implement ${settings.name}');
             return null;
           },
-        /*home: StreamBuilder(
-            stream: Auth().authStateChanges,
-            builder: (context, snapshot){
-              if(snapshot.hasData){
-                return Intro()/*IntroSignUp()*/;
-              }
-              else {
-                return AuthPage();
-              }
-            }),*/
           home: AnimatedSplashScreen(
             splash: Column(
               children: [
@@ -201,24 +195,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                   }
                 }),
           )
-          /*StreamBuilder(
-              stream: Auth().authStateChanges,
-              builder: (context, snapshot){
-                  if(snapshot.hasData){
-                    return Intro()/*IntroSignUp()*/;
-                  }
-                  else {
-                    return AuthPage();
-                  }
-              })*/
-          /*home: StreamBuilder(stream: Auth.authStateChanges, builder: (context, snapshot)){
-      if(snapshot.hasData){
-      return IntroSignUp();
-      }
-      else{
-      return Intro();
-      }
-      }*/
+
 
       ),
     );

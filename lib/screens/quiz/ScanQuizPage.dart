@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+//import 'dart:html';
 import 'dart:io' show Platform;
 
 import 'package:flutter/cupertino.dart';
@@ -183,12 +184,16 @@ class _ScanQuizState extends State<ScanQuiz> {
   List<Chapter> scanFilter(){
     List<Chapter> newChapters = [];
      var listLock = widget.list;
+     log('listlock ->$listLock');
     int i = 0;
     data.forEach((key, value){
+      log('listlock$i ->${listLock[i]}');
       var newChapter = Chapter(id: key, name: (value['name']),isLock: listLock[i]);
       i++;
+      log('newChapter ->$newChapter');
       newChapters.add(newChapter);
     });
+    log('newChapterslist ->$newChapters');
     return newChapters;
   }
 
