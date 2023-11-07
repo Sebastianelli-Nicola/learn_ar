@@ -26,9 +26,9 @@ class ResultBox extends StatelessWidget {
             const SizedBox(height: 20.0,),
             CircleAvatar(
               radius: 70.0,
-              backgroundColor: result == questionLength / 2
+              backgroundColor: (result < questionLength * (0.6) && result >= questionLength * (0.5))
                   ? Colors.yellow
-                  : result < questionLength/2
+                  : result < questionLength * (0.5)
                     ? incorrect
                     : correct,
               child: Text(
@@ -37,11 +37,17 @@ class ResultBox extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20.0,),
-            Text(result == questionLength / 2
+            Text((result < questionLength * (0.6) && result >= questionLength * (0.5))
                 ? 'Almost There'
-                : result < questionLength/2
+                : result < questionLength * (0.5)
                 ? 'Try Again'
-                : 'Great!',
+                : (result < questionLength * (0.75) && result >= questionLength * (0.6))
+                ? 'Good!'
+                : result == questionLength * (0.75)
+                ? 'Great!'
+                : (result > questionLength * (0.75) && result < questionLength)
+                ? 'Excellent!'
+                : 'Perfect!',
               style: const TextStyle(color: neutralW),
             ),
             const SizedBox(height: 25.0,),
@@ -58,18 +64,36 @@ class ResultBox extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 25.0,),
-            GestureDetector(
-              onTap: onPressedFinish,
-              child: const Text(
-                'Finish',
-                style: TextStyle(
-                  color: Colors.orange,
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1.0,
-                ),
-              ),
-            )
+            result >= questionLength * (0.6)
+                  ? GestureDetector(
+                    onTap: onPressedFinish,
+                    child: const Text(
+                      'Finish',
+                      style: TextStyle(
+                        color: Colors.orange,
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1.0,
+                      ),
+                    ),
+                  )
+                :
+                GestureDetector(
+                  onTap: (){
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    },
+                  child: const Text(
+                    'Go Back',
+                    style: TextStyle(
+                      color: Colors.orange,
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.0,
+                    ),
+                  ),
+                )
+
           ],
         )
       ),

@@ -262,7 +262,7 @@ class _AuthPageState extends State<AuthPage> {
                       if (isLogin == false) {
                         provider.addUserInfo(consumer.UserModel(
                                     id: '1',
-                                    email: _email.text.replaceAll('.', ''),
+                                    email: _email.text.replaceAll('.', '').toLowerCase(),
                                     name: _name.text,
                                     surname: _surname.text,
                                     birthDate: _date.text)

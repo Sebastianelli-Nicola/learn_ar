@@ -39,6 +39,8 @@ class QuizProvider extends ChangeNotifier{
   //added chapter statistic for auth user
   Future<void> addStats(int score, int index, String chapter) async {
     var emailWithoutComma = Auth().currentUser!.email.toString().replaceAll('.', '');
+    log('email -> ${Auth().currentUser!.email.toString()}');
+    log('emailWithoutComma -> $emailWithoutComma');
     double p = (score * 1.0 / (index + 1)) * 100;
     int perc = p.round();
     await db.addStatistic(Statistic(id: '1', email: emailWithoutComma , stats: {
