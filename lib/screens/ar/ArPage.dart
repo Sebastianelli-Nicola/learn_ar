@@ -49,15 +49,20 @@ class _ArPageState extends State<ArPage> {
             shadowColor: Colors.transparent,
             elevation: 0.0,
             actions: [
-              IconButton(
-                onPressed: ()  {
-                  changeScene();
-                  if(scene == 'SampleScene'){
-                    visibilityInfo = false;
-                  }
-                },
-                icon: const Icon(Icons.change_circle)
-                ),
+              Opacity(
+                opacity: (scene == 'SampleScene') ? 0.0 : 1.0 ,
+                child: IconButton(
+                  onPressed: ()  {
+                    if(scene != 'SampleScene'){
+                      changeScene();
+                    }
+                    if(scene == 'SampleScene'){
+                      visibilityInfo = false;
+                    }
+                  },
+                  icon: const Icon(Icons.change_circle)
+                  ),
+              ),
             ],
 
         ),
@@ -82,39 +87,57 @@ class _ArPageState extends State<ArPage> {
                   child: Opacity(
                     opacity: (visibilityInfo == true && scene == 'SampleScene') ? 1.0 : 0.0 ,
                     child: Card(
+                      surfaceTintColor: Colors.transparent,
                       elevation: 10,
                       child: Column(
                         children: <Widget>[
-                          Container(
-                            //margin: EdgeInsets.all(10),
-                            // ignore: deprecated_member_use
-                            child: ElevatedButton(
-                              onPressed: () {
-                                Navigator.pushNamed(context, '/infoar', arguments: ScreenArguments('name', info ,'arpage'));
-                              },
-                              /*shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(80.0)),
-                          padding: EdgeInsets.all(0.0),*/
-                              child: Ink(
-                                decoration: BoxDecoration(
-                                    /*gradient: const LinearGradient(
-                                      colors: [Color(0xff9E9E9E), Color(0xffE0E0E0)],
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.centerRight,
-                                    ),*/
-                                    borderRadius: BorderRadius.circular(30.0)),
-                                child: Container(
-                                  constraints:
-                                  BoxConstraints(maxWidth: 280.0, minHeight: 50.0),
-                                  alignment: Alignment.center,
-                                  child: const Text(
-                                    "Info",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(color: Colors.black, fontSize: 15),
+                          Row(
+                            children: [
+                              Container(
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.pushNamed(context, '/infoar', arguments: ScreenArguments('name', info ,'arpage'));
+                                  },
+                                  child: Ink(
+                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(30.0)),
+                                    child: Container(
+                                      constraints:
+                                      BoxConstraints(maxWidth: 115.5, minHeight: 50.0),
+                                      alignment: Alignment.center,
+                                      child: const Text(
+                                        "Info",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(color: Colors.black, fontSize: 15),
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
+                              SizedBox(width: 1,),
+                              Container(
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    changeScene();
+                                    if(scene == 'SampleScene'){
+                                      visibilityInfo = false;
+                                    }
+                                  },
+                                  child: Ink(
+                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(30.0)),
+                                    child: Container(
+                                      constraints:
+                                      BoxConstraints(maxWidth: 115.5, minHeight: 50.0),
+                                      alignment: Alignment.center,
+                                      child: const Text(
+                                        "Interact in 3D",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(color: Colors.black, fontSize: 15),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -132,10 +155,21 @@ class _ArPageState extends State<ArPage> {
   // Communcation from Flutter to Unity
   void changeScene () {
     if(scene == 'SampleScene'){
-      setState(() {
-        scene = 'InteractWithObject';
-      });
-
+      if(info == 'ram'){
+        setState(() {
+          scene = 'InteractWithObject';
+        });
+      }
+      if(info == 'gpu'){
+        setState(() {
+          scene = 'InteractWithGpu';
+        });
+      }
+      if(info == 'cpu'){
+        setState(() {
+          scene = 'InteractWithCpu';
+        });
+      }
     }
     else{
       setState(() {
@@ -143,6 +177,7 @@ class _ArPageState extends State<ArPage> {
       });
 
     }
+
     _unityWidgetController.postMessage('Gamemanager', 'ChangeTheSceneNow', scene);
   }
 
