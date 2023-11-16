@@ -24,7 +24,7 @@ class _AuthPageState extends State<AuthPage> {
   final TextEditingController _name = TextEditingController();
   final TextEditingController _surname = TextEditingController();
   final TextEditingController _date = TextEditingController();
-  late String errorCodeCreate;
+  String errorCodeCreate = '';
   bool isLogin = true;
   DateTime selectedDate = DateTime(2010, 12, 31);
   dynamic selectedDateF;
@@ -35,6 +35,7 @@ class _AuthPageState extends State<AuthPage> {
     try {
       await Auth().signInWithEmailAndPassword(
           email: _email.text, password: _password.text);
+
     } on FirebaseAuthException catch (error) {
       // Handle Errors here.
       var errorCode = error.code;
@@ -66,6 +67,7 @@ class _AuthPageState extends State<AuthPage> {
 
   Future<void> createUser() async {
     try {
+      errorCodeCreate = '';
       await Auth().createUserWithEmailAndPassword(
           email: _email.text, password: _password.text);
     } on FirebaseAuthException catch (error) {
@@ -260,7 +262,8 @@ class _AuthPageState extends State<AuthPage> {
                       // If the form is valid, display a snackbar. In the real world,
                       // you'd often call a server or save the information in a database.
                       isLogin ? signIn() : createUser();
-                      if (isLogin == false && errorCodeCreate != '') {
+                      log('errorCOdeCreate -> $errorCodeCreate');
+                      if (isLogin == false && errorCodeCreate == '') {
                         provider.addUserInfo(consumer.UserModel(
                                     id: '1',
                                     email: _email.text.replaceAll('.', '').toLowerCase(),
