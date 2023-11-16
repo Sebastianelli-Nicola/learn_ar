@@ -24,6 +24,7 @@ class _AuthPageState extends State<AuthPage> {
   final TextEditingController _name = TextEditingController();
   final TextEditingController _surname = TextEditingController();
   final TextEditingController _date = TextEditingController();
+  late String errorCodeCreate;
   bool isLogin = true;
   DateTime selectedDate = DateTime(2010, 12, 31);
   dynamic selectedDateF;
@@ -68,16 +69,16 @@ class _AuthPageState extends State<AuthPage> {
       await Auth().createUserWithEmailAndPassword(
           email: _email.text, password: _password.text);
     } on FirebaseAuthException catch (error) {
-      var errorCode = error.code;
       var errorMessage = error.message;
-      if (errorCode == 'email-already-in-use') {
+      errorCodeCreate = error.code;
+      if (errorCodeCreate == 'email-already-in-use') {
         //alert('Wrong password.');
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text('The email address is already in use by another account'),
           behavior: SnackBarBehavior.floating,
           margin: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
         ));
-      } else if(errorCode == 'too-many-requests'){
+      } else if(errorCodeCreate == 'too-many-requests'){
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text('We have blocked all requests from this device due to unusual activity. Try again later'),
           behavior: SnackBarBehavior.floating,
@@ -259,7 +260,7 @@ class _AuthPageState extends State<AuthPage> {
                       // If the form is valid, display a snackbar. In the real world,
                       // you'd often call a server or save the information in a database.
                       isLogin ? signIn() : createUser();
-                      if (isLogin == false) {
+                      if (isLogin == false && errorCodeCreate != '') {
                         provider.addUserInfo(consumer.UserModel(
                                     id: '1',
                                     email: _email.text.replaceAll('.', '').toLowerCase(),

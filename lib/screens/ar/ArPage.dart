@@ -86,60 +86,65 @@ class _ArPageState extends State<ArPage> {
                   right: 20,
                   child: Opacity(
                     opacity: (visibilityInfo == true && scene == 'SampleScene') ? 1.0 : 0.0 ,
-                    child: Card(
-                      surfaceTintColor: Colors.transparent,
-                      elevation: 10,
-                      child: Column(
-                        children: <Widget>[
-                          Row(
-                            children: [
-                              Container(
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.pushNamed(context, '/infoar', arguments: ScreenArguments('name', info ,'arpage'));
-                                  },
-                                  child: Ink(
-                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(30.0)),
-                                    child: Container(
-                                      constraints:
-                                      BoxConstraints(maxWidth: 115.5, minHeight: 50.0),
-                                      alignment: Alignment.center,
-                                      child: const Text(
-                                        "Info",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(color: Colors.black, fontSize: 15),
+                    child: Center(
+                      child: Card(
+                        color: Colors.transparent.withOpacity(0.0),
+                        surfaceTintColor: Colors.transparent,
+                        elevation: 10,
+                        child: Column(
+                          children: <Widget>[
+                            Row(
+                              children: [
+                                Container(
+                                  color: Colors.transparent.withOpacity(0.0),
+                                  //decoration: BoxDecoration(borderRadius: BorderRadius.circular(30.0)),
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.pushNamed(context, '/infoar', arguments: ScreenArguments('name', info ,'arpage'));
+                                    },
+                                    child: Ink(
+                                      child: Container(
+                                        constraints:
+                                        BoxConstraints(maxWidth: 113, minHeight: 50.0),
+                                        alignment: Alignment.center,
+                                        child: const Text(
+                                          "Info",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(color: Colors.black, fontSize: 15),
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              SizedBox(width: 1,),
-                              Container(
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    changeScene();
-                                    if(scene == 'SampleScene'){
-                                      visibilityInfo = false;
-                                    }
-                                  },
-                                  child: Ink(
-                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(30.0)),
-                                    child: Container(
-                                      constraints:
-                                      BoxConstraints(maxWidth: 115.5, minHeight: 50.0),
-                                      alignment: Alignment.center,
-                                      child: const Text(
-                                        "Interact in 3D",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(color: Colors.black, fontSize: 15),
+                                SizedBox(width: 5,),
+                                Container(
+                                  color: Colors.transparent.withOpacity(0.0),
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      changeScene();
+                                      if(scene == 'SampleScene'){
+                                        visibilityInfo = false;
+                                      }
+                                    },
+                                    child: Ink(
+                                      //decoration: BoxDecoration(borderRadius: BorderRadius.circular(30.0)),
+                                      child: Container(
+                                        constraints:
+                                        BoxConstraints(maxWidth: 113, minHeight: 50.0),
+                                        alignment: Alignment.center,
+                                        child: const Text(
+                                          "Interact in 3D",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(color: Colors.black, fontSize: 15),
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
