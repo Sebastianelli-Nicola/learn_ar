@@ -9,7 +9,7 @@ class HomeProvider extends ChangeNotifier{
   var db = DBconnect();
 
   Future<UserModel> getDataProfile()async{
-    var emailWithoutComma = Auth().currentUser!.email.toString().replaceAll('.', '');
+    var emailWithoutComma = Auth().currentUser!.email.toString()/*.replaceAll('.', '')*/;
     return db.fetchUserInfo(emailWithoutComma);
   }
   Future<void> addUserInfo(UserModel user)async{

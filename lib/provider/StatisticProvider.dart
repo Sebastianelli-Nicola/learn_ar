@@ -8,7 +8,7 @@ class StatisticProvider extends ChangeNotifier{
   var db = DBconnect();
 
   Future<Statistic> getDataStatistics()async{
-    var emailWithoutComma = Auth().currentUser!.email.toString().replaceAll('.', '');
+    var emailWithoutComma = Auth().currentUser!.email.toString()/*.replaceAll('.', '')*/;
     return db.fetchStatistic(emailWithoutComma);
   }
 }

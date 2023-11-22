@@ -153,13 +153,15 @@ class DBconnect{
 
       data.forEach((key, value){
         log('stats -> 4');
-        log('stats -> 4'+ value['email']);
+        log('stats -> 4'+ value['email'] + '... $email');
         log('stats -> 4'+ value['stats'].toString() );
         if(value['email'] == email){
+          log('stats -> 5');
           if(value['stats'] != null){
+            log('stats -> 51');
             if(Map.castFrom(value['stats']).keys.contains('no data yet') ){
               log('qua ->');
-              userNameRef.child('${email}').child('stats').child('no data yet').remove();
+              userNameRef.child('${email.replaceAll('.', '')}').child('stats').child('no data yet').remove();
             }
             else{
               log('dentro ->');
@@ -206,7 +208,7 @@ class DBconnect{
         }
       });
       if(isPresent == true){
-        userNameRef.child('${statistic.email}').update({
+        userNameRef.child('${statistic.email.replaceAll('.', '')}').update({
           'stats': map,
         });
       }
@@ -216,7 +218,7 @@ class DBconnect{
         log('addst -> 4 -> $map');
         map.remove('no data yet');
         log('addst -> 6 -> $map');
-        userNameRef.child('${statistic.email}').update({
+        userNameRef.child('${statistic.email.replaceAll('.', '')}').update({
           'stats': map,
         });
         log('addst -> 7 -> $map');
@@ -238,7 +240,7 @@ class DBconnect{
   void addUserAndInfo(UserModel user){
     var userNameRef =  myRootRef.child('/statistics_book_architettura_calcolatori');
 
-    userNameRef.child('${user.email}').set({
+    userNameRef.child('${user.email.replaceAll('.', '')}').set({
       'email': user.email,
       'name' : user.name,
       'surname': user.surname,
