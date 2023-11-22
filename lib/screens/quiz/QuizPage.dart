@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:learn_ar/auth.dart';
 import 'package:learn_ar/constants.dart';
@@ -164,23 +165,26 @@ class _QuizPageState extends State<QuizPage> {
           }
         }
         else{
-          return const Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                 crossAxisAlignment: CrossAxisAlignment.center,
-                 children: [
-                   CircularProgressIndicator(),
-                   /*const SizedBox(height: 20.0,),
-                   Text(
-                     'Please Wait while Question are loading..',
-                     style: TextStyle(
-                       color: Theme.of(context).primaryColor,
-                       decoration: TextDecoration.none,
-                       fontSize: 14.0,
-                     ),
-                   )*/
-                 ],
-              )
+          return Container(
+            color: CupertinoColors.white,
+            child: const Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                   crossAxisAlignment: CrossAxisAlignment.center,
+                   children: [
+                     CircularProgressIndicator(),
+                     /*const SizedBox(height: 20.0,),
+                     Text(
+                       'Please Wait while Question are loading..',
+                       style: TextStyle(
+                         color: Theme.of(context).primaryColor,
+                         decoration: TextDecoration.none,
+                         fontSize: 14.0,
+                       ),
+                     )*/
+                   ],
+                )
+            ),
           );
         }
       return Center(child: Text('No Data'));
@@ -273,28 +277,49 @@ class _QuizPageState extends State<QuizPage> {
   }*/
 
   //execute when the user press on finish button
-  void finish(QuizProvider provider) {
+  void finish(QuizProvider provider) async {
     //addStats();
-    provider.addStats(score, index, widget.message.toString());
-    setState(() {
-      index = 0;
-      score = 0;
-      isPressed = false;
-      isAlreadySelected = false;
-      isTrue = false;
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (ctx) => Container(
+          color: Colors.transparent,
+          child: const Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(),
+                ],
+              )
+          ),
+        )
+    );
+    await provider.addStats(score, index, widget.message.toString());
+    Future.delayed(Duration(milliseconds: 1300), () {
+       setState(() {
+         index = 0;
+         score = 0;
+         isPressed = false;
+         isAlreadySelected = false;
+         isTrue = false;
+       });
+      if(widget.origin.toString() == 'scan'){
+        Navigator.pop(context);
+        Navigator.pop(context);
+        Navigator.pop(context);
+        Navigator.pop(context);
+        //Navigator.pop(context);
+      }
+      else{
+        Navigator.pop(context);
+        Navigator.pop(context);
+        Navigator.pop(context);
+        Navigator.pop(context);
+      }
+      Navigator.pushNamed(context, '/quizhomepage');
     });
-    if(widget.origin.toString() == 'scan'){
-      Navigator.pop(context);
-      Navigator.pop(context);
-      Navigator.pop(context);
-      //Navigator.pop(context);
-    }
-    else{
-      Navigator.pop(context);
-      Navigator.pop(context);
-      Navigator.pop(context);
-    }
-    Navigator.pushNamed(context, '/quizhomepage');
+    //
 
   }
 

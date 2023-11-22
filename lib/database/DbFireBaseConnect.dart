@@ -192,11 +192,14 @@ class DBconnect{
     var userNameRef =  myRootRef.child('/statistics_book_architettura_calcolatori');
 
     var s = await fetchStatistic(statistic.email);
+    log('addst -> 0 -> $s');
     var isPresent = false;
     Map<String, int> map ={};
     if(s.stats.isNotEmpty){
       s.stats.forEach((key, value) {
         map[key] = value;
+        log('addst -> 1 -> $map');
+        log('addst -> 2 -> $key');
         if (statistic.stats.keys == key) {
           map.update(key, (value) => statistic.stats.values.first);
           isPresent = true;
@@ -208,10 +211,15 @@ class DBconnect{
         });
       }
       else{
+        log('addst -> 3 -> ');
         map[statistic.stats.keys.first] = statistic.stats.values.first;
+        log('addst -> 4 -> $map');
+        map.remove('no data yet');
+        log('addst -> 6 -> $map');
         userNameRef.child('${statistic.email}').update({
           'stats': map,
         });
+        log('addst -> 7 -> $map');
       }
     }
 
