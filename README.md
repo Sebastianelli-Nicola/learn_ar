@@ -1,4 +1,4 @@
-# learn_ar
+# Learn AR
 
 Augmented Reality Application to support education
 
