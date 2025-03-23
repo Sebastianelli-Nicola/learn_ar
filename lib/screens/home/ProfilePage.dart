@@ -1,14 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:learn_ar/auth.dart';
+import 'package:learn_ar/database/auth.dart';
 import 'package:learn_ar/provider/HomeProvider.dart';
 import 'package:provider/provider.dart';
-import 'package:learn_ar/database/UserModel.dart' as profile;
+import 'package:learn_ar/database/models/UserModel.dart' as profile;
 
 import '../../constants.dart';
 import '../../database/DbFireBaseConnect.dart';
-import '../../database/InfoModel.dart';
+import '../../database/models/Info.dart';
 import '../../provider/ArProvider.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -20,13 +20,8 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  //var db = DBconnect();
 
   late Future _info;
-
-  /*Future<List<Info>> getData() async{
-    return db.fetchInfo();
-  }*/
 
   @override
   void initState() {
@@ -102,7 +97,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                   SizedBox(height: 30.0,),
                                   Row(
-                                    //mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     children: [
                                       Text('Name: \t\t\t\t\t\t', style: TextStyle(fontSize: 19.0,fontWeight: FontWeight.bold),),
                                       Text(extractedData.name, style: TextStyle(fontSize: 17.0),),
@@ -110,7 +104,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                   SizedBox(height: 30.0,),
                                   Row(
-                                    //mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     children: [
                                       Text('Surname: \t', style: TextStyle(fontSize: 19.0,fontWeight: FontWeight.bold),),
                                       Text(extractedData.surname, style: TextStyle(fontSize: 17.0),),
@@ -118,7 +111,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                   SizedBox(height: 30.0,),
                                   Row(
-                                    //mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     children: [
                                       Text('Birthday: \t', style: TextStyle(fontSize: 19.0,fontWeight: FontWeight.bold),),
                                       Text(extractedData.birthDate, style: TextStyle(fontSize: 17.0),),
@@ -146,16 +138,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     children: [
                       CircularProgressIndicator(),
                       SizedBox(height: 20.0,),
-                      /*Text(
-                        'Please Wait while Question are loading..',
-                        style: TextStyle(
-                          color: Theme
-                              .of(context)
-                              .primaryColor,
-                          decoration: TextDecoration.none,
-                          fontSize: 14.0,
-                        ),
-                      )*/
                     ],
                   )
               ),
