@@ -4,13 +4,13 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-import 'package:learn_ar/database/ChapterModel.dart';
-import 'package:learn_ar/database/QuestionModel.dart';
-import 'package:learn_ar/database/StatisticModel.dart';
+import 'package:learn_ar/database/models/Chapter.dart';
+import 'package:learn_ar/database/models/Question.dart';
+import 'package:learn_ar/database/models/Statistic.dart';
 import 'dart:convert';
 
-import 'InfoModel.dart';
-import 'UserModel.dart';
+import 'models/Info.dart';
+import 'models/UserModel.dart';
 
 class DBconnect{
 
@@ -36,17 +36,16 @@ class DBconnect{
    return result;
   }
 
-  //For load model 3D in the quiz
+  //For load model 3D in the quiz. return url
   Future<String> downloadURL(String imageName, String chapter) async{
-    log('qua-> $imageName e $chapter');
     String downloadurl = await storage.ref('/quiz_$chapter/$imageName').getDownloadURL();
-    log('qua-> $downloadurl');
     return downloadurl;
   }
 
 
   // Realtime Database -->
 
+  // add question on realtime database
   Future<void> addQuestion(Question question) async{
       http.post(url, body: json.encode({
         'title': question.title,
@@ -55,7 +54,7 @@ class DBconnect{
       ));
   }
 
-  //Question for chapter
+  //return question for chapter name
   Future<List<Question>> fetchQuestion(String name) async{
     var urlQuestions = Uri.parse(urlStringQuestions + name + '/questions.json' );
     return http.get(urlQuestions).then((response){
@@ -63,28 +62,16 @@ class DBconnect{
       List<Question> newQuestions = [];
 
       data.forEach((key, value){
-        var newQuestion = Question(id: key, title: value['title'], options: Map.castFrom(value['options']), model3dName: value['model3dName']);
+        var newQuestion = Question(id: key, title: value['title'],
+            options: Map.castFrom(value['options']), model3dName: value['model3dName']);
         newQuestions.add(newQuestion);
       });
       return newQuestions;
     });
   }
 
-  /*Future<List<Question>> fetchQuestion() async{
-    return http.get(url).then((response){
-      var data = json.decode(response.body) as Map<String, dynamic>;
-      List<Question> newQuestions = [];
 
-      data.forEach((key, value){
-        var newQuestion = Question(id: key, title: value['title'], options: Map.castFrom(value['options']), model3dName: value['model3dName']);
-        newQuestions.add(newQuestion);
-      });
-      return newQuestions;
-    });
-  }*/
-
-
-  //Chapters
+  //return list of Chapters
   Future<List<Chapter>> fetchChapters() async{
     var urlChapters = Uri.parse(urlString);
     return http.get(urlChapters).then((response){
@@ -100,7 +87,7 @@ class DBconnect{
     });
   }
 
-  //Info Ar Model
+  //return Info associate at the Ar Model
   Future<List<Info>> fetchInfo(String chapter) async{
     var urlInfo = Uri.parse(urlStringInfo + '$chapter' + '/info.json' );
     return http.get(urlInfo).then((response){
@@ -115,75 +102,41 @@ class DBconnect{
     });
   }
 
-  //qr code filters
+  //return a qr code filters map
   Future<Map<String, dynamic>> readJson() async {
     final String response = await rootBundle.loadString('assets/chapters.json');
     return json.decode(response) as Map<String, dynamic>;
   }
 
 
-  //Statistics
 
-  /*Future<void> addStatistic(Statistic statistic) async{
-    var urlStatistics = Uri.parse(urlStringStatistics );
-    http.post(urlStatistics, body: json.encode({
-
-      "user5": {
-            "user3": {
-              'email': statistic.email,
-              'stats': statistic.stats,
-            }
-          }
-        }
-    ));
-  }*/
-
-
+  //return statistic for a email
   Future<Statistic> fetchStatistic(String email) async{
     var userNameRef =  myRootRef.child('/statistics_book_architettura_calcolatori');
     var urlStatistics = Uri.parse(urlStringStatistics);
     return http.get(urlStatistics).then((response){
-      log('stats -> 2');
       var data = json.decode(response.body) as Map<String, dynamic>;
-      log('stats -> 3 -> $data');
-      log('stats -> 3 -> ${data.values}');
-      log('stats -> 3 -> ${data.keys}');
 
       List<Statistic> newStatistics = [];
 
       data.forEach((key, value){
-        log('stats -> 4');
-        log('stats -> 4'+ value['email'] + '... $email');
-        log('stats -> 4'+ value['stats'].toString() );
         if(value['email'] == email){
-          log('stats -> 5');
           if(value['stats'] != null){
-            log('stats -> 51');
             if(Map.castFrom(value['stats']).keys.contains('no data yet') ){
-              log('qua ->');
               userNameRef.child('${email.replaceAll('.', '')}').child('stats').child('no data yet').remove();
             }
             else{
-              log('dentro ->');
-              log('${Map.castFrom(value['stats']).keys}');
               var newStatistic = Statistic(
                   id: key,
                   email: value['email'],
                   stats: Map.castFrom(value['stats']));
               newStatistics.add(newStatistic);
-              log('stats -> 5 -> $newStatistic');
 
             }
           }
         }
-        log('stats -> 6 -> $newStatistics');
       });
-      //log('stats -> 7 -> ${newStatistics[0].stats.keys.toList()[0]}');
-      //log('stats -> 8 -> ${newStatistics[0].stats.keys.toList()[1]}');
-      //log('stats -> 8 -> ${newStatistics[0].stats.keys.toList().length}');
       var defaultStatistic = Statistic(id: '', email: '', stats: <String, int>{'no data yet' : 0});
-
-
       return newStatistics.isNotEmpty ? newStatistics[0] : defaultStatistic;
     });
   }
@@ -194,14 +147,11 @@ class DBconnect{
     var userNameRef =  myRootRef.child('/statistics_book_architettura_calcolatori');
 
     var s = await fetchStatistic(statistic.email);
-    log('addst -> 0 -> $s');
     var isPresent = false;
     Map<String, int> map ={};
     if(s.stats.isNotEmpty){
       s.stats.forEach((key, value) {
         map[key] = value;
-        log('addst -> 1 -> $map');
-        log('addst -> 2 -> $key');
         if (statistic.stats.keys == key) {
           map.update(key, (value) => statistic.stats.values.first);
           isPresent = true;
@@ -213,30 +163,17 @@ class DBconnect{
         });
       }
       else{
-        log('addst -> 3 -> ');
         map[statistic.stats.keys.first] = statistic.stats.values.first;
-        log('addst -> 4 -> $map');
-        map.remove('no data yet');
-        log('addst -> 6 -> $map');
         userNameRef.child('${statistic.email.replaceAll('.', '')}').update({
           'stats': map,
         });
-        log('addst -> 7 -> $map');
       }
     }
-
-    /*for (int i=0; i<s.stats.keys.length; i++){
-      log('dent-> $i');
-    }
-
-    userNameRef.child('${statistic.email}').update({
-      'stats': statistic.stats,
-    });*/
   }
 
 
 
-  //add user info
+  //add user info on realtime database
   void addUserAndInfo(UserModel user){
     var userNameRef =  myRootRef.child('/statistics_book_architettura_calcolatori');
 
@@ -250,20 +187,12 @@ class DBconnect{
 
   //return info for a specific user
   fetchUserInfo(String email){
-    var userNameRef =  myRootRef.child('/statistics_book_architettura_calcolatori');
     var urlStatistics = Uri.parse(urlStringStatistics);
     return http.get(urlStatistics).then((response){
-      log('user -> 2');
       var data = json.decode(response.body) as Map<String, dynamic>;
-      log('user -> 3 -> $data');
-      log('user -> 3 -> ${data.values}');
-      log('user -> 3 -> ${data.keys}');
-
       UserModel user = UserModel(id: 'id', email: '', name: '', surname: '', birthDate: '');
 
       data.forEach((key, value){
-        log('user -> 4');
-        log('user -> 4'+ value['email']);
         if(value['email'] == email){
           var newUser = UserModel(
               id: key,
@@ -273,53 +202,10 @@ class DBconnect{
               birthDate: value['birthdate']
           );
           user = newUser;
-          log('user -> 5 -> $newUser');
         }
-        log('user -> 6 -> $user');
       });
-      //log('stats -> 7 -> ${newStatistics[0].stats.keys.toList()[0]}');
-      //log('stats -> 8 -> ${newStatistics[0].stats.keys.toList()[1]}');
-      //log('stats -> 8 -> ${newStatistics[0].stats.keys.toList().length}');
-      var defaultStatistic = Statistic(id: '', email: '', stats: <String, int>{'no data yet' : 0});
       return user;
     });
   }
-
-
-/*Future<void> fetchStatistic2(String email) async{
-    var userNameRef =  myRootRef.child('/statistics_book_architettura_calcolatori');
-    log('a -> 0');
-    final snapshot = await userNameRef.child('$email').get();
-    log('a -> ${snapshot.value}');
-    if (snapshot.exists) {
-      log('a -> 1');
-      List<Statistic> newStatistics = [];
-      log('a -> 2');
-      var values = Map<String, dynamic>.from(snapshot.value as Map);
-      var stats = Map.castFrom(values["stats"]);
-      var stringQueryParameters = values.map<String, int>(
-            (key, value) => MapEntry<String, int>(key, value ),
-      );
-      log('a -> 2 -> ${stringQueryParameters}');
-      //var newStatistic = Statistic(id: email, email: email, stats: stats);
-      //var data = snapshot as Map<String, dynamic>;
-      log('a -> 3');
-
-      values.forEach((key, value){
-        log('a-> 4 $key');
-        log('a-> 4 $value');
-        var stats = Map.castFrom(value['stats']);
-        log('a-> 4 $stats');
-        var newStatistic = Statistic(id: key, email: value['email'], stats: Map.castFrom(value['stats']));
-        log('a -> 5 -> $newStatistic');
-        newStatistics.add(newStatistic);
-        log('a -> 6 -> $newStatistics');
-      });
-      print(snapshot.value);
-    } else {
-      print('No data available.');
-    }
-  }*/
-
 
 }
