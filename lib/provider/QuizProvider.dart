@@ -55,35 +55,5 @@ class QuizProvider extends ChangeNotifier{
      _data = await db.readJson() as Map<String, dynamic>;
   }
 
-  /*Future<void> updateJson(String chapter) async {
-   // Directory appDocDir = await getApplicationDocumentsDirectory();
-    File jsonFile = File("${appDocDir.path}/chapters.json");
-    final String response = await rootBundle.loadString('assets/chapters.json');
-    _data = json.decode(response) as Map<String, dynamic>;
-    List<Chapter> newChapters = [];
-
-    log('datajsoncahpter -> $chapter');
-    log('datajson -> $_data');
-    _data.forEach((key, value) {
-      if (value['name'] == chapter){
-        log('qui -> $_data');
-        value['isLock'] = false;
-        log('qui2 -> $_data');
-        _data = json.encode(value['isLock'] = false) as Map<String, dynamic>;
-      }
-    });
-
-
-    /*(_data["chapter1"] as List<dynamic>).forEach((item) => item["isLock"] = true);
-    log('datajson -> $_data');*/
-  }*/
-
-  /*Future setBookmark(int questionId, String isBookmark) async {
-    // update the list
-    _listQuestions
-        .firstWhere((question) => question.id == questionId)
-        .bookmark = isBookmark;
-    // and write it
-    jsonFile.writeAsStringSync(json.encode(_listQuestions));
-  }*/
+  
 }
