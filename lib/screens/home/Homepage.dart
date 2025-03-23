@@ -102,6 +102,7 @@ class Intro extends StatelessWidget {
     );
   }
 
+  // return the first letter of the email
   getEmailFirstLetter(){
     var email = Auth().currentUser?.email;
     var logo = email?[0] != null ? email![0] : '?';
